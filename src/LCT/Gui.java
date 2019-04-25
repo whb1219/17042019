@@ -1,5 +1,5 @@
 package LCT;
-//25042019q
+
 import static org.jscience.economics.money.Currency.EUR;
 import java.awt.BorderLayout;
 import java.awt.Color;
