@@ -209,11 +209,16 @@ public class Parameter_C_Material {
 			
 			LW = W1+W2+W3+W4+W5+W6+W9;
 			 WA=W1; //steel
+			
 			 WB=W2+W5+W6+W9;//outfitting
+			 
+			 
 			 WC=W4;//machinery
 			
 			 CA = kA*W1;
+		
 			 CB = kB*WB;
+			 
 			 CC = 850000*Math.pow(Pw/1000, 0.7);
 			 CD =kC*W3;
 			Transportation_fuel_quantity=Transportation_SFOC*Transportation_distance/100*LW*1000/1000;

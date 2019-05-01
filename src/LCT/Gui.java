@@ -1,5 +1,5 @@
 package LCT;
-
+//01052019
 import static org.jscience.economics.money.Currency.EUR;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -2442,7 +2442,7 @@ Parameter_C_Material RM1 = new Parameter_C_Material();
 //RM1.	Pw	=Double.parseDouble(data_m[	11	][5]);
 //
 //if(Double.parseDouble(data_m[	12	][5])!=0) {
-	RM1. 	W11 = Double.parseDouble(data_m[	12	][5]);
+	RM1. 	W11 = Double.parseDouble(data_m[	13	][5]);
 //}
 
 
@@ -2558,8 +2558,13 @@ Parameter_C_Material RM2 = new Parameter_C_Material();
 //RM2.	NJ	=Double.parseDouble(data_m[	8	][5]);
 //RM2.	NE	=Double.parseDouble(data_m[	9	][5]);
 //RM2.	Pw	=Double.parseDouble(data_m[	11	][5]);
+RM2.W2=Double.parseDouble(data_m[	2	][36]);
+RM2.W5=0;
+RM2.W6=0;
+RM2.W9=0;
 
 RM2.kB=Double.parseDouble(data_m[	1	][36]);
+
 RM2.E_price=Double.parseDouble(data_m[	1	][34]);
 RM2.Spec_GWP_E = Double.parseDouble(data_m[	2	][34]);
 RM2.Spec_AP_E = Double.parseDouble(data_m[	3	][34]);
@@ -2616,6 +2621,7 @@ RM2. Labour_fee_welding =Double.parseDouble(data_m[	6	][38]);
 RM2. Labour_fee_painting =Double.parseDouble(data_m[	6	][39]);
 
 RM2.run(); //Run the calculation
+System.out.println("xxx" + RM2.WB);
 
 
 //Operation M1
@@ -2896,9 +2902,11 @@ System.out.println(M1.Spare_cost);
 M1.run();
 //Scrapping
 Parameter_S S1 = new Parameter_S();
-S1.	Number	=	CS1.Number	; //Number of item for scrapping
-S1.	Weight	=	CS1.Weight	; //Weight of item (ton)
-S1.	S_Price	=	Double.parseDouble(data_m[6][54])	; //Price of scrapping (Euro/set)
+S1.Hull_Weight = Double.parseDouble(data_m[12][5]);
+S1.	Machinery_Number	=	CS1.Number	; //Number of item for scrapping
+S1.	Machinery_Weight	=	CS1.Weight	; //Weight of item (ton)
+S1.S_Price_M	=	Double.parseDouble(data_m[6][54])	; //Price of machinery scrapping (Euro/set)
+S1.S_Price_H	= 	Double.parseDouble(data_m[1][54]);//Price of hullscrapping (Euro/set)
 S1.	Transportation_distance	=	Double.parseDouble(data_m[1][55])	; //Distance of material transportation (km)
 S1.	Transportation_fee	=	Double.parseDouble(data_m[2][55])	; //Transportation fee per km (Euro/km)
 S1.	Transportation_SFOC	=	Double.parseDouble(data_m[3][55]); //Transportation specification fuel consumption (ton/km)
@@ -2907,7 +2915,9 @@ S1.	Transportation_fuel_price	=	Double.parseDouble(data_m[4][55])	; //Fuel price
 S1.	Electricity_price	=	Double.parseDouble(data_m[1][56])	;  //Fuel oil price (Euro/ton) natural gas
 //	S1.Fuel_price = Double.parseDouble(data_m[1][56]);
 S1.Cutting_power=Double.parseDouble(data_m[5][6]);
-S1.Cutting_hours = Double.parseDouble(data_m[1][57]);
+S1.Cutting_hours = Double.parseDouble(data_m[1][57])+Double.parseDouble(data_m[1][58])+Double.parseDouble(data_m[1][59]);
+S1.Cleaning_power=Double.parseDouble(data_m[5][10]);
+S1.Cleaning_hours = Double.parseDouble(data_m[2][57])+Double.parseDouble(data_m[2][58])+Double.parseDouble(data_m[2][59]);
 
 S1.	Life_span	=	Life_span	;
 S1.	Interest	=	Interest	;
@@ -2929,17 +2939,17 @@ S1.run(); //Run the calculation
 
 
 Parameter_S S2 = new Parameter_S();
-S2.	Number	=	CS1.Number	; //Number of item for scrapping
-S2.	Weight	=	CS1.Weight	; //Weight of item (ton)
-S2.	S_Price	=	Double.parseDouble(data_m[8][54])	; //Price of scrapping (Euro/ton)
+S2.	Machinery_Number	=	CS1.Number	; //Number of item for scrapping
+S2.	Machinery_Weight	=	CS1.Weight	; //Weight of item (ton)
+S2.S_Price_M	=	Double.parseDouble(data_m[8][54])	; //Price of scrapping (Euro/ton)
 S2.	Transportation_distance	=	Double.parseDouble(data_m[1][55])	; //Distance of material transportation (km)
 S2.	Transportation_fee	=	Double.parseDouble(data_m[2][55])	; //Transportation price per km (Euro/km)
 S2.	Transportation_SFOC	=	Double.parseDouble(data_m[3][55]); //Transportation specification fuel consumption (ton/km)
 S2.	Transportation_fuel_price	=	Double.parseDouble(data_m[4][55])	; //Fuel price of transportation (Euro/ton)
 //S2.	Cut_type	= data_m[0][57];
-S2.	Electricity_price	=	Double.parseDouble(data_m[1][56])	;  //Fuel oil price (Euro/ton) natural gas
+//S2.	Electricity_price	=	Double.parseDouble(data_m[1][56])	;  //Fuel oil price (Euro/ton) natural gas
 //S2.Fuel_price = Double.parseDouble(data_m[1][56]);
-S2.Cutting_power=Double.parseDouble(data_m[5][6]);
+//S2.Cutting_power=Double.parseDouble(data_m[5][6]);
 //S2.Cutting_hours = Double.parseDouble(data_m[1][57]);
 
 S2.	Life_span	=	Life_span	;

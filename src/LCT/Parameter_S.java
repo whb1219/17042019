@@ -8,9 +8,11 @@ public class Parameter_S {
 //	String 	LO_type;
 	String 	Cut_type;
 	
-	double	Number	=0;
-	double	Weight	=0;
-	double	S_Price	=0;
+	double	Machinery_Number	=0;
+	double	Machinery_Weight	=0;
+	double	Hull_Weight=0;
+	double	S_Price_M	=0;
+	double	S_Price_H	=0;
 	double	Transportation_distance	=0;
 	double	Transportation_fee	=0;
 	double	Transportation_SFOC	=0;
@@ -20,6 +22,8 @@ public class Parameter_S {
 	double 	Fuel_price  =0;
 	double 	Cutting_power=0;
 	double  Cutting_hours=0;
+	double 	Cleaning_power=0;
+	double  Cleaning_hours=0;
 	double  Cutting_material=0;
 	double 	Cutting_M_price=0;
 	double	Life_span	=0;
@@ -52,25 +56,34 @@ public class Parameter_S {
 	
 	public void run(){	
 		//Interim results
-		double Transportation_fuel_quantity=Transportation_SFOC*Transportation_distance/100*Weight*Number*1000/1000;
+		double Transportation_fuel_quantity=Transportation_SFOC*Transportation_distance/100*Machinery_Weight*Machinery_Number*1000/1000;
 		double Transportation_fuel_cost= Transportation_fuel_price*Transportation_fuel_quantity;
-		double Electricity_consumption= Cutting_hours*Cutting_power;
-		double Electricity_cost = Electricity_consumption/1000*Electricity_price;
-		double Cutting_M_Cost = Cutting_material*Cutting_M_price;
 		
+		if(Cutting_hours==0) {
+			Cutting_hours=Hull_Weight*20;
+		}
+		else {
+			}
+		
+		double Electricity_consumption= Cutting_hours*Cutting_power+Cleaning_hours*Cleaning_power;
+		
+//		double Electricity_cost = Electricity_consumption/1000*Electricity_price;
+		double Cutting_M_Cost = Cutting_material*Cutting_M_price;
+		double S_Cost_hull = Hull_Weight*S_Price_H;
+		double S_Cost_mach= Machinery_Number*S_Price_M;
 		
 		//Final result	
 		//LCA
-		GWP	= (Spec_GWP_Trans * Number*Weight*Transportation_distance/100 +Spec_GWP_E*Electricity_consumption/1000);
-		AP 	= (Spec_AP_Trans * Number*Weight*Transportation_distance/100 +Spec_AP_E*Electricity_consumption/1000);
-		EP	= (Spec_EP_Trans * Number*Weight*Transportation_distance/100 +Spec_EP_E*Electricity_consumption/1000);
-		POCP= (Spec_POCP_Trans * Number*Weight*Transportation_distance/100 +Spec_POCP_E*Electricity_consumption/1000);		
+		GWP	= (Spec_GWP_Trans * Machinery_Number*Machinery_Weight*Transportation_distance/100 +Spec_GWP_E*Electricity_consumption/1000);
+		AP 	= (Spec_AP_Trans * Machinery_Number*Machinery_Weight*Transportation_distance/100 +Spec_AP_E*Electricity_consumption/1000);
+		EP	= (Spec_EP_Trans * Machinery_Number*Machinery_Weight*Transportation_distance/100 +Spec_EP_E*Electricity_consumption/1000);
+		POCP= (Spec_POCP_Trans * Machinery_Number*Machinery_Weight*Transportation_distance/100 +Spec_POCP_E*Electricity_consumption/1000);		
 				
 		if (PV==0){
-			Cost_S = Cutting_M_Cost+Electricity_cost+Transportation_fuel_cost+Number*S_Price;
+			Cost_S = S_Cost_hull+Cutting_M_Cost+Transportation_fuel_cost+S_Cost_mach;//Electricity_cost+
 			}
 		else{
-			Cost_S = (Cutting_M_Cost+Electricity_cost+Transportation_fuel_cost+Number*S_Price)/(Math.pow((1+Interest),Life_span));
+			Cost_S = (S_Cost_hull+Cutting_M_Cost+Transportation_fuel_cost+S_Cost_mach)/(Math.pow((1+Interest),Life_span));//Electricity_cost+
 			};
 //			System.out.println("Scrapping: cost is : " + Cost_S +"Euro");
 //			System.out.println("Scrapping: GWP is :" + GWP + "ton CO2e"); 
