@@ -161,7 +161,7 @@ public class Parameter_C_Material {
 			if(W1!=0) {
 				
 			}
-			System.out.println(W1);
+//			System.out.println(W1);
 			double NCo = Math.pow(LBP*B*T,2/3)+2*B*(D-T+(NJ-1)*2.8);
 			double NC = NCo+0.1*(D-T+0.588*(NJ-1))*LBP;
 			double W21 = 0.0475*NC;
@@ -210,8 +210,12 @@ public class Parameter_C_Material {
 			LW = W1+W2+W3+W4+W5+W6+W9;
 			 WA=W1; //steel
 			
-			 WB=W2+W5+W6+W9;//outfitting
 			 
+			 if(WB==0) {
+				 WB=W2+W5+W6+W9;}//outfitting
+				if(W1!=0) {
+					
+				}
 			 
 			 WC=W4;//machinery
 			

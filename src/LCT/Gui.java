@@ -1,5 +1,5 @@
 package LCT;
-//01052019
+//010520191
 import static org.jscience.economics.money.Currency.EUR;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -11,6 +11,7 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -36,6 +37,7 @@ import javax.measure.unit.SI;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -58,8 +60,11 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
@@ -70,6 +75,7 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jscience.economics.money.Currency;
 
+import com.liferay.portal.kernel.util.Time;
 import com.sun.tools.javac.code.Attribute.Array;
 
 import jxl.Cell;
@@ -107,6 +113,7 @@ import org.atlantec.db.Session;
 import org.atlantec.directory.ConnectionMode;
 import org.atlantec.directory.InformationDirectory;
 import org.atlantec.jeb.ObjectNotFoundException;
+import org.atlantec.jeb.tgeb.n.F;
 
 
 public class Gui extends JPanel {
@@ -1096,8 +1103,8 @@ public class Gui extends JPanel {
                 panel_il,panel_s;									//all panels
 	
 		private static JButton importData, button_search, button_download;
-		private static Dimension screenSize = new Dimension (1280,800);//800,700);
-			//Toolkit.getDefaultToolkit().getScreenSize();//new Dimension (300,200); //
+		private static Dimension screenSize = //new Dimension (1280,800);//800,700);
+			Toolkit.getDefaultToolkit().getScreenSize();//new Dimension (300,200); //
 		private static Dimension size = new Dimension (800,200); //frame size
 		private JTextField field, field_search;						//textfield
 		private JTextArea area;
@@ -1106,9 +1113,11 @@ public class Gui extends JPanel {
 		private Font font_1 = new Font("Arial", Font.BOLD,24);
 		private Font font_2 = new Font("Arial", Font.BOLD,36);
 	
-		private Date d = new Date();
-		private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss") ;	
-	
+		private static Date d = new Date();
+		private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss") ;	
+		
+		static String project_name;
+		
 	private static JMenuBar menuBar;
 	private static JMenu menu, submenu;
 	private static JMenuItem menuItem;
@@ -1117,7 +1126,7 @@ public class Gui extends JPanel {
 	private static ActionListener AL_1, AL_2, AL_3,AL_4;// AL_4, AL_5, AL_6, AL_7, AL_8, AL_9, AL_10, AL_11, AL_12, AL_13, AL_14, AL_15;
 	private String selection_Number ;
 	private String selection_Name;
-
+	private static String frame_name;
     
 //    static File currentJavaJarFile = new File(Gui.class.getProtectionDomain().getCodeSource().getLocation().getPath());
 //    
@@ -1141,7 +1150,7 @@ public class Gui extends JPanel {
 	
 	private String [] Welcome = 	{"Objectives", "Impact", "Approaches"};
 	private String [] Description = 	{	"Developed models of life cycel approaches (LCCA, LCA and RA) can compare different design/"
-			+"\n"+ "maintenance/replacement strategiesfor ships from a through life perspecitvie by quantifying:"
+			+"\n"+ "maintenance/replacement strategies for ships from a through life perspecitvie by quantifying:"
 			+"\n"+ "  	-Direct economic costs of production (Capex)"
 			+"\n"+ "  	-Operation and maintenance cost (Opex;regular costs)"
 			+"\n"+ "  	-Repair and refurbishmeng costs and end-of-life costs (Opex; one-off costs)"
@@ -1156,12 +1165,12 @@ public class Gui extends JPanel {
 										+"\n"+ "environmental assessments, risk assessments and end-of-life considerations."};
 
 	//these names should be consistent with Database folder's names 
-	private String [] Design = 		{"Case Name","Life Span", "Financial data","Sensitivity level", "Ship total price","Ship Particulars"};
+	private String [] Design = 		{"Project Name","Life Span", "Financial data","Sensitivity level", "Ship total price","Ship Particulars"};
 	private String [] C_H = 		{"Hull Cutting", "Hull Bending", "Hull Welding", "Hull Blasting","Hull Coating", "Transportation"};
-	private String [] C_M = 		{"Engine", "Generator","Auxiliary", "Main System Transportation","Aux. System Transportation", "Electricity"};
+	private String [] C_M = 		{"Engine (M1)", "Generator (M2)","Auxiliary (M3)", "Main Engine Transportation","Aux. System Transportation", "Electricity"};
 	private String [] C_A = 		{"Purchase", "Outfitting Cutting", "Outfitting Welding", "Outfitting Coating", "Transportation","Copy"};
 	private String [] R_H = 		{"Hull Cutting", "Hull Bending", "Hull Welding", "Hull Blasting","Hull Coating", "Transportation"};
-	private String [] R_M = 		{"Engine", "Auxiliary", "Scrubber","Transportation", "Electricity", "Copy"};
+	private String [] R_M = 		{"Engine (M1)", "Auxiliary (M2)", "Scrubber (M3)","Transportation", "Electricity", "Copy"};
 	private String [] R_A = 		{"Purchase", "Outfitting Cutting", "Outfitting Welding", "Outfitting Coating", "Transportation","Copy"};
 	private String [] Operation = 	{"Operation - M1", "Operation - M2","Operation - M3","Fuel oil", "Lub oil","Transportation"};
 	private String [] Maintenance = {"Machinery", "Hull", "Outfitting", "Docking", "Spare","Copy"}; 
@@ -1340,13 +1349,13 @@ public class Gui extends JPanel {
 			panel_w.add(TP_lbl,c_w);
 	     	JTextPane TP = new JTextPane();
 	     	
-			TP.insertIcon(new ImageIcon ( cwd+"/pic/approach.png" ));
+			TP.insertIcon(new ImageIcon ( cwd+"/pic/approach2.png" ));
 			TP.setLayout(new BorderLayout());
 			//TP.add( new ImageIcon ( cwd+"/pic/approach.png" ),BorderLayout.CENTER );
 			TP.setEditable(false);
 			Dimension D_approach = new Dimension();
 			D_approach.setSize(screenSize.getWidth()/2,screenSize.getHeight()/2);
-			TP.setPreferredSize(D_approach);
+			TP.setPreferredSize(new Dimension(902, 408));
 		    c_w.weightx = 0;
 		    c_w.weighty = 0;
 		    c_w.gridy = 3;
@@ -1839,11 +1848,12 @@ public class Gui extends JPanel {
 	     tp.setTabPlacement(JTabbedPane.TOP);
 	     panel5.setLayout(new BoxLayout(panel5, BoxLayout.PAGE_AXIS));
 	     setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
-	     
-
-	     
+     
 	     JTextPane textReport = new JTextPane();
 	     textReport.setAlignmentX(Component.CENTER_ALIGNMENT);
+	     textReport.setSelectionColor(Color.red);	
+	     textReport.setSelectedTextColor(Color.white);
+
 //	     textReport.setFont(new Font("Arial", Font.PLAIN, 12));
 //	     textReport.setContentType("text/html");
 	     //textReport.setEditable(true);
@@ -1914,7 +1924,7 @@ public class Gui extends JPanel {
 PV =Double.parseDouble(data_m1[1][2]); //0 means not using present value; 1 means using;
 Life_span = Double.parseDouble(field0[1].getText()); //Life span of target (year)
 Interest= Double.parseDouble(data_m1[2][2]); //Interest rate (100%)
-String case_name = field0[0].getText();						//project name
+project_name = field0[0].getText();						//project name
 //	LCAdataCreation.dts.setProjectName(case_name);
 //uncertainty level
 SL= Double.parseDouble(field0[3].getText());			//sensitivity level
@@ -2141,7 +2151,7 @@ CM1.L_Welding=Double.parseDouble(data_m[	1	][8]);
 CM1.SMC_Welding=Double.parseDouble(data_m[	3	][8]);
 CM1.MP_Welding = Double.parseDouble(data_m[	4	][8]);
 //CM1.H_Welding_Hull= Double.parseDouble(data_m[	7	][8]);
-System.out.println("H"+CM1.H_Welding_Hull);
+//System.out.println("H"+CM1.H_Welding_Hull);
 //if the hours of welding is inputed just use this hours to determine energy consumption (E=P*H). 
 //If it leave as 0, use speed and quantity to find energy consumption (E=P*L/V) 
 if(Double.parseDouble(data_m[	7	][8])!=0) {
@@ -2210,6 +2220,7 @@ CM2.	NE	=Double.parseDouble(data_m[	9	][5]);
 CM2.	Pw	=Double.parseDouble(data_m[	11	][5]);
 
 CM2.kB=Double.parseDouble(data_m[	1	][18]);
+CM2.WB=Double.parseDouble(data_m[	2	][18]);
 CM2.E_price=Double.parseDouble(data_m[	1	][17]);
 CM2.Spec_GWP_E = Double.parseDouble(data_m[	2	][17]);
 CM2.Spec_AP_E = Double.parseDouble(data_m[	3	][17]);
@@ -2558,13 +2569,10 @@ Parameter_C_Material RM2 = new Parameter_C_Material();
 //RM2.	NJ	=Double.parseDouble(data_m[	8	][5]);
 //RM2.	NE	=Double.parseDouble(data_m[	9	][5]);
 //RM2.	Pw	=Double.parseDouble(data_m[	11	][5]);
-RM2.W2=Double.parseDouble(data_m[	2	][36]);
-RM2.W5=0;
-RM2.W6=0;
-RM2.W9=0;
+
 
 RM2.kB=Double.parseDouble(data_m[	1	][36]);
-
+RM2.WB=Double.parseDouble(data_m[	2	][36]);
 RM2.E_price=Double.parseDouble(data_m[	1	][34]);
 RM2.Spec_GWP_E = Double.parseDouble(data_m[	2	][34]);
 RM2.Spec_AP_E = Double.parseDouble(data_m[	3	][34]);
@@ -2621,7 +2629,7 @@ RM2. Labour_fee_welding =Double.parseDouble(data_m[	6	][38]);
 RM2. Labour_fee_painting =Double.parseDouble(data_m[	6	][39]);
 
 RM2.run(); //Run the calculation
-System.out.println("xxx" + RM2.WB);
+//System.out.println("xxx" + RM2.WB);
 
 
 //Operation M1
@@ -2771,7 +2779,7 @@ else {
 	O3.	SFOC_2		=	Double.parseDouble(data_m[11][44])	; //Specific fuel oil consumption (g/kWh)
 	O3.	SFOC_3		=	Double.parseDouble(data_m[18][44])	; //Specific fuel oil consumption (g/kWh)
 }
-System.out.println("sfoc=" + O3.	SFOC);
+//System.out.println("sfoc=" + O3.	SFOC);
 O3.	Ohour		=	Double.parseDouble(data_m[1][44]); //Operation hours (h)
 O3.	Ohour_2		=	Double.parseDouble(data_m[8][44]); //Operation hours (h)
 O3.	Ohour_3		=	Double.parseDouble(data_m[15][44]); //Operation hours (h)
@@ -3094,13 +3102,13 @@ q.add(String.valueOf(sum));
 //    lCAdataCreation.projOM=projOM;
 
 textReport.setText( 	"SHIPLYS LCT Report"+"\n"+
-        "Case Name: "+ case_name +"\n"+
+        "Case Name: "+ project_name +"\n"+
         "Date: " +dateFormat.format(d) +"\n"+"\n"+
         
         PV_state+"\n"+
         SL_state+"\n"+"\n"+
         
-        "Cost of Machinery  (Euro):"+"\n"+
+        "Life cycle cost (Euro):"+"\n"+
         "	Construction (Structure): 	" + formatter.format(sum1+sum3) +"\n"+
         "	Construction (Machinery): 	" + formatter.format(sum2) +"\n"+
         "	Retrofitting (Structure): 	" + formatter.format(sum1r+sum3r) +"\n"+
@@ -3110,7 +3118,7 @@ textReport.setText( 	"SHIPLYS LCT Report"+"\n"+
         "	Scrapping: 		" + formatter.format(sum6) + "\n"+
         "	Total cost: 		" + formatter.format(sum) + "\n"+"\n"+
         
-        "Global Warming Potential (GWP) of Machinery  (ton CO2e):"+"\n"+
+        "Global Warming Potential (GWP) (ton CO2e):"+"\n"+
         "	Construction: 	" + formatter.format(GWP_C) +"\n"+
         "	Retrofitting: 		" + formatter.format(GWP_R) +"\n"+
         "	Operation: 		" + formatter.format(GWP4) +"\n"+
@@ -3118,7 +3126,7 @@ textReport.setText( 	"SHIPLYS LCT Report"+"\n"+
         "	Scrapping: 		" + formatter.format(GWP6) +"\n"+
         "	Total GWP: 		" + formatter.format(GWP) +"\n"+"\n"+
         
-        "Acidification Potential (AP) of Machinery  (ton SO2e):"+"\n"+
+        "Acidification Potential (AP) (ton SO2e):"+"\n"+
         "	Construction: 	" + formatter.format(AP_C)+"\n"+
         "	Retrofitting:		" + formatter.format(AP_R)+"\n"+
         "	Operation: 		" + formatter.format(AP4) +"\n"+
@@ -3126,7 +3134,7 @@ textReport.setText( 	"SHIPLYS LCT Report"+"\n"+
         "	Scrapping: 		" + formatter.format(AP6) +"\n"+
         "	Total AP: 		" + formatter.format(AP) +"\n"+"\n"+
         
-        "Eutrophication Potential(EP) of Machinery  (ton PO4e):"+"\n"+
+        "Eutrophication Potential(EP) (ton PO4e):"+"\n"+
         "	Construction: 	" + formatter.format(EP_C) +"\n"+
         "	Retrofitting:		" + formatter.format(EP_R) +"\n"+
         "	Operation:		" + formatter.format(EP4) +"\n"+
@@ -3135,7 +3143,7 @@ textReport.setText( 	"SHIPLYS LCT Report"+"\n"+
         "	Total EP: 		" + formatter.format(EP) +"\n"+"\n"+
         
         
-        "Photochemical Ozone Creation Potential (POCP) of Machinery  (ton C2H6e):"+"\n"+
+        "Photochemical Ozone Creation Potential (POCP) (ton C2H6e):"+"\n"+
         "	Construction: 	" + formatter.format(POCP_C) +"\n"+
         "	Retrofitting:		" + formatter.format(POCP_R) +"\n"+
         "	Operation: 		" + formatter.format(POCP4 )+"\n"+
@@ -3205,7 +3213,7 @@ dataset1.addValue( sum6 , "Scrapping" , "");
 dataset1.addValue( sum , "Total" , "");
 // Generate the graph
 JFreeChart chart1 = ChartFactory.createBarChart(
-        "Life Cycle Cost - " + case_name, // Title
+        "Life Cycle Cost - " + project_name, // Title
         "Life Stages", // x-axis Label
         "Cost (Euro)", // y-axis Label
         dataset1, // Dataset
@@ -3236,7 +3244,7 @@ dataset2.addValue( GWP6 , "Scrapping" , "" );
 dataset2.addValue( GWP , "Total" , "" );
 // Generate the graph
 JFreeChart chart2 = ChartFactory.createBarChart(
-        "Global Warming Potential - " + case_name, // Title
+        "Global Warming Potential - " + project_name, // Title
         "Life Stages", // x-axis Label
         "GWP (ton CO2e)", // y-axis Label
         dataset2, // Dataset
@@ -3267,7 +3275,7 @@ dataset3.addValue( AP6 , "Scrapping" , "" );
 dataset3.addValue( AP , "Total" , "" );
 // Generate the graph
 JFreeChart chart3 = ChartFactory.createBarChart(
-        "Acidification Potential - " + case_name, // Title
+        "Acidification Potential - " + project_name, // Title
         "Life Stages", // x-axis Label
         "AP (ton SO2e)", // y-axis Label
         dataset3, // Dataset
@@ -3298,7 +3306,7 @@ dataset4.addValue( EP6 , "Scrapping" , "" );
 dataset4.addValue( EP , "Total" , "" );
 // Generate the graph
 JFreeChart chart4 = ChartFactory.createBarChart(
-        "Eutrophication Potential - " + case_name, // Title
+        "Eutrophication Potential - " + project_name, // Title
         "Life Stages", // x-axis Label
         "EP (ton PO4e)", // y-axis Label
         dataset4, // Dataset
@@ -3329,7 +3337,7 @@ dataset5.addValue( POCP6 , "Scrapping" , "" );
 dataset5.addValue( POCP , "Total" , "" );
 // Generate the graph
 JFreeChart chart5 = ChartFactory.createBarChart(
-        "Photochemical Ozone Creation Potential - " + case_name, // Title
+        "Photochemical Ozone Creation Potential - " + project_name, // Title
         "Life Stages", // x-axis Label
         "POCP (ton C2H6e)", // y-axis Label
         dataset5, // Dataset
@@ -3360,7 +3368,7 @@ dataset6.addValue( RA6 , "Scrapping" , "" );
 dataset6.addValue( RA , "Total" , "" );
 // Generate the graph
 JFreeChart chart6 = ChartFactory.createBarChart(
-        "Risk Assessment- RPN - " + case_name, // Title
+        "Risk Assessment- RPN - " + project_name, // Title
         "Life Stages", // x-axis Label
         "Risk Priority Number", // y-axis Label
         dataset6, // Dataset
@@ -3391,7 +3399,7 @@ dataset7.addValue( sum6+GWP6*P_GWP+AP6*P_AP+EP6*P_EP+POCP6*P_POCP+RA6/1000*CoTL 
 dataset7.addValue( sum+GWP*P_GWP+AP*P_AP+EP*P_EP+POCP*P_POCP+RA/1000*CoTL , "Total" , "" );     				//life cycle total cost
 // Generate the graph
 JFreeChart chart7 = ChartFactory.createBarChart(
-        "Total Life Cycle Cost - " + case_name, // Title
+        "Total Life Cycle Cost - " + project_name, // Title
         "Life Stages", // x-axis Label
         "Cost (Euro)", // y-axis Label
         dataset7, // Dataset
@@ -3532,7 +3540,7 @@ Frame.setVisible(true);
 ////Frame.pack();
 //Frame.setVisible(true);
 FileOutputStream fout;
-fout = new FileOutputStream(cwd+"/reports/result_"+case_name+"_" +dateFormat.format(d)+".xls");
+fout = new FileOutputStream(cwd+"/reports/result_"+project_name+"_" +dateFormat.format(d)+".xls");
 //Total spreadsheet
 @SuppressWarnings("resource")
 HSSFWorkbook wb1 = new HSSFWorkbook();
@@ -4476,7 +4484,7 @@ P_ud.add(Fd_id,BorderLayout.CENTER);
 F_ud.add(P_ud);
 F_ud.setVisible(true);
 F_ud.setResizable(false);
-System.out.println("Results are saved to Project@"+"case_name"+"/~AnalysisCase");
+System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCase");
  //Tear Down
 //try {
 //	LCAdataFactory.tearDownDataBase();
@@ -4827,8 +4835,10 @@ System.out.println("Results are saved to Project@"+"case_name"+"/~AnalysisCase")
 	    c_sub.gridx = 0;
 	    c_sub.gridy = 1;
 	    area.setEditable(false);
+	    area.setAutoscrolls(true);
+//	    Border border = BorderFactory.createLineBorder(Color.black, 1);
+//	    area.setBorder(border);
 	    panel_n.add(area,c_sub);
-	    
 	    panel_n.setVisible(true); // added code
 	    return panel_n; 
 	  }
@@ -4873,7 +4883,7 @@ System.out.println("Results are saved to Project@"+"case_name"+"/~AnalysisCase")
 		    cb = new JComboBox<String>(choices);
 		    cb.setName(string);
 //		    cb.setBorder(BorderFactory.createTitledBorder("Select database"));
-		  
+		    cb.setBackground(Color.white);
 		    Font font_cb = new Font("Arial", Font.PLAIN, 15);
 		    cb.setFont(font_cb);
 		    cb.setPreferredSize(new Dimension(400,40));
@@ -4886,10 +4896,12 @@ System.out.println("Results are saved to Project@"+"case_name"+"/~AnalysisCase")
 		    panel_m.add(cb,c_sub);
 
 //create drop list for database selection
-		    importData = new JButton("import from server");
+		    importData = new JButton("Import from platform");
 		    importData.setName("import from server");
-		    importData.setFont(new Font("Arial", Font.BOLD, 15));
+		    importData.setToolTipText("SHIPLYS platform should be running before import!");
+		    importData.setFont(new Font("Arial", Font.ITALIC, 15));
 		    importData.setPreferredSize(new Dimension(400,20));
+		    importData.setBackground(Color.white);
 		    c_sub.fill = GridBagConstraints.VERTICAL;
 		    c_sub.weighty = 1;
 		    c_sub.gridx = 0;
@@ -4902,7 +4914,11 @@ System.out.println("Results are saved to Project@"+"case_name"+"/~AnalysisCase")
 //create field for user inputs		    		    
 		    field = new JTextField("0");
 		    field.setPreferredSize(new Dimension(400,40));
-		    field.setFont(font_1);
+		    field.setHorizontalAlignment(JTextField.CENTER);
+		    field.setBackground(Color.lightGray);
+		    field.setSelectedTextColor(Color.white);
+		    field.setSelectionColor(Color.red);
+
 		    c_sub.fill = GridBagConstraints.VERTICAL;
 		    c_sub.weighty = 1;
 		    c_sub.gridx = 0;
@@ -5001,6 +5017,8 @@ System.out.println("Results are saved to Project@"+"case_name"+"/~AnalysisCase")
 				selection_Number = Integer.toString(cb_m[j].getSelectedIndex());
 				selection_Name = cb_m[j].getItemAt(cb_m[j].getSelectedIndex());
 				cb_m[j].setToolTipText(selection_Name);
+				cb_m[j].setBackground(Color.red);
+				cb_m[j].setForeground(Color.white);
 //				System.out.println(selection_Name);
 //				System.out.println(cb_m[j].getName());
 //Modify to be related to file_group.length	??
@@ -5089,11 +5107,20 @@ System.out.println("Results are saved to Project@"+"case_name"+"/~AnalysisCase")
 			    
 			     
 				 JTable[] table_db1 = new JTable[activity_length];
-				
 				 table_db1 [j] = new JTable(DTM);
+				 
 				 table_db1 [j].setSelectionBackground(Color.GREEN);
 				 table_db1 [j].setToolTipText("Please 'ENTER' after modification!");
+				 table_db1 [j].setColumnSelectionAllowed(true);
 
+				 JTextField textField = new JTextField();
+				 textField.setFont(new Font("Verdana", 1, 12));
+				 textField.setBackground(Color.red);
+				 textField.setForeground(Color.white);
+				 DefaultCellEditor dce = new DefaultCellEditor( textField );
+				 table_db1[j].getColumnModel().getColumn(1).setCellEditor(dce);
+				 table_db1[j].getColumnModel().getColumn(2).setCellEditor(dce);
+				 table_db1[j].getColumnModel().getColumn(3).setCellEditor(dce);
 //				 table_db1 [j].setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 				 
 				 table_db1 [j].getColumnModel().getColumn(0).setPreferredWidth(480);
@@ -5134,6 +5161,8 @@ System.out.println("Results are saved to Project@"+"case_name"+"/~AnalysisCase")
 					
 					@Override
 					public void actionPerformed(ActionEvent e) {
+						cb_m[j].setBackground(Color.DARK_GRAY);
+						cb_m[j].setForeground(Color.white);
 						TableModel DTM2 = table_db1[j].getModel();
 						for (int k = 0;k<data_length;k++){
 							
@@ -5750,7 +5779,7 @@ System.out.println("Results are saved to Project@"+"case_name"+"/~AnalysisCase")
 		 };	
 		 return downloadLinster;
 		 }	 
-//main function
+		 //main function
 //main function to run to show GUI	 
 	public static void main(String[] args) {
 //          System.out.println(currentJavaJarFilePath);
@@ -5760,14 +5789,44 @@ System.out.println("Results are saved to Project@"+"case_name"+"/~AnalysisCase")
             
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
+            	JFrame F_id = new JFrame("New project");
+            	
+        		JPanel P_id = new JPanel();
+        		P_id.setLayout(new BorderLayout());
+        		JTextField TF = new JTextField();
+        		TF.setName("Enter project name here!");
+        		JButton enter_name = new JButton();
+        		enter_name.setText("Create project");
+        		
+        		TF.setBackground(Color.green);
+        		enter_name.setBackground(Color.red);
+        		enter_name.setForeground(Color.white);
+        		ActionListener en = new ActionListener() {
+        			
+        			@Override
+        			public void actionPerformed(ActionEvent e) {
+        				frame_name = TF.getText();
+        				try {
+        					createAndShowGUI();
+                                                
+        				} catch (BiffException | IOException e1) {
+        					// TODO Auto-generated catch block
+        					e1.printStackTrace();
+        				}
+        				F_id.dispose();
+        			}
+        		};
+        		enter_name.addActionListener(en);
+        		
+        		F_id.setSize(250, 75);
+        		//Fd_warn0.setText("Database saved in:" + "\n"+ cwd+"/db/" + cb_m[j].getName()+"/"+dateFormat.format(d)+".xls");
+        		P_id.add(TF,BorderLayout.PAGE_START);
+        		P_id.add(enter_name,BorderLayout.PAGE_END);
+        		F_id.add(P_id);
+        		F_id.setVisible(true);
+        		F_id.setResizable(false);  	
             
-				try {
-					createAndShowGUI();
-                                        
-				} catch (BiffException | IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+		
 			}
             
             }
@@ -5779,7 +5838,12 @@ System.out.println("Results are saved to Project@"+"case_name"+"/~AnalysisCase")
 	//Create and set up the window.
   
 	//	JFrame.setDefaultLookAndFeelDecorated(true);
-	frame = new JFrame("SHIPLYS");
+		
+		
+		
+
+	frame = new JFrame("SHIPLYS LCT - "+ frame_name+" - " +dateFormat.format(d));
+	frame.setName(project_name);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setSize(screenSize );
     
