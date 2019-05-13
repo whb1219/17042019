@@ -58,6 +58,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.JToolTip;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
@@ -1107,8 +1108,8 @@ public class Gui extends JPanel {
 			Toolkit.getDefaultToolkit().getScreenSize();//new Dimension (300,200); //
 		private static Dimension size = new Dimension (800,200); //frame size
 		private JTextField field, field_search;						//textfield
+		JTextField[] field0;
 		private JTextArea area;
-	
 		private Font font_0 = new Font("Arial", Font.PLAIN,14);
 		private Font font_1 = new Font("Arial", Font.BOLD,24);
 		private Font font_2 = new Font("Arial", Font.BOLD,36);
@@ -1384,7 +1385,7 @@ public class Gui extends JPanel {
 	     panel0.setLayout(new GridBagLayout());
 	     GridBagConstraints c = new GridBagConstraints();
 	     JPanel[] j0 = new JPanel[Design.length];
-	     JTextField[] field0 = new JTextField[Design.length];
+	     field0 = new JTextField[Design.length];
 	     JComboBox<String>[]  cb0	=	new JComboBox[Design.length];
 	     ActionListener[] db0 = new ActionListener[Design.length];
 	     JButton[] IL0 = new JButton[Design.length];
@@ -1405,7 +1406,8 @@ public class Gui extends JPanel {
 			    field0[i] = field;
 			    cb0[i] = cb;
 			    IL0[i] = importData;
-				
+				field0[0].setText(frame_name);
+				field0[0].setEditable(false);
 //				File file_new = new File (cwd+"/db2/Template/");
 //				file_group_1 =  file_new.listFiles();
 //				System.out.println(cb0[0]);
@@ -1924,6 +1926,7 @@ public class Gui extends JPanel {
 PV =Double.parseDouble(data_m1[1][2]); //0 means not using present value; 1 means using;
 Life_span = Double.parseDouble(field0[1].getText()); //Life span of target (year)
 Interest= Double.parseDouble(data_m1[2][2]); //Interest rate (100%)
+
 project_name = field0[0].getText();						//project name
 //	LCAdataCreation.dts.setProjectName(case_name);
 //uncertainty level
@@ -4285,6 +4288,17 @@ wb1.write(fout);
                                 java.util.logging.Logger.getLogger(Gui.class.getName()).log(Level.SEVERE, null, ex);
                             } catch (Exception ex) {
                                 java.util.logging.Logger.getLogger(Gui.class.getName()).log(Level.SEVERE, null, ex);
+                                JFrame F_warn0 = new JFrame("Error!");
+								JPanel P_warn0 = new JPanel();
+								P_warn0.setLayout(new BorderLayout());
+								JLabel Fd_warn0 = new JLabel("Error: please make sure no 'BLANK' cell and run again!");
+								F_warn0.setSize(500, 80);
+								//Fd_warn0.setText("Database saved in:" + "\n"+ cwd+"/db/" + cb_m[j].getName()+"/"+dateFormat.format(d)+".xls");
+								P_warn0.add(Fd_warn0,BorderLayout.CENTER);
+								F_warn0.setLocation(400, 170);
+								F_warn0.add(P_warn0);
+								F_warn0.setVisible(true);
+								F_warn0.setResizable(false);
                             }
 
                         }
@@ -5160,16 +5174,70 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
 			     updateButton[j].addActionListener(new ActionListener() {
 					
 					@Override
-					public void actionPerformed(ActionEvent e) {
+					public void actionPerformed(ActionEvent e){
 						cb_m[j].setBackground(Color.DARK_GRAY);
 						cb_m[j].setForeground(Color.white);
 						TableModel DTM2 = table_db1[j].getModel();
+						System.out.println(data_m1[1][1]);
 						for (int k = 0;k<data_length;k++){
-							
+							data_m0[k][j]=(String) DTM2.getValueAt(k, 0);
 							data_m1[k][j]=(String) DTM2.getValueAt(k, 1);
 							data_m2[k][j]=(String) DTM2.getValueAt(k, 2);
 							data_m3[k][j]=(String) DTM2.getValueAt(k, 3);
-													
+							int expression = Integer.parseInt(field0[3].getText());
+							switch(expression) {
+							  case 1:
+								  if(data_m0[k][j]!=""&&(data_m1[k][j]!=""||data_m3[k][j]!="")) {
+									  if(data_m2[k][j]=="") {
+										JFrame F_warn0 = new JFrame("Error!");
+										JPanel P_warn0 = new JPanel();
+										P_warn0.setLayout(new BorderLayout());
+										JLabel Fd_warn0 = new JLabel(data_m0[k][j]+" data is empty! Please fill in and update again!");
+										F_warn0.setSize(500, 80);
+										//Fd_warn0.setText("Database saved in:" + "\n"+ cwd+"/db/" + cb_m[j].getName()+"/"+dateFormat.format(d)+".xls");
+										P_warn0.add(Fd_warn0,BorderLayout.CENTER);
+										F_warn0.setLocation(400, 170);
+										F_warn0.add(P_warn0);
+										F_warn0.setVisible(true);
+										F_warn0.setResizable(false);
+													}}
+								  break;
+							  case 2:
+								  if(data_m0[k][j]!=""&&(data_m2[k][j]!=""||data_m1[k][j]!="")) {
+									  if(data_m3[k][j]=="") {
+										JFrame F_warn0 = new JFrame("Error!");
+										JPanel P_warn0 = new JPanel();
+										P_warn0.setLayout(new BorderLayout());
+										JLabel Fd_warn0 = new JLabel(data_m0[k][j]+" data is empty! Please fill in and update again!");
+										F_warn0.setSize(500, 80);
+										//Fd_warn0.setText("Database saved in:" + "\n"+ cwd+"/db/" + cb_m[j].getName()+"/"+dateFormat.format(d)+".xls");
+										P_warn0.add(Fd_warn0,BorderLayout.CENTER);
+										F_warn0.setLocation(400, 170);
+										F_warn0.add(P_warn0);
+										F_warn0.setVisible(true);
+										F_warn0.setResizable(false);}}
+								  break;
+							  default:
+								  if(data_m0[k][j]!=""&&(data_m2[k][j]!=""||data_m3[k][j]!="")) {
+									  if(data_m1[k][j]=="") {
+										JFrame F_warn0 = new JFrame("Error!");
+										JPanel P_warn0 = new JPanel();
+										P_warn0.setLayout(new BorderLayout());
+										JLabel Fd_warn0 = new JLabel(data_m0[k][j]+" data is empty! Please fill in and update again!");
+										F_warn0.setSize(500, 80);
+										//Fd_warn0.setText("Database saved in:" + "\n"+ cwd+"/db/" + cb_m[j].getName()+"/"+dateFormat.format(d)+".xls");
+										P_warn0.add(Fd_warn0,BorderLayout.CENTER);
+										F_warn0.setLocation(400, 170);
+										F_warn0.add(P_warn0);
+										F_warn0.setVisible(true);
+										F_warn0.setResizable(false);
+										
+			}}
+									
+							}
+						
+							
+					
 						}}});
 			     
 				   //add button	  
@@ -5790,14 +5858,14 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
             	JFrame F_id = new JFrame("New project");
-            	
+            	F_id.setIconImage(new ImageIcon(cwd+"/pic/icon.png").getImage());
         		JPanel P_id = new JPanel();
         		P_id.setLayout(new BorderLayout());
         		JTextField TF = new JTextField();
         		TF.setName("Enter project name here!");
         		JButton enter_name = new JButton();
-        		enter_name.setText("Create project");
-        		
+        		enter_name.setText("Create a project");
+        		enter_name.setFont(new Font("Arial", Font.BOLD,14));
         		TF.setBackground(Color.green);
         		enter_name.setBackground(Color.red);
         		enter_name.setForeground(Color.white);
@@ -5817,14 +5885,18 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
         			}
         		};
         		enter_name.addActionListener(en);
-        		
+        		TF.addActionListener(en);
         		F_id.setSize(250, 75);
         		//Fd_warn0.setText("Database saved in:" + "\n"+ cwd+"/db/" + cb_m[j].getName()+"/"+dateFormat.format(d)+".xls");
         		P_id.add(TF,BorderLayout.PAGE_START);
         		P_id.add(enter_name,BorderLayout.PAGE_END);
         		F_id.add(P_id);
         		F_id.setVisible(true);
-        		F_id.setResizable(false);  	
+        		F_id.setResizable(false);  
+        		int w = (int) (screenSize.getWidth()/2);
+        		int h = (int) (screenSize.getHeight()/2);
+        		F_id.setLocation(w,h);
+        		F_id.setAlwaysOnTop(true);
             
 		
 			}
@@ -5986,25 +6058,25 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
 
 //to dir	
 	
-	menuItem = new JMenuItem("Directory ", KeyEvent.VK_I);
+	menuItem = new JMenuItem("Training Material ", KeyEvent.VK_T);
 	menuItem.setAccelerator(KeyStroke.getKeyStroke(
-	        KeyEvent.VK_I, ActionEvent.CTRL_MASK));
+	        KeyEvent.VK_T, ActionEvent.CTRL_MASK));
 	menuItem.getAccessibleContext().setAccessibleDescription(
-	        "Open installation folder");
+	        "Open Training Material");
 	AL_3=  new ActionListener() {
 
 		public void actionPerformed(ActionEvent Menu) {
 			Desktop d = Desktop.getDesktop();
-			File folder = new File(cwd);
+			File TM = new File(cwd+"/Training Material.pdf");
 			
 			    try {
-					d.open(folder);;
+					d.open(TM);;
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}}};
 	menuItem.addActionListener(AL_3);
-	//menu.add(menuItem);
+	menu.add(menuItem);
 	//
 //	//Build the first menu.
 //	menu = new JMenu("File");
@@ -6242,7 +6314,7 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
 //	
 //
 	frame.setJMenuBar(menuBar);
-	frame.setIconImage(new ImageIcon("C:/Users/tjb12178/workspace/04012018/icon.png").getImage());
+	frame.setIconImage(new ImageIcon(cwd+"/pic/icon.png").getImage());
 //    
     //Display the window.
     frame.pack();

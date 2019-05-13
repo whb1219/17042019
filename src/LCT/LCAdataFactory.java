@@ -642,7 +642,11 @@ public class LCAdataFactory
         if (result.getParameters() == null) {
             result.setParameters(Arrays.asList(lifeCycleCostKV));
         } else {
-            result.getParameters().add(lifeCycleCostKV);
+            List<KeyValue> oldAndNewParameters = new ArrayList(result.getParameters());
+
+            oldAndNewParameters.add(lifeCycleCostKV);
+
+            result.setParameters(oldAndNewParameters);
         }
     }
     @SuppressWarnings("unchecked")
