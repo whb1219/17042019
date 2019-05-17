@@ -12,7 +12,11 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -20,10 +24,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -1092,6 +1098,8 @@ public class Gui16052019 extends JPanel {
 		private static Dimension screenSize = //new Dimension (1280,800);//800,700);
 			Toolkit.getDefaultToolkit().getScreenSize();//new Dimension (300,200); //
 		private static Dimension size = new Dimension (800,200); //frame size
+		static int w = (int) (screenSize.getWidth()/2);
+		static int h = (int) (screenSize.getHeight()/2);
 		private JTextField field, field_search;						//textfield
 		JTextField[] field0;
 		private JTextArea area;
@@ -1109,7 +1117,7 @@ public class Gui16052019 extends JPanel {
 	private static JMenuItem menuItem;
 	private static JRadioButtonMenuItem rbMenuItem;
 	private static JCheckBoxMenuItem cbMenuItem;
-	private static ActionListener AL_1, AL_2, AL_3,AL_4;
+	private static ActionListener AL_1, AL_2, AL_3,AL_4, cb_update;
 	private String selection_Number ;
 	private String selection_Name;
 	private static String frame_name;
@@ -1176,6 +1184,10 @@ public class Gui16052019 extends JPanel {
 //set up database in a default folder	
 	private File file = new File (cwd+"/db/");
 	private File[]file_group = file.listFiles();
+	private File file_1 = new File (cwd+"/db/");
+	private File[]file_group_1 = file.listFiles();
+	
+	
 	private Workbook wb_num = Workbook.getWorkbook(new File(cwd+"/db/Template/Template.xls"));
 
 //set up data length of database	
@@ -1608,6 +1620,7 @@ public class Gui16052019 extends JPanel {
 	     
 //list all combobox in a array and add action for each combobox
 	     cb_m = new JComboBox[activity_length];
+	     
 	     for(int j=0; j<activity_length;j++)
 	     {
 	    	 if(j<Design.length)
@@ -3481,8 +3494,28 @@ wb1.write(fout);
 
 				try {
 					LCAdataFactory.setUpDataServiceConnection();
+					JFrame F_warn0 = new JFrame("Calculation complete!");
+					JPanel P_warn0 = new JPanel();
+					P_warn0.setLayout(new BorderLayout());
+					JLabel Fd_warn0 = new JLabel("Results are saved and uploaded to SHIPLYS server!");
+					F_warn0.setSize(200, 80);
+					P_warn0.add(Fd_warn0,BorderLayout.CENTER);
+					F_warn0.setLocation(w, h);
+					F_warn0.add(P_warn0);
+					F_warn0.setVisible(true);
+					F_warn0.setResizable(false); 
+					
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
+					JFrame F_warn0 = new JFrame("Error!");
+					JPanel P_warn0 = new JPanel();
+					P_warn0.setLayout(new BorderLayout());
+					JLabel Fd_warn0 = new JLabel("Can't upload to SHIPLYS server!");
+					F_warn0.setSize(200, 80);
+					P_warn0.add(Fd_warn0,BorderLayout.CENTER);
+					F_warn0.setLocation(w, h);
+					F_warn0.add(P_warn0);
+					F_warn0.setVisible(true);
+					F_warn0.setResizable(false); 						         				
 					e.printStackTrace();
 				}
 
@@ -3982,10 +4015,10 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
 		    panel_m.add(lbl,c_sub);
 
 //create drop list for database selection
-		    int position;
-		    position = string.lastIndexOf(".");
+
 		    file = new File (cwd+"/db/"+string+"/");//.substring(0, position)
 		    file_group = file.listFiles();
+		    Arrays.sort(file_group, Comparator.comparingLong(File::lastModified));
 		    choices = new String[file_group.length];
 		    choices_NAME = new String[file_group.length];
 		    int[] pos = new int[file_group.length];
@@ -3998,12 +4031,24 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
 		    	}}
 
 		    cb = new JComboBox<String>(choices);
+		
 		    cb.setName(string);
 		    cb.setBackground(Color.white);
 		    Font font_cb = new Font("Arial", Font.PLAIN, 18);
 		    cb.setFont(font_cb);
 		    cb.setPreferredSize(new Dimension(500,40));
 		    ((JLabel)cb.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
+//		    cb_update= new ActionListener() {
+//				
+//				@Override
+//				public void actionPerformed(ActionEvent e) {
+//					cb.removeAll();
+//				    panel_m.add(cb,c_sub);
+//				}
+//			};
+//		    	
+//		    
+//		    cb.addActionListener(cb_update);
 // added code
 		    c_sub.fill = GridBagConstraints.VERTICAL;
 		    c_sub.weighty = 1;
@@ -4111,46 +4156,55 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
                                 @Override
 				public void actionPerformed(ActionEvent db) 
                                 {
-				
+                                	
 				selection_Number = Integer.toString(cb_m[j].getSelectedIndex());
 				selection_Name = cb_m[j].getItemAt(cb_m[j].getSelectedIndex());
 				cb_m[j].setToolTipText(selection_Name);
 				cb_m[j].setBackground(Color.red);
 				cb_m[j].setForeground(Color.white);
 				System.out.println(file_group.length);
-				File file = new File (cwd+"/db/"+cb_m[j].getName()+"/");
+				file_1 = new File (cwd+"/db/"+cb_m[j].getName()+"/");
 				System.out.println(cwd+"/db/"+cb_m[j].getName());
-	    		File[] file_group =  file.listFiles();
+	    		file_group_1 =  file_1.listFiles();
 	    		   		 
-	    		  wb = new Workbook[file_group.length];
+	    		Arrays.sort(file_group_1, Comparator.comparingLong(File::lastModified));
+	    		  wb = new Workbook[file_group_1.length];
 	    		  
-	    			sheet = new Sheet[file_group.length];
-	    			item0  = new Cell[file_group.length][data_length];
-	    			cell0  = new Cell[file_group.length][data_length];
-	    			cell1  = new Cell[file_group.length][data_length];
-	    			cell2  = new Cell[file_group.length][data_length];
-	    			unit0  = new Cell[file_group.length][data_length];
-	    			content0  = new String[file_group.length][data_length];
-	    			content1  = new String[file_group.length][data_length];
-	    			content2  = new String[file_group.length][data_length];
-	    			content3  = new String[file_group.length][data_length];
-	    			content4  = new String[file_group.length][data_length];
+	    			sheet = new Sheet[file_group_1.length];
+	    			item0  = new Cell[file_group_1.length][data_length];
+	    			cell0  = new Cell[file_group_1.length][data_length];
+	    			cell1  = new Cell[file_group_1.length][data_length];
+	    			cell2  = new Cell[file_group_1.length][data_length];
+	    			unit0  = new Cell[file_group_1.length][data_length];
+	    			content0  = new String[file_group_1.length][data_length];
+	    			content1  = new String[file_group_1.length][data_length];
+	    			content2  = new String[file_group_1.length][data_length];
+	    			content3  = new String[file_group_1.length][data_length];
+	    			content4  = new String[file_group_1.length][data_length];
 	    		 
-	    		 System.out.println(file_group.length);
+	    		 System.out.println(file_group_1.length);
 					data = new Object[data_length][5];
 					Object[] columnNames = 
 						{
 							"Type	", "Average", "Minimum","Maximum","Unit",
 		                   };
 				
-	    		 for (i=0; i<file_group.length;i++){
+	    		 for (i=0; i<file_group_1.length;i++){
 
           
 						try {
-							wb[i] = Workbook.getWorkbook(file_group[i]);
+							wb[i] = Workbook.getWorkbook(file_group_1[i]);
 						} catch (BiffException | IOException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
+							JFrame F_warn0 = new JFrame("Error!");
+							JPanel P_warn0 = new JPanel();
+							P_warn0.setLayout(new BorderLayout());
+							JLabel Fd_warn0 = new JLabel("No database found!");
+							F_warn0.setSize(200, 80);
+							P_warn0.add(Fd_warn0,BorderLayout.CENTER);
+							F_warn0.setLocation(w, h);
+							F_warn0.add(P_warn0);
+							F_warn0.setVisible(true);
+							F_warn0.setResizable(false); 								e1.printStackTrace();
 						}
 						sheet[i]  = wb[i].getSheet(0);
 	    				for(int j = 0 ; j<data_length ; j++)
@@ -4251,7 +4305,7 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
 							int expression = Integer.parseInt(field0[3].getText());
 							switch(expression) {
 							  case 1:
-								  if(data_m0[k][j]!=""&&(data_m1[k][j]!=""||data_m3[k][j]!="")) {
+								  if(k!=0&&data_m0[k][j]!=""&&(data_m1[k][j]!=""||data_m3[k][j]!="")) {
 									  if(data_m2[k][j]=="") {
 										JFrame F_warn0 = new JFrame("Error!");
 										JPanel P_warn0 = new JPanel();
@@ -4266,7 +4320,7 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
 													}}
 								  break;
 							  case 2:
-								  if(data_m0[k][j]!=""&&(data_m2[k][j]!=""||data_m1[k][j]!="")) {
+								  if(k!=0&&data_m0[k][j]!=""&&(data_m2[k][j]!=""||data_m1[k][j]!="")) {
 									  if(data_m3[k][j]=="") {
 										JFrame F_warn0 = new JFrame("Error!");
 										JPanel P_warn0 = new JPanel();
@@ -4280,7 +4334,7 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
 										F_warn0.setResizable(false);}}
 								  break;
 							  default:
-								  if(data_m0[k][j]!=""&&(data_m2[k][j]!=""||data_m3[k][j]!="")) {
+								  if(k!=0&&data_m0[k][j]!=""&&(data_m2[k][j]!=""||data_m3[k][j]!="")) {
 									  if(data_m1[k][j]=="") {
 										JFrame F_warn0 = new JFrame("Error!");
 										JPanel P_warn0 = new JPanel();
@@ -4347,26 +4401,37 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
 							Column2 [k].setCellValue(data_m2[k][j]);
 							Column3 [k].setCellValue(data_m3[k][j]);
 							Column4 [k].setCellValue(data_m4[k][j]);
-							
+					
 							
 							try {
-								fout = new FileOutputStream(cwd+"/db/" + cb_m[j].getName()+"/"+dateFormat.format(d)+".xls");
+								fout = new FileOutputStream(cwd+"/db/" + cb_m[j].getName()+"/"+ cb_m[j].getName().substring(cb_m[j].getName().indexOf(".")+2)+" details_"+dateFormat.format(d)+".xls");
 								wb_save.write(fout);
 							} catch (IOException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
+								JFrame F_warn0 = new JFrame("Error!");
+								JPanel P_warn0 = new JPanel();
+								P_warn0.setLayout(new BorderLayout());
+								JLabel Fd_warn0 = new JLabel("Can't save to local drive!");
+								F_warn0.setSize(200, 80);
+								P_warn0.add(Fd_warn0,BorderLayout.CENTER);
+								F_warn0.setLocation(w, h);
+								F_warn0.add(P_warn0);
+								F_warn0.setVisible(true);
+								F_warn0.setResizable(false); 									e1.printStackTrace();
 							}
 						}
+						
 						JFrame F_warn0 = new JFrame("Saved");
 						JPanel P_warn0 = new JPanel();
 						P_warn0.setLayout(new BorderLayout());
-						JLabel Fd_warn0 = new JLabel("Database saved in:" + "\n"+ cwd+"/db/" + cb_m[j].getName()+"/"+dateFormat.format(d)+".xls");
+						JLabel Fd_warn0 = new JLabel("Database saved in:" + "\n"+ cwd+"/db/" + cb_m[j].getName()+"/"+ cb_m[j].getName().substring(cb_m[j].getName().indexOf(".")+2)+" details_"+dateFormat.format(d)+".xls");
 						F_warn0.setSize(620, 100);
 						P_warn0.add(Fd_warn0,BorderLayout.CENTER);
 						F_warn0.add(P_warn0);
 						F_warn0.setVisible(true);
 						F_warn0.setResizable(false);
-					
+	
+						cb_m[j].addItem("Created on "+ dateFormat.format(d) );
+						
 					}});		     
 			     			     
 			     //create a window for db
@@ -4375,10 +4440,9 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
 			     frame_db.add(panel_db,BorderLayout.WEST);
 			     frame_db.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			     frame_db.setSize(new Dimension(1180, 865));
-			     frame_db.setResizable(true);
+			     frame_db.setResizable(false);
 			     panel_db.setPreferredSize(new Dimension(frame_db.getWidth()-150, frame_db.getHeight()-400));
 			     frame_db.pack();
-			     
 			     if(Double.parseDouble(selection_Number)==0){frame_db.setVisible(false);} 
 			     else{frame_db.setVisible(true);}
 			      
@@ -4388,22 +4452,87 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
 	return ddbb;
 	 }
 	 
-	 
-//add actionlistner to importdata button to open a window for downloading and maping data from server to local database
+
+
+	//add actionlistner to importdata button to open a window for downloading and maping data from server to local database
 	 private ActionListener createImportListener(int j){
 		 ActionListener importLinster=  new ActionListener() {
              @Override
              public void actionPerformed(ActionEvent iL) {
             	           	 
-            	 LoggingSystem.setUp();
-                 try {
-					LCAdataFactory.setUpDataServiceConnection();
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+            	 JFrame F_id = new JFrame("Import from Platform");
+             	F_id.setIconImage(new ImageIcon(cwd+"/pic/icon.png").getImage());
+         		JPanel P_id = new JPanel();
+         		P_id.setLayout(new BorderLayout());
+         		JLabel TF = new JLabel("<html>Are you sure to download available database from SHIPLYS platform?<br/>Please make sure SHIPLYS server is running!</html>", SwingConstants.CENTER);
+         		TF.setPreferredSize(new Dimension (400,70));
+//         		TF.setText("Do you want to download availabel database from SHIPLYS platform? "
+//         				+"\n"+ "Make sure SHIPLYS server is running!");
+         		JButton download = new JButton();
+         		download.setText("Download");
+         		download.setFont(new Font("Arial", Font.BOLD,14));
+         		download.setPreferredSize(new Dimension(120,10));
+//         		TF.setBackground(Color.green);
+//         		download.setBackground(Color.red);
+//         		download.setForeground(Color.white);
+//         		
+         		JButton cancel = new JButton();
 
-					readFromDB();
+         		cancel.setText("Cancel");
+         		cancel.setFont(new Font("Arial", Font.BOLD,14));
+         		cancel.setPreferredSize(new Dimension(120,10));
+         		ActionListener c = new ActionListener() {
+         			
+         			@Override
+         			public void actionPerformed(ActionEvent e) {
+         				F_id.dispose();
+
+         			}
+         			;};
+				cancel.addActionListener(c);
+//         		cancel.setBackground(Color.red);
+//         		cancel.setForeground(Color.white);
+
+         		ActionListener en = new ActionListener() {
+         			
+         			@Override
+         			public void actionPerformed(ActionEvent e) {
+         				frame_name = TF.getText();
+         				LoggingSystem.setUp();
+						 try {
+							LCAdataFactory.setUpDataServiceConnection();
+						} catch (Exception e1) {
+							JFrame F_warn0 = new JFrame("Error!");
+							JPanel P_warn0 = new JPanel();
+							P_warn0.setLayout(new BorderLayout());
+							JLabel Fd_warn0 = new JLabel("No SHIPLYS server found!");
+							F_warn0.setSize(200, 80);
+							P_warn0.add(Fd_warn0,BorderLayout.CENTER);
+							F_warn0.setLocation(w, h);
+							F_warn0.add(P_warn0);
+							F_warn0.setVisible(true);
+							F_warn0.setResizable(false); 						         				
+							F_id.dispose();
+						}
+
+							readFromDB();
+         				F_id.dispose();
+         			}
+         		};
+            	 
+         		download.addActionListener(en);
+//        		TF.addActionListener(en);
+        		F_id.setSize(400, 120);
+        		P_id.add(TF,BorderLayout.NORTH);
+        		P_id.add(download,BorderLayout.WEST);
+        		P_id.add(cancel,BorderLayout.EAST);
+        		F_id.add(P_id);
+        		F_id.setVisible(true);
+        		F_id.setResizable(false);  
+
+        		F_id.setLocation(w,h);
+        		F_id.setAlwaysOnTop(true);
+
              }
 	 };	
 	 return importLinster;
@@ -4530,8 +4659,16 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
 						fout2 = new FileOutputStream(cwd+"/db/" + "import database"+"/"+productComponent.getCommonName()+"_unconfiguratable_"+dateFormat.format(d)+".xls");
 						wb_save2.write(fout2);
 					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+						JFrame F_warn0 = new JFrame("Error!");
+						JPanel P_warn0 = new JPanel();
+						P_warn0.setLayout(new BorderLayout());
+						JLabel Fd_warn0 = new JLabel("Can't download to local drive!");
+						F_warn0.setSize(200, 80);
+						P_warn0.add(Fd_warn0,BorderLayout.CENTER);
+						F_warn0.setLocation(w, h);
+						F_warn0.add(P_warn0);
+						F_warn0.setVisible(true);
+						F_warn0.setResizable(false); 							e1.printStackTrace();
 					}
 
 					
@@ -4675,6 +4812,9 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
 		 };	
 		 return downloadLinster;
 		 }	 
+		 
+		 
+
 		 //main function
 //main function to run to show GUI	 
 	public static void main(String[] args) {
@@ -4686,6 +4826,7 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
         		JPanel P_id = new JPanel();
         		P_id.setLayout(new BorderLayout());
         		JTextField TF = new JTextField();
+        		TF.setPreferredSize(new Dimension(300,45));
         		TF.setName("Enter project name here!");
         		JButton enter_name = new JButton();
         		enter_name.setText("Create a project");
@@ -4702,15 +4843,23 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
         					createAndShowGUI();
                                                 
         				} catch (BiffException | IOException e1) {
-        					// TODO Auto-generated catch block
-        					e1.printStackTrace();
+							JFrame F_warn0 = new JFrame("Error!");
+							JPanel P_warn0 = new JPanel();
+							P_warn0.setLayout(new BorderLayout());
+							JLabel Fd_warn0 = new JLabel("Can't start up!");
+							F_warn0.setSize(200, 80);
+							P_warn0.add(Fd_warn0,BorderLayout.CENTER);
+							F_warn0.setLocation(w, h);
+							F_warn0.add(P_warn0);
+							F_warn0.setVisible(true);
+							F_warn0.setResizable(false); 	        					e1.printStackTrace();
         				}
         				F_id.dispose();
         			}
         		};
         		enter_name.addActionListener(en);
         		TF.addActionListener(en);
-        		F_id.setSize(250, 75);
+        		F_id.setSize(300, 100);
         		P_id.add(TF,BorderLayout.PAGE_START);
         		P_id.add(enter_name,BorderLayout.PAGE_END);
         		F_id.add(P_id);
@@ -4774,8 +4923,16 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
 				    try {
 						d.open(folder);;
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						JFrame F_warn0 = new JFrame("Error!");
+						JPanel P_warn0 = new JPanel();
+						P_warn0.setLayout(new BorderLayout());
+						JLabel Fd_warn0 = new JLabel("Can't open database folder! ");
+						F_warn0.setSize(200, 80);
+						P_warn0.add(Fd_warn0,BorderLayout.CENTER);
+						F_warn0.setLocation(w, h);
+						F_warn0.add(P_warn0);
+						F_warn0.setVisible(true);
+						F_warn0.setResizable(false); 						e.printStackTrace();
 					}}};
 		menuItem.addActionListener(AL_3);
 		menu.add(menuItem);
@@ -4784,7 +4941,7 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
 		menuItem.setAccelerator(KeyStroke.getKeyStroke(
 		        KeyEvent.VK_R, ActionEvent.CTRL_MASK));
 		menuItem.getAccessibleContext().setAccessibleDescription(
-		        "Open reports folder");
+		        "Open report folder");
 		AL_4=  new ActionListener() {
 
 			public void actionPerformed(ActionEvent Menu) {
@@ -4794,8 +4951,16 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
 				    try {
 						d.open(folder);;
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						JFrame F_warn0 = new JFrame("Error!");
+						JPanel P_warn0 = new JPanel();
+						P_warn0.setLayout(new BorderLayout());
+						JLabel Fd_warn0 = new JLabel("Can't open report folder! ");
+						F_warn0.setSize(200, 80);
+						P_warn0.add(Fd_warn0,BorderLayout.CENTER);
+						F_warn0.setLocation(w, h);
+						F_warn0.add(P_warn0);
+						F_warn0.setVisible(true);
+						F_warn0.setResizable(false);						e.printStackTrace();
 					}}};
 		menuItem.addActionListener(AL_4);
 		menu.add(menuItem);		
@@ -4841,8 +5006,16 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (URISyntaxException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					JFrame F_warn0 = new JFrame("Error!");
+					JPanel P_warn0 = new JPanel();
+					P_warn0.setLayout(new BorderLayout());
+					JLabel Fd_warn0 = new JLabel("Can't open SHIPLYS website! ");
+					F_warn0.setSize(200, 80);
+					P_warn0.add(Fd_warn0,BorderLayout.CENTER);
+					F_warn0.setLocation(w, h);
+					F_warn0.add(P_warn0);
+					F_warn0.setVisible(true);
+					F_warn0.setResizable(false);					e.printStackTrace();
 				}
 			
 			}};
@@ -4865,8 +5038,16 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
 			    try {
 					d.open(manual);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					JFrame F_warn0 = new JFrame("Error!");
+					JPanel P_warn0 = new JPanel();
+					P_warn0.setLayout(new BorderLayout());
+					JLabel Fd_warn0 = new JLabel("Can't open manual! ");
+					F_warn0.setSize(200, 80);
+					P_warn0.add(Fd_warn0,BorderLayout.CENTER);
+					F_warn0.setLocation(w, h);
+					F_warn0.add(P_warn0);
+					F_warn0.setVisible(true);
+					F_warn0.setResizable(false);					e.printStackTrace();
 				}}};
 	menuItem.addActionListener(AL_2);
 	menu.add(menuItem);
@@ -4887,8 +5068,16 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
 			    try {
 					d.open(TM);;
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					JFrame F_warn0 = new JFrame("Error!");
+					JPanel P_warn0 = new JPanel();
+					P_warn0.setLayout(new BorderLayout());
+					JLabel Fd_warn0 = new JLabel("Can't open training material! ");
+					F_warn0.setSize(200, 80);
+					P_warn0.add(Fd_warn0,BorderLayout.CENTER);
+					F_warn0.setLocation(w, h);
+					F_warn0.add(P_warn0);
+					F_warn0.setVisible(true);
+					F_warn0.setResizable(false);					e.printStackTrace();
 				}}};
 	menuItem.addActionListener(AL_3);
 	menu.add(menuItem);

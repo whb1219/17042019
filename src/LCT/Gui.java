@@ -1,6 +1,4 @@
 package LCT;
-//010520191
-import static org.jscience.economics.money.Currency.EUR;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -15,7 +13,6 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -58,15 +55,10 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
-import javax.swing.JToolTip;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
-import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 import org.jfree.chart.ChartFactory;
@@ -76,9 +68,6 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jscience.economics.money.Currency;
 
-import com.liferay.portal.kernel.util.Time;
-import com.sun.tools.javac.code.Attribute.Array;
-
 import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
@@ -87,7 +76,6 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-//import org.apache.poi.hssf.util.HSSFColor.WHITE;
 import org.apache.poi.ss.usermodel.CellType;
 import org.atlantec.objects.ObjectManager;
 import org.atlantec.objects.Query;
@@ -111,10 +99,7 @@ import org.atlantec.binding.erm.ProductComponent;
 import org.atlantec.binding.erm.SpecificConsumptionMeasure;
 import org.atlantec.catalogue.CatalogueManager;
 import org.atlantec.db.Session;
-import org.atlantec.directory.ConnectionMode;
-import org.atlantec.directory.InformationDirectory;
 import org.atlantec.jeb.ObjectNotFoundException;
-import org.atlantec.jeb.tgeb.n.F;
 
 
 public class Gui extends JPanel {
@@ -1124,46 +1109,43 @@ public class Gui extends JPanel {
 	private static JMenuItem menuItem;
 	private static JRadioButtonMenuItem rbMenuItem;
 	private static JCheckBoxMenuItem cbMenuItem;
-	private static ActionListener AL_1, AL_2, AL_3,AL_4;// AL_4, AL_5, AL_6, AL_7, AL_8, AL_9, AL_10, AL_11, AL_12, AL_13, AL_14, AL_15;
+	private static ActionListener AL_1, AL_2, AL_3,AL_4;
 	private String selection_Number ;
 	private String selection_Name;
 	private static String frame_name;
-    
-//    static File currentJavaJarFile = new File(Gui.class.getProtectionDomain().getCodeSource().getLocation().getPath());
-//    
-//    static String currentJavaJarFilePath = currentJavaJarFile.getAbsolutePath();
-//    static String currentRootDirectoryPath = currentJavaJarFilePath.replace(currentJavaJarFile.getName(), "");
-//    
-	private static String cwd = System.getProperty("user.dir");
-	
-	
+    private static String cwd = System.getProperty("user.dir");
+		
 	
 //define all the strings based on phases and activities	
 
-	public static ActionListener getAL_4() {
+	public static ActionListener getAL_4() 
+	{
 		return AL_4;
 	}
-	public static void setAL_4(ActionListener aL_4) {
+	public static void setAL_4(ActionListener aL_4) 
+	{
 		AL_4 = aL_4;
 	}
 
-	private String [] Phase = 		{"Welcome","Design", "C_H","C_M","C_A","R_H", "R_M", "R_A", "Operation","Maintenance","Scrapping", "Report","Comparisons"};
+	private String [] Phase = 		
+		{"Welcome","Design", "C_H","C_M","C_A","R_H", "R_M", "R_A", "Operation","Maintenance","Scrapping", "Report","Comparisons"};
 	
-	private String [] Welcome = 	{"Objectives", "Impact", "Approaches"};
-	private String [] Description = 	{	"Developed models of life cycel approaches (LCCA, LCA and RA) can compare different design/"
-			+"\n"+ "maintenance/replacement strategies for ships from a through life perspecitvie by quantifying:"
-			+"\n"+ "  	-Direct economic costs of production (Capex)"
-			+"\n"+ "  	-Operation and maintenance cost (Opex;regular costs)"
-			+"\n"+ "  	-Repair and refurbishmeng costs and end-of-life costs (Opex; one-off costs)"
-			+"\n"+ "  	-Impact on environment"
-			+"\n"+ " 	-Risks", 
+	private String [] Welcome = 	
+		{"Objective", "Impact", "Approach"};
+	private String [] Description = 	
+		{		"The direct economic costs of production (CAPEX), operation and maintenance costs (OPEX) and "
+										+"\n"+ 	"repair and end-of-life costs can be used in combination with environmental impact and risk assessment"
+										+"\n"+ 	"to evaluate and compare different designs, maintenance and replacement strategies for ships based on "
+										+"\n"+ 	"a through life perspective by quantifying:"
+										+"\n"+ 	"  	- Life Cycle Cost Assessment (LCCA)"
+										+"\n"+ 	"  	- Life Cycle Assessment (LCA) "
+										+"\n"+ 	"  	- Risk Assessment (RA)", 
 			
-			"The SHIPLYS system is intended to be used by the shipyards and associated design consultants, "
-					+"\n"+ "in conjunction with their clients the owners and operators, to provide optimised design and costing"
-										+"\n"+ "at the early stages of design, leading to improved life cycle"
-												+ " management through production, operation,"
-										+"\n"+ "refits and end of life disposal and to meet the increasing requirements for LCCA (lifecycle cost analyses), "
-										+"\n"+ "environmental assessments, risk assessments and end-of-life considerations."};
+			"The SHIPLYS Life Cycle Tool (LCT) has been developed to help designers during the early stages of the design process. "
+					+"\n"+ "The LCT software can be used by shipyards and design offices for the evaluation of their early designs"
+					+"\n"+ "with respect to cost, environmental assessment, risk assessment and end-of-life considerations."
+					+"\n"+ "The LCT software can also be used for the evaluation of retrofitting projects. "
+										};
 
 	//these names should be consistent with Database folder's names 
 	private String [] Design = 		{"Project Name","Life Span", "Financial data","Sensitivity level", "Ship total price","Ship Particulars"};
@@ -1177,12 +1159,7 @@ public class Gui extends JPanel {
 	private String [] Maintenance = {"Machinery", "Hull", "Outfitting", "Docking", "Spare Parts","Not in use"}; 
 	private String [] Scrapping = 	{"Scrapping","Transportation", "Electricity", "Hull","Machinery","Outfitting"}; 
 	
-	
 	private ArrayList<String> q = new ArrayList<String>();
-	
-//	String Trans_type, Electricity_type, FO_type, LO_type,Trans_type_LO, Cut_type, Trans_type_S, E_type_S, F_type_S;
-	
-	
 	private int activity_length = Design.length+C_H.length+C_M.length+C_A.length+R_H.length+R_M.length+R_A.length+Operation.length+Maintenance.length+Scrapping.length;
 
 //combobox	= droplist
@@ -1200,7 +1177,7 @@ public class Gui extends JPanel {
 	private File file = new File (cwd+"/db/");
 	private File[]file_group = file.listFiles();
 	private Workbook wb_num = Workbook.getWorkbook(new File(cwd+"/db/Template/Template.xls"));
-//	Workbook trans,electricity, FO, LO,trans_lo, cut, trans_s, E_s,F_s;	
+
 //set up data length of database	
 	private int data_length = wb_num.getSheet(0).getRows() ;
 	private Workbook [] wb = new Workbook[file_group.length];
@@ -1222,13 +1199,6 @@ public class Gui extends JPanel {
 	private  double [] a_result =new double[5];
 	private  double [] b_result =new double[5];
 	private  double [] c_result =new double[5];
-	
-
-//	WritableSheet RS = RB.createSheet("Sheet1", 0);
-//	WritableCell RC = RS.getWritableCell(0, 0);
-	
-	
-//  Workbook RB = Workbook.getWorkbook(new File(("C:/Users/tjb12178/workspace/04012018/result.xls")));
 
 //build a template column and data comes from excel database
 	
@@ -1240,6 +1210,7 @@ public class Gui extends JPanel {
 
 //build a template table include previous column	
 	private Object[][] 	data;
+	
 //build a column include the select column for each activity		
 	private String[][] data_m0	= new String[data_length][activity_length];
 	private String[][] data_m1	= new String[data_length][activity_length];
@@ -1271,7 +1242,6 @@ public class Gui extends JPanel {
 	@SuppressWarnings("unchecked")
 	private  Gui() throws BiffException, IOException{
 		
-//		System.out.println(file_group[0]);
             
             for(i=0;i<data_length;i++) {
                 for(int j=0;j<activity_length;j++){
@@ -1333,17 +1303,14 @@ public class Gui extends JPanel {
 			    panel_w.add(j_w[i], c_w);
 				area_w[i]=area;			    
 				area_w[i].setText(Description[i]);
+				area_w[i].setFont(new Font("Arial", Font.PLAIN,18));
 				area_w[i].setSelectedTextColor(Color.WHITE);
 				area_w[i].setSelectionColor(Color.RED);
 				area_w[i].setWrapStyleWord(true);
 				area_w[i].setBackground(Color.WHITE);
-				area_w[i].setFont(font_0);
-				//area_w[i].setPreferredSize(new Dimension(1400, 300));//setSize(new Dimension(2400,300));
 				}
 			JLabel TP_lbl = new JLabel(Welcome[2]);	
 			TP_lbl.setFont(font_1);
-			//TP_lbl.setPreferredSize(new Dimension(300,35));
-			//TP_lbl.setPreferredSize(new Dimension(50,35));
 			c_w.weightx = 0;
 		    c_w.gridy = 2;
 		    c_w.gridx = 0;
@@ -1352,7 +1319,6 @@ public class Gui extends JPanel {
 	     	
 			TP.insertIcon(new ImageIcon ( cwd+"/pic/approach2.png" ));
 			TP.setLayout(new BorderLayout());
-			//TP.add( new ImageIcon ( cwd+"/pic/approach.png" ),BorderLayout.CENTER );
 			TP.setEditable(false);
 			Dimension D_approach = new Dimension();
 			D_approach.setSize(screenSize.getWidth()/2,screenSize.getHeight()/2);
@@ -1362,18 +1328,7 @@ public class Gui extends JPanel {
 		    c_w.gridy = 3;
 		    c_w.gridx = 0;
 			panel_w.add(TP,c_w);
-			    //field_w[i]= new JTextField(Description[i]) ;
 
-			    
-
-	     
-			    	    
-	       
-	     int xxx=2;
-		
-		
-		
-		
 		
 //Design phase
 		 panel0 = createPanel("");	//add panel 
@@ -1393,8 +1348,6 @@ public class Gui extends JPanel {
 	     
 	     for (i=0;i<Design.length;i++){
 	    	 j0[i] = createsubPanel(String.valueOf(i)+". "+Design[i]);
-	    	 //j0[i].setName(Design[i]);
-
 		        c.fill = GridBagConstraints.HORIZONTAL;
 			    c.weightx = 2;
 			    c.gridx = i%3;
@@ -1408,84 +1361,8 @@ public class Gui extends JPanel {
 			    IL0[i] = importData;
 				field0[0].setText(frame_name);
 				field0[0].setEditable(false);
-//				File file_new = new File (cwd+"/db2/Template/");
-//				file_group_1 =  file_new.listFiles();
-//				System.out.println(cb0[0]);
-				
 				}    
 	     
-	     
-//	     //add button 1 	     
-//	     JButton importDataButton = new JButton("Import data from server");
-//	     importDataButton.setName("importDataButton");
-//	     importDataButton.setAlignmentY(Component.BOTTOM_ALIGNMENT);
-//	     importDataButton.setPreferredSize(new Dimension(400,40));
-//	     c.fill = GridBagConstraints.BASELINE;
-//	     c.anchor = GridBagConstraints.LAST_LINE_START;
-//	     c.insets = new Insets(30,85,0,0);  //top padding
-//		    c.weightx = 0;
-//		    c.gridx = 0;
-//		    c.gridy = 3;
-//	     panel0.add(importDataButton,c);
-//	     
-//	     importDataButton.addActionListener(new ActionListener() {
-//				
-//					public void actionPerformed(ActionEvent e) {
-//						QueryExamplesGeneral queryExamplesGeneral = new QueryExamplesGeneral();
-//						queryExamplesGeneral.run();
-//				        queryExamplesGeneral.shutdown();
-//					}
-//	     } );
-
-	     
-//	     //add button 2	     
-//	     JButton importCaseButton = new JButton("Import case from server");
-//	     importCaseButton.setName("importCaseButton");
-//	     importCaseButton.setAlignmentY(Component.BOTTOM_ALIGNMENT);
-//	     importCaseButton.setPreferredSize(new Dimension(400,40));
-//	     c.fill = GridBagConstraints.BASELINE;
-//	     c.anchor = GridBagConstraints.PAGE_END;
-//	     c.insets = new Insets(30,0,0,0);  //top padding
-//		    c.weightx = 0;
-//		    c.gridx = 1;
-//		    c.gridy = 3;
-//	     panel0.add(importCaseButton,c);
-//	     
-//	     importCaseButton.addActionListener(new ActionListener() {
-//				
-//					public void actionPerformed(ActionEvent e) {
-//						QueryAnalysisCase queryAnalysisCase=new QueryAnalysisCase();
-//				        queryAnalysisCase.runAnalysisCaseExampleRead();
-//				         // clean up; if you forget this, the application may not stop or release all resources
-//				        queryAnalysisCase.shutdown();
-//					}
-//	     } );	
-//	     
-//		 //add button 3	      
-//	     JButton importCatalogueButton = new JButton("Import catalogue from server");
-//	     importCatalogueButton.setName("importCatalogueButton");
-//	     importCatalogueButton.setAlignmentX(Component.BOTTOM_ALIGNMENT);
-//	     importCatalogueButton.setPreferredSize(new Dimension(400,40));
-//	     c.fill = GridBagConstraints.BASELINE;
-//	     c.anchor = GridBagConstraints.LAST_LINE_END;
-//	     c.insets = new Insets(30,0,0,85);  //top padding
-//		    c.weightx = 0;
-//		    c.gridx = 2;
-//		    c.gridy = 3;
-//	     panel0.add(importCatalogueButton,c);
-//	     
-//	     importCatalogueButton.addActionListener(new ActionListener() {
-//				
-//					public void actionPerformed(ActionEvent e) {
-//						// create a ReadCatalogue object
-//				        QueryCatalogue readCatalogue = new QueryCatalogue();
-//				        // run sample method
-//				        readCatalogue.run();
-//				        // clean up; if you forget this, the application may not stop or release all resources
-//				        readCatalogue.shutdown();
-//					}
-//	     } );
-
 //Construction	     
 	     //C_H phase	    
 	     panel1 = createPanel("");	//add panel 
@@ -1507,16 +1384,12 @@ public class Gui extends JPanel {
 
 	     for (i=0;i<C_H.length;i++){
 	    	 j1_0[i] = createsubPanel(String.valueOf(Design.length+i)+". "+C_H[i]);
-	    	 //j1_0[i].setName(C_H[i]);
 		        c1.fill = GridBagConstraints.HORIZONTAL;
 			    c1.weightx = 2;
-			    //c1.weighty = 1;
 			    c1.gridx = i%3;
 			    c1.gridy = Math.round(i/3);
 			    if ("".equals(j1_0[i].getName())){}
 			    else {panel1_0.add(j1_0[i], c1);}
-//			    File file_new = new File (cwd+"/db2/"+C_H[i]);
-//			    file_group_1 =  file_new.listFiles();
 			    field1_0[i] = field;
 			    cb1_0[i]=cb;}
 	             	     
@@ -1534,18 +1407,13 @@ public class Gui extends JPanel {
 
 	     for (i=0;i<C_M.length;i++){
 	    	 j1_1[i] = createsubPanel(String.valueOf(Design.length+C_H.length+i)+". "+C_M[i]);
-	    	 //j1_1[i].setName(C_M[i]);
 		        c2.fill = GridBagConstraints.HORIZONTAL;
 			    c2.weightx = 2;
-			    //c2.weighty = 1;
 			    c2.gridx = i%3;
 			    c2.gridy = Math.round(i/3);
 			    if ("".equals(j1_1[i].getName())){}
 			    else {panel1_1.add(j1_1[i], c2);}
 			    field1_1[i] = field;
-//			    System.out.println(C_M[i]);
-//			    File file_new = new File (cwd+"/db2/"+C_M[i]);
-//			    file_group_1 =  file_new.listFiles();
 			    cb1_1[i]=cb;
 
 			    }
@@ -1567,14 +1435,11 @@ public class Gui extends JPanel {
 	    	 j1_2[i].setName(C_A[i]);
 		        c3.fill = GridBagConstraints.HORIZONTAL;
 			    c3.weightx = 2;
-			    //c3.weighty = 1;
 			    c3.gridx = i%3;
 			    c3.gridy = Math.round(i/3);
 			    if ("".equals(j1_2[i].getName())){}
 			    else {panel1_2.add(j1_2[i], c3);}
 			    field1_2[i] = field;
-//			    File file_new = new File (cwd+"/db2/"+C_A[i]);
-//			    file_group_1 =  file_new.listFiles();
 			    cb1_2[i]=cb;}
 //Retrofitting
 	     //R_H phase	    
@@ -1600,13 +1465,10 @@ public class Gui extends JPanel {
 	    	 j1r_0[i].setName(R_H[i]);
 		        c1r.fill = GridBagConstraints.HORIZONTAL;
 			    c1r.weightx = 2;
-			    //c1.weighty = 1;
 			    c1r.gridx = i%3;
 			    c1r.gridy = Math.round(i/3);
 			    if ("".equals(j1r_0[i].getName())){}
 			    else {panel1r_0.add(j1r_0[i], c1r);}
-//			    File file_new = new File (cwd+"/db2/"+C_H[i]);
-//			    file_group_1 =  file_new.listFiles();
 			    field1r_0[i] = field;
 			    cb1r_0[i]=cb;}
 	             	     
@@ -1627,15 +1489,11 @@ public class Gui extends JPanel {
 	    	 j1r_1[i].setName(R_M[i]);
 		        c2r.fill = GridBagConstraints.HORIZONTAL;
 			    c2r.weightx = 2;
-			    //c2.weighty = 1;
 			    c2r.gridx = i%3;
 			    c2r.gridy = Math.round(i/3);
 			    if ("".equals(j1r_1[i].getName())){}
 			    else {panel1r_1.add(j1r_1[i], c2r);}
 			    field1r_1[i] = field;
-//			    System.out.println(C_M[i]);
-//			    File file_new = new File (cwd+"/db2/"+C_M[i]);
-//			    file_group_1 =  file_new.listFiles();
 			    cb1r_1[i]=cb;
 
 			    }
@@ -1657,14 +1515,11 @@ public class Gui extends JPanel {
 	    	 j1r_2[i].setName(R_A[i]);
 		        c3r.fill = GridBagConstraints.HORIZONTAL;
 			    c3r.weightx = 2;
-			    //c3.weighty = 1;
 			    c3r.gridx = i%3;
 			    c3r.gridy = Math.round(i/3);
 			    if ("".equals(j1r_2[i].getName())){}
 			    else {panel1r_2.add(j1r_2[i], c3r);}
 			    field1r_2[i] = field;
-//			    File file_new = new File (cwd+"/db2/"+C_A[i]);
-//			    file_group_1 =  file_new.listFiles();
 			    cb1r_2[i]=cb;}	     
 	     
 	     
@@ -1683,19 +1538,15 @@ public class Gui extends JPanel {
 	     JButton[] IL2 = new JButton[Operation.length];
 	     ActionListener[] il2 = new ActionListener[Operation.length];
 
-//	     for(i=0;i<Design.length+C_H.length+C_M.length+C_A.length+R_H.length+R_M.length+R_A.length+i)+". "+Operation[i]);
 	     for (i=0;i<Operation.length;i++){
 	    	 j2[i] = createsubPanel(String.valueOf(Design.length+C_H.length+C_M.length+C_A.length+R_H.length+R_M.length+R_A.length+i)+". "+Operation[i]);
 	    	 j2[i].setName(Operation[i]);
 		        c4.fill = GridBagConstraints.HORIZONTAL;
 			    c4.weightx = 2;
-			    //c4.weighty = 1;
 			    c4.gridx = i%3;
 			    c4.gridy = Math.round(i/3);
 			    if ("".equals(j2[i].getName())){}
 			    else {panel2.add(j2[i], c4);}
-//			    File file_new = new File (cwd+"/db2/"+Operation[i]);
-//			    file_group_1 =  file_new.listFiles();
 			    field2[i] = field;
 			    cb2[i]=cb;}
 	     
@@ -1718,13 +1569,10 @@ public class Gui extends JPanel {
 	    	 j3[i].setName(Maintenance[i]);
 		        c5.fill = GridBagConstraints.HORIZONTAL;
 			    c5.weightx = 2;
-			    //c5.weighty = 1;
 			    c5.gridx = i%3;
 			    c5.gridy = Math.round(i/3);
 			    if ("".equals(j3[i].getName())){}
 			    else {panel3.add(j3[i], c5);}
-//			    File file_new = new File (cwd+"/db2/"+Maintenance[i]);
-//			    file_group_1 =  file_new.listFiles();
 			    field3[i] = field;
 			    cb3[i]=cb;
 	     }
@@ -1751,13 +1599,10 @@ public class Gui extends JPanel {
 		      j4[i].setName(Scrapping[i]);
 		        c6.fill = GridBagConstraints.HORIZONTAL;
 			    c6.weightx = 2;
-			    //c6.weighty = 1;
 			    c6.gridx = i%3;
 			    c6.gridy = Math.round(i/3);
 			    if ("".equals(j4[i].getName())){}
 			    else {panel4.add(j4[i], c6);}
-//			    File file_new = new File (cwd+"/db2/"+Scrapping[i]);
-//			    file_group_1 =  file_new.listFiles();
 			    field4[i] = field;
 			    cb4[i]=cb;}
 	     
@@ -1765,81 +1610,76 @@ public class Gui extends JPanel {
 	     cb_m = new JComboBox[activity_length];
 	     for(int j=0; j<activity_length;j++)
 	     {
-	    	 if(j<Design.length){
+	    	 if(j<Design.length)
+	    	 {
 	    		 cb_m[j]=cb0[j];
 	    		 db0[j]=createCbActionListener(j);
-//	    		 File file_new = new File (cwd+"/db2/"+String.valueOf(j)+ ". "+Design[j]);
-//	    		 file_group_1 =  file_new.listFiles();
 	    	 	 cb0[j].addActionListener(db0[j]);
-	    	 	 
-	    	 	 //cb0[j].setName(db0[j].getClass().getDeclaredAnnotations().toString());
 	    	 	 }
 	    	 
-	    	 if(Design.length<=j&&j<Design.length+C_H.length){
+	    	 if(Design.length<=j&&j<Design.length+C_H.length)
+	    	 {
 	    		 cb_m[j]=cb1_0[j-Design.length];
 	    	 	 db1_0[j-Design.length]=createCbActionListener(j);
-//	    	 	File file_new = new File (cwd+"/db2/"+String.valueOf(j)+ ". "+C_H[j-Design.length]);
-//	    	 	file_group =  file_new.listFiles();
-	    	 	 cb1_0[j-Design.length].addActionListener(db1_0[j-Design.length]);}
+	    	 	 cb1_0[j-Design.length].addActionListener(db1_0[j-Design.length]);
+	    	 	 }
 	    	 
-	    	 if(Design.length+C_H.length<=j&&j<Design.length+C_H.length+C_M.length){
+	    	 if(Design.length+C_H.length<=j&&j<Design.length+C_H.length+C_M.length)
+	    	 {
 	    		 cb_m[j]=cb1_1[j-Design.length-C_H.length];
 	    		 db1_1[j-Design.length-C_H.length]=createCbActionListener(j);
-//	    		 File file_new = new File (cwd+"/db2/"+String.valueOf(j)+". "+C_M[j-Design.length-C_H.length]);
-//	    		 file_group_1 =  file_new.listFiles();
-	    	 	 cb1_1[j-Design.length-C_H.length].addActionListener(db1_1[j-Design.length-C_H.length]);}
+	    	 	 cb1_1[j-Design.length-C_H.length].addActionListener(db1_1[j-Design.length-C_H.length]);
+	    	 	 }
 	    	 
-	    	 if(Design.length+C_H.length+C_M.length<=j&&j<Design.length+C_H.length+C_M.length+C_A.length){
+	    	 if(Design.length+C_H.length+C_M.length<=j&&j<Design.length+C_H.length+C_M.length+C_A.length)
+	    	 {
 	    		 cb_m[j]=cb1_2[j-Design.length-C_H.length-C_M.length];
 	    		 db1_2[j-Design.length-C_H.length-C_M.length]=createCbActionListener(j);
-//	    		 File file_new = new File (cwd+"/db2/"+String.valueOf(j)+". "+C_A[j-Design.length-C_H.length-C_M.length]);
-//	    		 file_group_1 =  file_new.listFiles();
-	    	 	 cb1_2[j-Design.length-C_H.length-C_M.length].addActionListener(db1_2[j-Design.length-C_H.length-C_M.length]);}
-	    	 
-	    	 
-	    	 //////////////////
-	    	 if(Design.length+C_H.length+C_M.length+C_A.length<=j&&j<Design.length+C_H.length+C_M.length+C_A.length+R_H.length){
+	    	 	 cb1_2[j-Design.length-C_H.length-C_M.length].addActionListener(db1_2[j-Design.length-C_H.length-C_M.length]);
+	    	 	 }
+	     
+	    	 if(Design.length+C_H.length+C_M.length+C_A.length<=j&&j<Design.length+C_H.length+C_M.length+C_A.length+R_H.length)
+	    	 {
 	    		 cb_m[j]=cb1r_0[j-Design.length-C_H.length-C_M.length-C_A.length];
 	    	 	 db1r_0[j-Design.length-C_H.length-C_M.length-C_A.length]=createCbActionListener(j);
-//	    	 	File file_new = new File (cwd+"/db2/"+String.valueOf(j)+ ". "+C_H[j-Design.length+C_H.length+C_M.length+C_A.length]);
-//	    	 	file_group =  file_new.listFiles();
-	    	 	 cb1r_0[j-Design.length-C_H.length-C_M.length-C_A.length].addActionListener(db1r_0[j-Design.length-C_H.length-C_M.length-C_A.length]);}
+	    	 	 cb1r_0[j-Design.length-C_H.length-C_M.length-C_A.length].addActionListener(db1r_0[j-Design.length-C_H.length-C_M.length-C_A.length]);
+	    	 	 }
 	    	 
-	    	 if(Design.length+C_H.length+C_M.length+C_A.length+R_H.length<=j&&j<Design.length+C_H.length+C_M.length+C_A.length+R_H.length+R_M.length){
+	    	 if(Design.length+C_H.length+C_M.length+C_A.length+R_H.length<=j&&j<Design.length+C_H.length+C_M.length+C_A.length+R_H.length+R_M.length)
+	    	 {
 	    		 cb_m[j]=cb1r_1[j-Design.length-C_H.length-C_M.length-C_A.length-R_H.length];
 	    		 db1r_1[j-Design.length-C_H.length-C_M.length-C_A.length-R_H.length]=createCbActionListener(j);
-//	    		 File file_new = new File (cwd+"/db2/"+String.valueOf(j)+". "+C_M[j-Design.length+C_H.length+C_M.length+C_A.length-C_H.length]);
-//	    		 file_group_1 =  file_new.listFiles();
-	    	 	 cb1r_1[j-Design.length-C_H.length-C_M.length-C_A.length-R_H.length].addActionListener(db1r_1[j-Design.length-C_H.length-C_M.length-C_A.length-R_H.length]);}
+	    	 	 cb1r_1[j-Design.length-C_H.length-C_M.length-C_A.length-R_H.length].addActionListener(db1r_1[j-Design.length-C_H.length-C_M.length-C_A.length-R_H.length]);
+	    	 	 }
 	    	 
-	    	 if(Design.length+C_H.length+C_M.length+C_A.length+R_H.length+R_M.length<=j&&j<Design.length+C_H.length+C_M.length+C_A.length+R_H.length+R_M.length+R_A.length){
+	    	 if(Design.length+C_H.length+C_M.length+C_A.length+R_H.length+R_M.length<=j&&j<Design.length+C_H.length+C_M.length+C_A.length+R_H.length+R_M.length+R_A.length)
+	    	 {
 	    		 cb_m[j]=cb1r_2[j-Design.length-C_H.length-C_M.length-C_A.length-R_H.length-R_M.length];
 	    		 db1r_2[j-Design.length-C_H.length-C_M.length-C_A.length-R_H.length-R_M.length]=createCbActionListener(j);
-//	    		 File file_new = new File (cwd+"/db2/"+String.valueOf(j)+". "+C_A[j-Design.length+C_H.length+C_M.length+C_A.length-C_H.length-C_M.length]);
-//	    		 file_group_1 =  file_new.listFiles();
-	    	 	 cb1r_2[j-Design.length-C_H.length-C_M.length-C_A.length-R_H.length-R_M.length].addActionListener(db1r_2[j-Design.length-C_H.length-C_M.length-C_A.length-R_H.length-R_M.length]);}
+	    	 	 cb1r_2[j-Design.length-C_H.length-C_M.length-C_A.length-R_H.length-R_M.length].addActionListener(db1r_2[j-Design.length-C_H.length-C_M.length-C_A.length-R_H.length-R_M.length]);
+	    	 	 }
 	    	 /////////////////
 	    	 
-	    	 if(Design.length+C_H.length+C_M.length+C_A.length+R_H.length+R_M.length+R_A.length<=j&&j<Design.length+C_H.length+C_M.length+C_A.length+R_H.length+R_M.length+R_A.length+Operation.length){
+	    	 if(Design.length+C_H.length+C_M.length+C_A.length+R_H.length+R_M.length+R_A.length<=j&&j<Design.length+C_H.length+C_M.length+C_A.length+R_H.length+R_M.length+R_A.length+Operation.length)
+	    	 {
 	    		 cb_m[j]=cb2[j-Design.length-C_H.length-C_M.length-C_A.length-R_H.length-R_M.length-R_A.length];
 	    		 db2[j-Design.length-C_H.length-C_M.length-C_A.length-R_H.length-R_M.length-R_A.length]=createCbActionListener(j);
-//	    		 File file_new = new File (cwd+"/db2/"+String.valueOf(j)+". "+Operation[j-Design.length-C_H.length-C_M.length-C_A.length-R_H.length-R_M.length-R_A.length]);
-//	    		 file_group_1 =  file_new.listFiles();
-	    	 	 cb2[j-Design.length-C_H.length-C_M.length-C_A.length-R_H.length-R_M.length-R_A.length].addActionListener(db2[j-Design.length-C_H.length-C_M.length-C_A.length-R_H.length-R_M.length-R_A.length]);}
+	    	 	 cb2[j-Design.length-C_H.length-C_M.length-C_A.length-R_H.length-R_M.length-R_A.length].addActionListener(db2[j-Design.length-C_H.length-C_M.length-C_A.length-R_H.length-R_M.length-R_A.length]);
+	    	 	 }
 	    	 
-	    	 if(Design.length+C_H.length+C_M.length+C_A.length+R_H.length+R_M.length+R_A.length+Operation.length<=j&&j<Design.length+C_H.length+C_M.length+C_A.length+R_H.length+R_M.length+R_A.length+Operation.length+Maintenance.length){
+	    	 if(Design.length+C_H.length+C_M.length+C_A.length+R_H.length+R_M.length+R_A.length+Operation.length<=j&&j<Design.length+C_H.length+C_M.length+C_A.length+R_H.length+R_M.length+R_A.length+Operation.length+Maintenance.length)
+	    	 {
 	    		 cb_m[j]=cb3[j-Design.length-C_H.length-C_M.length-C_A.length-R_H.length-R_M.length-R_A.length-Operation.length];
-//	    		 File file_new = new File (cwd+"/db2/"+String.valueOf(j)+". "+Maintenance[j-Design.length-C_H.length-C_M.length-C_A.length-R_H.length-R_M.length-R_A.length-Operation.length]);
-//	    		 file_group_1 =  file_new.listFiles();
 	    		 db3[j-Design.length-C_H.length-C_M.length-C_A.length-R_H.length-R_M.length-R_A.length-Operation.length]=createCbActionListener(j);
-	    		 cb3[j-Design.length-C_H.length-C_M.length-C_A.length-R_H.length-R_M.length-R_A.length-Operation.length].addActionListener(db3[j-Design.length-C_H.length-C_M.length-C_A.length-R_H.length-R_M.length-R_A.length-Operation.length]);}
+	    		 cb3[j-Design.length-C_H.length-C_M.length-C_A.length-R_H.length-R_M.length-R_A.length-Operation.length].addActionListener(db3[j-Design.length-C_H.length-C_M.length-C_A.length-R_H.length-R_M.length-R_A.length-Operation.length]);
+	    		 }
 	    	 
-	    	 else if(Design.length+C_H.length+C_M.length+C_A.length+R_H.length+R_M.length+R_A.length+Operation.length+Maintenance.length<=j&&j<activity_length){
+	    	 else if(Design.length+C_H.length+C_M.length+C_A.length+R_H.length+R_M.length+R_A.length+Operation.length+Maintenance.length<=j&&j<activity_length)
+	    	 {
 	    		 cb_m[j]=cb4[j-Design.length-C_H.length-C_M.length-C_A.length-R_H.length-R_M.length-R_A.length-Operation.length-Maintenance.length];
 	    		 db4[j-Design.length-C_H.length-C_M.length-C_A.length-R_H.length-R_M.length-R_A.length-Operation.length-Maintenance.length]=createCbActionListener(j);
-//	    		 File file_new = new File (cwd+"/db2/"+String.valueOf(j)+". "+Scrapping[j-Design.length-C_H.length-C_M.length-C_A.length-R_H.length-R_M.length-R_A.length-Operation.length-Maintenance.length]);
-//	    		 file_group_1 =  file_new.listFiles();
-	    		 cb4[j-Design.length-C_H.length-C_M.length-C_A.length-R_H.length-R_M.length-R_A.length-Operation.length-Maintenance.length].addActionListener(db4[j-Design.length-C_H.length-C_M.length-C_A.length-R_H.length-R_M.length-R_A.length-Operation.length-Maintenance.length]);}
+	    		 cb4[j-Design.length-C_H.length-C_M.length-C_A.length-R_H.length-R_M.length-R_A.length-Operation.length-Maintenance.length].addActionListener(db4[j-Design.length-C_H.length-C_M.length-C_A.length-R_H.length-R_M.length-R_A.length-Operation.length-Maintenance.length]);
+	    		 }
 	     }
 		
 // 
@@ -1856,30 +1696,19 @@ public class Gui extends JPanel {
 	     textReport.setSelectionColor(Color.red);	
 	     textReport.setSelectedTextColor(Color.white);
 
-//	     textReport.setFont(new Font("Arial", Font.PLAIN, 12));
-//	     textReport.setContentType("text/html");
-	     //textReport.setEditable(true);
-//	     textReport.s;;
 	     JScrollPane sp = new JScrollPane(textReport);
 	     sp.setPreferredSize(new Dimension(800,400));
-//	     areaReport.setLineWrap(true);
-//	     areaReport.setAutoscrolls(true);
-//		 textReport.setPreferredSize(new Dimension (200,200));
-  
+ 
 	     panel5.add(sp);
 	     
 //add button	
 	     
 	     JButton calcButton = new JButton("Calculate");
 	     calcButton.setName("calcButton");
-	     //calcButton.setAlignmentY(Component.RIGHT_ALIGNMENT);
-//	     panel5.add(calcButton);
+
 //add button	     
 	     JButton uploadButton = new JButton("Upload");
 	     uploadButton.setName("uploadButton");
-	     //uploadButton.setAlignmentY(Component.RIGHT_ALIGNMENT);
-//	     panel5.add(Box.createRigidArea(new Dimension(10,0)));
-//	     panel5.add(uploadButton);	     
 	     
 	     JPanel buttonPane = new JPanel();
 	     buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.LINE_AXIS));
@@ -1889,15 +1718,6 @@ public class Gui extends JPanel {
 	     buttonPane.add(Box.createRigidArea(new Dimension(10, 0)));
 	     buttonPane.add(uploadButton);
 	     panel5.add(buttonPane);
-//	     JButton saveButton = new JButton("Save");
-//	     saveButton.setName("saveButton");
-//	     saveButton.setAlignmentX(Component.BOTTOM_ALIGNMENT);
-//	     panel5.add(saveButton);
-//	     
-//	     JButton compButton = new JButton("Compare");
-//	     compButton.setName("compButton");
-//	     compButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-//	     panel5.add(compButton);
 
 //add action for clicking button
 	     //calc
@@ -1908,55 +1728,69 @@ public class Gui extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 
                             try { 
-                                //include all the equations here
-//				Parameter_C_System CS1 = new Parameter_C_System();
-//				Parameter_C_Material CM1 = new Parameter_C_Material();
-//				Parameter_O O1 = new Parameter_O();
-//				Parameter_S S1 = new Parameter_S();
-
-//Initialise the general value xxxxxx delete while publishing new versions xxxxxxx
-//String case_name =	"Test Case";
-//Life_span = 28;
-//SL = 0;
-//CoTL =1222222;
-//
-//PV=0;
-//Interest =0;
                             	
 PV =Double.parseDouble(data_m1[1][2]); //0 means not using present value; 1 means using;
 Life_span = Double.parseDouble(field0[1].getText()); //Life span of target (year)
 Interest= Double.parseDouble(data_m1[2][2]); //Interest rate (100%)
 
 project_name = field0[0].getText();						//project name
-//	LCAdataCreation.dts.setProjectName(case_name);
-//uncertainty level
 SL= Double.parseDouble(field0[3].getText());			//sensitivity level
 CoTL = Double.parseDouble(field0[4].getText());		//ship total price
 String PV_state, SL_state = null;
-if(PV==0){PV_state = "Present value is not applied;";
-System.out.println(PV_state);}
-else{PV_state = "Present value is applied;";
-System.out.println(PV_state);}
-if(SL==0){SL_state="Average value is applied;";
-System.out.println(SL_state);
-for(int i = 0; i<data_length; i++){
-    for(int j = 0; j<activity_length; j++){
-        data_m[i][j]=data_m1[i][j];			}}}
-if(SL==1){SL_state="Minimum value is applied;";
-System.out.println(SL_state);
-for(int i = 0; i<data_length; i++){
-    for(int j = 0; j<activity_length; j++){
-        data_m[i][j]=data_m2[i][j];			}}}
-if(SL==2){SL_state="Maximum value is applied;";
-System.out.println(SL_state);
-for(int i = 0; i<data_length; i++){
-    for(int j = 0; j<activity_length; j++){
-        data_m[i][j]=data_m3[i][j];			}}}
+//Statement to identify PV/SL
+if(PV==0)
+{
+	PV_state = "Present value is not applied;";
+}
+else
+{
+	PV_state = "Present value is applied;";
+}
+
+if(SL==0)
+{
+	data_m=data_m1;
+}
+//	SL_state="Average value is applied;";
+//	System.out.println(SL_state);
+//	for(int i = 0; i<data_length; i++)
+//	{
+//	    for(int j = 0; j<activity_length; j++)
+//	    {
+//	        data_m[i][j]=data_m1[i][j];			
+//        	}}}
+
+if(SL==1)
+{
+	data_m=data_m2;
+}
+//	SL_state="Minimum value is applied;";
+//	System.out.println(SL_state);
+//	for(int i = 0; i<data_length; i++)
+//	{
+//	    for(int j = 0; j<activity_length; j++)
+//	    {
+//	        data_m[i][j]=data_m2[i][j];			
+//	        }}}
+
+if(SL==2)
+{
+	data_m=data_m3;
+}
+//	SL_state="Maximum value is applied;";
+//	System.out.println(SL_state);
+//	for(int i = 0; i<data_length; i++)
+//	{
+//	    for(int j = 0; j<activity_length; j++)
+//	    {
+//	        data_m[i][j]=data_m3[i][j];			
+//        	}}}
+
+System.out.println("test"+data_m[1][12]);
 //Construction
 //System: ME, MG, Boiler...
 Parameter_C_System CS1 = new Parameter_C_System();
 CS1.	Engine_type	=	data_m[0][12];					//Engine type
-//	LCAdataCreation.createCatalogueAndProductComponents();
 CS1.	Number	=	Double.parseDouble(data_m[1][12])	; //Number of items
 CS1.	Weight	=	Double.parseDouble(data_m[2][12])	; //Weight of item (ton)
 CS1.	Price	=	Double.parseDouble(data_m[3][12])	; //Item price (Euro/ton)
@@ -2089,6 +1923,7 @@ CS3.M[5]=Double.parseDouble(data_m3[15][13]);
 CS3.M[6]=Double.parseDouble(data_m3[16][13]);
 CS3.CoTL =CoTL;
 CS3.run(); //Run the calculation
+
 //Material: steel, aluminium, composite material...
 Parameter_C_Material CM1 = new Parameter_C_Material();
 //
@@ -2105,13 +1940,11 @@ CM1.	NE	=Double.parseDouble(data_m[	9	][5]);
 CM1.	kA	=Double.parseDouble(data_m[	10	][5]);
 CM1.	Pw	=Double.parseDouble(data_m[	11	][5]);
 
-if(Double.parseDouble(data_m[	12	][5])!=0) {
+if(Double.parseDouble(data_m[	12	][5])!=0) 
+{
 	CM1. 	W11 = Double.parseDouble(data_m[	12	][5]);
 }
 
-
-
-//CM1.	kC	=Double.parseDouble(data_m[	1	][18]); // add an option to use user's input of steel weight
 CM1.	E_price		= Double.parseDouble(data_m[	1	][17]);
 CM1.	Spec_GWP_E 	= Double.parseDouble(data_m[	2	][17]);
 CM1.	Spec_AP_E 	= Double.parseDouble(data_m[	3	][17]);
@@ -4572,7 +4405,7 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
 				     System.out.println(a_result[4]);	
 
 
-					
+				     F61.setText(f.getName());
 					
 					
 				} catch (BiffException | IOException e1) {
@@ -4636,7 +4469,8 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
 				     System.out.println(b_result[3]);	
 				     System.out.println(b_result[4]);	
 
-					
+				     F62.setText(f.getName());
+
 					
 					
 				} catch (BiffException | IOException e1) {
@@ -4701,6 +4535,7 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
 				     System.out.println(c_result[3]);	
 				     System.out.println(c_result[4]);	
 
+				     F63.setText(f.getName());
 
 					
 					
