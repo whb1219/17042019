@@ -3494,22 +3494,13 @@ wb1.write(fout);
 
 				try {
 					LCAdataFactory.setUpDataServiceConnection();
-					JFrame F_warn0 = new JFrame("Calculation complete!");
-					JPanel P_warn0 = new JPanel();
-					P_warn0.setLayout(new BorderLayout());
-					JLabel Fd_warn0 = new JLabel("Results are saved and uploaded to SHIPLYS server!");
-					F_warn0.setSize(200, 80);
-					P_warn0.add(Fd_warn0,BorderLayout.CENTER);
-					F_warn0.setLocation(w, h);
-					F_warn0.add(P_warn0);
-					F_warn0.setVisible(true);
-					F_warn0.setResizable(false); 
-					
-				} catch (Exception e) {
+				} 
+				catch (Exception e) 
+					{
 					JFrame F_warn0 = new JFrame("Error!");
 					JPanel P_warn0 = new JPanel();
 					P_warn0.setLayout(new BorderLayout());
-					JLabel Fd_warn0 = new JLabel("Can't upload to SHIPLYS server!");
+					JLabel Fd_warn0 = new JLabel("Can't connect to SHIPLYS server!");
 					F_warn0.setSize(200, 80);
 					P_warn0.add(Fd_warn0,BorderLayout.CENTER);
 					F_warn0.setLocation(w, h);
@@ -3608,10 +3599,10 @@ LCAdataFactory.setProductComponentsProperty(battery, "rh7", rh7Value1);
 
 
 //Create Scenario
-AnalysisScenario scenario = LCAdataFactory.createAnalysisScenario("lcaAnalysisScenario");
+AnalysisScenario scenario = LCAdataFactory.createAnalysisScenario("lcaAnalysisScenario" + project_name);
 
 //Create Case
-AnalysisCase analysisCase = LCAdataFactory.createAnalysisCase(scenario, "lcaAnalysisCase");
+AnalysisCase analysisCase = LCAdataFactory.createAnalysisCase(scenario, " - Case: "+d);
 
 //Create General LCA Parameters
 ParameterSet lcaGeneralParameterSet = LCAdataFactory.createParameterSet(analysisCase, "GeneralParameters",
@@ -3653,15 +3644,25 @@ LCAdataFactory.projOM.makePersistent(analysisCase);
 LCAdataFactory.projOM.makePersistent(result);
 LCAdataFactory.projOM.currentTransaction().commit();
 
-JFrame F_ud = new JFrame("Uploaded");
-JPanel P_ud = new JPanel();
-P_ud.setLayout(new BorderLayout());
-JLabel Fd_id = new JLabel("Results are saved to SHIPLYS platform!");
-F_ud.setSize(620, 100);
-P_ud.add(Fd_id,BorderLayout.CENTER);
-F_ud.add(P_ud);
-F_ud.setVisible(true);
-F_ud.setResizable(false);
+//JFrame F_ud = new JFrame("Uploaded");
+//JPanel P_ud = new JPanel();
+//P_ud.setLayout(new BorderLayout());
+//JLabel Fd_id = new JLabel("Results are saved to SHIPLYS platform!");
+//F_ud.setSize(620, 100);
+//P_ud.add(Fd_id,BorderLayout.CENTER);
+//F_ud.add(P_ud);
+//F_ud.setVisible(true);
+//F_ud.setResizable(false);
+JFrame F_warn0 = new JFrame("Calculation complete!");
+JPanel P_warn0 = new JPanel();
+P_warn0.setLayout(new BorderLayout());
+JLabel Fd_warn0 = new JLabel("Results are saved and uploaded to SHIPLYS server!");
+F_warn0.setSize(400, 80);
+P_warn0.add(Fd_warn0,BorderLayout.CENTER);
+F_warn0.setLocation(w, h);
+F_warn0.add(P_warn0);
+F_warn0.setVisible(true);
+F_warn0.setResizable(false); 
 System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCase");
 	
 }
@@ -4002,9 +4003,8 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
 		 	panel_m.setPreferredSize(new Dimension(500, 300));
 		    panel_m.setLayout(new GridBagLayout()); // added code
 		    GridBagConstraints c_sub = new GridBagConstraints();
-		    Dimension d = new Dimension(100,80);
-
-//create label
+		    
+		    //create label
 		    JLabel lbl = new JLabel();
 		    lbl.setName(string);
 		    lbl.setFont(font_1);
@@ -4565,7 +4565,7 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
             log.info("Configurable Properties of " + productComponent.getCommonName() + " are:");
             if (parameterSet != null) {
                 configurableProperties = parameterSet.getParameters(); 
-                System.out.println(configurableProperties.size());
+//                System.out.println(configurableProperties.size());
                 CP_name= new String[configurableProperties.size()];
                 CP_value= new String[configurableProperties.size()];
                 import_name= new String[configurableProperties.size()];
@@ -4595,7 +4595,7 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
 				HSSFCell [] Column1 = new HSSFCell[data_length];
 
 				HSSFSheet sheet1 = wb_save.createSheet();
-				System.out.println(configurableProperties.size());
+//				System.out.println(configurableProperties.size());
 				for (int k = 0;k<configurableProperties.size();k++){
 					
 					c0[k]=sheet1.createRow(k);
@@ -4620,7 +4620,7 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
             Set<KeyValue> allProperties = productComponent.getCatalogueItemRef().getProperties();
             KeyValue[] a = allProperties.toArray(new KeyValue[0]);
             for(int i = 0; i<a.length;i++) {
-            System.out.println("test " +i+". "+ a[i].getKey());}
+//            System.out.println("test " +i+". "+ a[i].getKey());}
             String[] test= new String[54];
             log.info("Standard Properties of " + productComponent.getCommonName() + " are:");
             for (KeyValue catalogueItemProp: allProperties) {
@@ -4644,7 +4644,7 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
 				HSSFCell [] Column1 = new HSSFCell[data_length];
 
 				HSSFSheet sheet1 = wb_save2.createSheet();
-				System.out.println(a.length);
+//				System.out.println(a.length);
 				for (int k = 0;k<a.length;k++){
 					
 					c0[k]=sheet1.createRow(k);
@@ -4683,9 +4683,11 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
 				P_id.add(Fd_id,BorderLayout.CENTER);
 				F_id.add(P_id);
 				F_id.setVisible(true);
-				F_id.setResizable(false);          }
-        }		
-      }
+				F_id.setResizable(false);          
+					}
+            	}		
+        	}
+        }
     		
 	private static CatalogueProperty getCataloguePropertyByName(CatalogueItemInstance item, String propertyName)
     {
@@ -4917,11 +4919,11 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
 		AL_3=  new ActionListener() {
 
 			public void actionPerformed(ActionEvent Menu) {
-				Desktop d = Desktop.getDesktop();
+				Desktop desktop = Desktop.getDesktop();
 				File folder = new File(cwd+"/db");
 				
 				    try {
-						d.open(folder);;
+						desktop.open(folder);;
 					} catch (IOException e) {
 						JFrame F_warn0 = new JFrame("Error!");
 						JPanel P_warn0 = new JPanel();
@@ -4945,11 +4947,11 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
 		AL_4=  new ActionListener() {
 
 			public void actionPerformed(ActionEvent Menu) {
-				Desktop d = Desktop.getDesktop();
+				Desktop desktop = Desktop.getDesktop();
 				File folder = new File(cwd+"/reports");
 				
 				    try {
-						d.open(folder);;
+						desktop.open(folder);;
 					} catch (IOException e) {
 						JFrame F_warn0 = new JFrame("Error!");
 						JPanel P_warn0 = new JPanel();
@@ -4998,10 +5000,10 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
 	AL_1=  new ActionListener() {
 
 		public void actionPerformed(ActionEvent Menu) {
-			Desktop d = Desktop.getDesktop();
+			Desktop desktop = Desktop.getDesktop();
 			
 			    try {
-					d.browse(new URI("http://www.shiplys.com/"));
+					desktop.browse(new URI("http://www.shiplys.com/"));
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -5032,11 +5034,11 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
 	AL_2=  new ActionListener() {
 
 		public void actionPerformed(ActionEvent Menu) {
-			Desktop d = Desktop.getDesktop();
+			Desktop desktop = Desktop.getDesktop();
 			File manual = new File(cwd+"/Help.pdf");
 			
 			    try {
-					d.open(manual);
+					desktop.open(manual);
 				} catch (IOException e) {
 					JFrame F_warn0 = new JFrame("Error!");
 					JPanel P_warn0 = new JPanel();
@@ -5062,11 +5064,11 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
 	AL_3=  new ActionListener() {
 
 		public void actionPerformed(ActionEvent Menu) {
-			Desktop d = Desktop.getDesktop();
+			Desktop desktop = Desktop.getDesktop();
 			File TM = new File(cwd+"/Training Material.pdf");
 			
 			    try {
-					d.open(TM);;
+					desktop.open(TM);;
 				} catch (IOException e) {
 					JFrame F_warn0 = new JFrame("Error!");
 					JPanel P_warn0 = new JPanel();

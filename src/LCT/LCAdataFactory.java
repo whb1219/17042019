@@ -81,7 +81,7 @@ public class LCAdataFactory
     private static URI serviceURI;
     public static String catalogueName = "UstrathTestCatalogue";
 
-    private static Ship ship;
+	private static Ship ship;
 
     public static void setUpDataServiceConnection() throws Exception
     {
@@ -651,13 +651,7 @@ public class LCAdataFactory
     }
     @SuppressWarnings("unchecked")
 	public static void setLifeCycleTotalCost(EvaluationResult result, double lifeCycleTotalCosts){
-//      KeyValue lifeCycleTotalCostKV = KeyValueHelper.createKeyValueOfType(result, "lifeCycleTotalCostKV", "lifeCycleTotalCost", ValueType.T_MEASURE, new MoneyMeasure(lifeCycleTotalCosts, Currency.EUR));
-      
-//      if (result.getParameters()==null){
-//          result.setParameters(Arrays.asList(lifeCycleTotalCostKV));
-//      }else{
-//          result.getParameters().add(lifeCycleTotalCostKV);
-//      } 
+
       CostClassification costClassification = projOM.createInformationObject(CostClassification.class,
               "UstrathCostClassification2");
       costClassification.setCostCategory(CostCategory.TOTAL_COSTS);
@@ -723,11 +717,15 @@ public class LCAdataFactory
   public static void setGWP(EvaluationResult result, double GWP){
       KeyValue GWPKV = KeyValueHelper.createKeyValueOfType(result, "GWPKV", "GWP", ValueType.T_MEASURE, new MassMeasure(GWP, NonSI.TON_UK));
       
-//      if (result.getParameters()==null){
+      if (result.getParameters()==null){
           result.setParameters(Arrays.asList(GWPKV));
-//      }else{
-//          result.getParameters().add(GWPKV);
-//      } 
+      }else{
+          List<KeyValue> oldAndNewParameters = new ArrayList(result.getParameters());
+
+          oldAndNewParameters.add(GWPKV);
+
+          result.setParameters(oldAndNewParameters);
+      } 
   }
 
   public static void setAPCost(EvaluationResult result, double APCost){
@@ -767,11 +765,15 @@ public class LCAdataFactory
   public static void setAP(EvaluationResult result, double AP){
       KeyValue APKV = KeyValueHelper.createKeyValueOfType(result, "APKV", "AP", ValueType.T_MEASURE, new MassMeasure(AP, NonSI.TON_UK));
       
-//      if (result.getParameters()==null){
+      if (result.getParameters()==null){
           result.setParameters(Arrays.asList(APKV));
-//      }else{
-//          result.getParameters().add(APKV);
-//      } 
+      }else{
+          List<KeyValue> oldAndNewParameters = new ArrayList(result.getParameters());
+
+          oldAndNewParameters.add(APKV);
+
+          result.setParameters(oldAndNewParameters);
+      } 
   }  
    
 
@@ -812,11 +814,16 @@ public class LCAdataFactory
   public static void setEP(EvaluationResult result, double EP){
       KeyValue EPKV = KeyValueHelper.createKeyValueOfType(result, "EPKV", "EP", ValueType.T_MEASURE, new MassMeasure(EP, NonSI.TON_UK));
       
-//      if (result.getParameters()==null){
+      if (result.getParameters()==null){
           result.setParameters(Arrays.asList(EPKV));
-//      }else{
-//          result.getParameters().add(EPKV);
-//      } 
+      }else{
+          List<KeyValue> oldAndNewParameters = new ArrayList(result.getParameters());
+
+          oldAndNewParameters.add(EPKV);
+
+          result.setParameters(oldAndNewParameters);
+
+      } 
   }  
   
   public static void setPOCPCost(EvaluationResult result, double POCPCost){
@@ -856,11 +863,15 @@ public class LCAdataFactory
   public static void setPOCP(EvaluationResult result, double POCP){
       KeyValue POCPKV = KeyValueHelper.createKeyValueOfType(result, "POCPKV", "POCP", ValueType.T_MEASURE, new MassMeasure(POCP, NonSI.TON_UK));
       
-//      if (result.getParameters()==null){
+      if (result.getParameters()==null){
           result.setParameters(Arrays.asList(POCPKV));
-//      }else{
-//          result.getParameters().add(POCPKV);
-//      } 
+      }else{
+          List<KeyValue> oldAndNewParameters = new ArrayList(result.getParameters());
+
+          oldAndNewParameters.add(POCPKV);
+
+          result.setParameters(oldAndNewParameters);
+      } 
   }  
   
   public static void setRPNCost(EvaluationResult result, double RPNCost){
@@ -900,11 +911,15 @@ public class LCAdataFactory
   public static void setRPN(EvaluationResult result, double RPN){
       KeyValue RPNKV = KeyValueHelper.createKeyValueOfType(result, "RPNKV", "RPN", ValueType.T_MEASURE, new MoneyMeasure(RPN, Currency.EUR));
       
-//      if (result.getParameters()==null){
+      if (result.getParameters()==null){
           result.setParameters(Arrays.asList(RPNKV));
-//      }else{
-//          result.getParameters().add(RPNKV);
-//      } 
+      }else{
+          List<KeyValue> oldAndNewParameters = new ArrayList(result.getParameters());
+
+          oldAndNewParameters.add(RPNKV);
+
+          result.setParameters(oldAndNewParameters);
+      } 
   } 
 
     public static void createCommonCostClassification(){
