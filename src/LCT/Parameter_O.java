@@ -88,7 +88,14 @@ public class Parameter_O {
 		double	Fuel_cost 	= Fuel_consumption*Fuel_price;
 		double	LO_cost	= LO_consumption*LO_price;
 		double	Transportation_fuel_cost	= Transportation_fuel_quantity*Transportation_fuel_price;
+		Electricity_quantity=Eload*Ohour*Number;
 		double Electricity_cost = Electricity_price*Electricity_quantity;
+//		System.out.println("xxx1"+Electricity_price);
+//		System.out.println("xxx2"+Electricity_quantity);
+//		System.out.println("xxx3"+Eload);
+//		System.out.println("xxx4"+Ohour);
+//		System.out.println("xxx5"+Number);
+
 		
 		//Final result	
 		//LCA

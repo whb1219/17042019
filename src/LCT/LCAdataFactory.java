@@ -83,15 +83,25 @@ public class LCAdataFactory
 
 	private static Ship ship;
 
-    public static void setUpDataServiceConnection() throws Exception
+	
+	
+    public static void setUpDataServiceConnection(String connectionURL, String projectName) throws Exception
     {
         serviceURI = new URI("http://localhost:10000" + DATA_SERVICE_PATH_PREFIX + DATA_SERVICE_VERSION);
 
         Currency.setReferenceCurrency(EUR);
-        String connectionURL = "http://localhost:10000/data/v1/dbs/dc=shiplys.example";
+        
+        if(connectionURL==null) {
+        connectionURL = "http://localhost:10000/data/v1/dbs/dc=shiplys.example";
+        }
+        
         String username = System.getProperty("user.name", "tgadmin");
         char[] pw = "none".toCharArray();
-        String projectName = "SHIPLYS Project";
+        
+        if(projectName==null) {
+         projectName = "SHIPLYS Project";
+        }
+        
         shipName = "MPC-100-Example";
 
         Session session;

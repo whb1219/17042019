@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "SHIPLYS LCT"
-#define MyAppVersion "1.2"
+#define MyAppVersion "1.3"
 #define MyAppPublisher "Strathclyde University"
 #define MyAppURL1 "http://www.strath.ac.uk/" 
 #define MyAppURL2 "http://www.shiplys.com/"
@@ -22,10 +22,9 @@ AppSupportURL={#MyAppURL2}
 AppUpdatesURL={#MyAppURL2}
 DefaultDirName={pf}\{#MyAppName}
 DisableProgramGroupPage=yes
-OutputBaseFilename=LCT_setup v1.2
+OutputBaseFilename=LCT_setup v1.3
 Compression=lzma
 SolidCompression=yes
-PrivilegesRequired=admin
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -40,14 +39,14 @@ Name: "scottishgaelic"; MessagesFile: "compiler:Languages\ScottishGaelic.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\Users\tjb12178\git\17042019\e_deploy\db\*"; DestDir: "{app}\db\"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\Users\tjb12178\git\17042019\e_deploy\03042019_lib\*"; DestDir: "{app}\03042019_lib\"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\Users\tjb12178\git\17042019\e_deploy\pic\*"; DestDir: "{app}\pic\"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\Users\tjb12178\git\17042019\e_deploy\reports\*"; DestDir: "{app}\reports\"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\Users\tjb12178\git\17042019\e_deploy\03042019.jar"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\tjb12178\git\17042019\e_deploy\SHIPLYS LCT.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\tjb12178\git\17042019\e_deploy\Help.pdf"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\tjb12178\git\17042019\e_deploy\Training Material.pdf"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\tjb12178\git\11062019\e_deploy\db\*"; DestDir: "{app}\db\"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Users\tjb12178\git\11062019\e_deploy\03042019_lib\*"; DestDir: "{app}\03042019_lib\"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Users\tjb12178\git\11062019\e_deploy\pic\*"; DestDir: "{app}\pic\"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Users\tjb12178\git\11062019\e_deploy\reports\*"; DestDir: "{app}\reports\"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Users\tjb12178\git\11062019\e_deploy\03042019.jar"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\tjb12178\git\11062019\e_deploy\SHIPLYS LCT.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\tjb12178\git\11062019\e_deploy\Help.pdf"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\tjb12178\git\11062019\e_deploy\Training Material.pdf"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

@@ -213,7 +213,7 @@ public class Parameter_C_Material {
 			 
 			 if(WB==0) {
 				 WB=W2+W5+W6+W9;}//outfitting
-				if(W1!=0) {
+				if(WB!=0) {
 					
 				}
 			 

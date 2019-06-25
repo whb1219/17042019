@@ -67,7 +67,7 @@ public class Parameter_S {
 		
 		double Electricity_consumption= Cutting_hours*Cutting_power+Cleaning_hours*Cleaning_power;
 		
-//		double Electricity_cost = Electricity_consumption/1000*Electricity_price;
+		double Electricity_cost = Electricity_consumption*Electricity_price;
 		double Cutting_M_Cost = Cutting_material*Cutting_M_price;
 		double S_Cost_hull = Hull_Weight*S_Price_H;
 		double S_Cost_mach= Machinery_Number*S_Price_M;
@@ -80,10 +80,10 @@ public class Parameter_S {
 		POCP= (Spec_POCP_Trans * Machinery_Number*Machinery_Weight*Transportation_distance/100 +Spec_POCP_E*Electricity_consumption/1000);		
 				
 		if (PV==0){
-			Cost_S = S_Cost_hull+Cutting_M_Cost+Transportation_fuel_cost+S_Cost_mach;//Electricity_cost+
+			Cost_S = Electricity_cost+S_Cost_hull+Cutting_M_Cost+Transportation_fuel_cost+S_Cost_mach;//Electricity_cost+
 			}
 		else{
-			Cost_S = (S_Cost_hull+Cutting_M_Cost+Transportation_fuel_cost+S_Cost_mach)/(Math.pow((1+Interest),Life_span));//Electricity_cost+
+			Cost_S = (Electricity_cost+S_Cost_hull+Cutting_M_Cost+Transportation_fuel_cost+S_Cost_mach)/(Math.pow((1+Interest),Life_span));//
 			};
 //			System.out.println("Scrapping: cost is : " + Cost_S +"Euro");
 //			System.out.println("Scrapping: GWP is :" + GWP + "ton CO2e"); 

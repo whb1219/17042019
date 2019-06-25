@@ -36,7 +36,7 @@ public class GUIexample
         //Logger.getRootLogger().setLevel(Level.DEBUG);
 
         //setup data service connection
-        LCAdataFactory.setUpDataServiceConnection();
+        LCAdataFactory.setUpDataServiceConnection(null, null);
 
         
         //a common cost classification has been already created and is available within data base, that's why the method is outcommented

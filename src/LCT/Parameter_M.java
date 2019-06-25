@@ -11,6 +11,7 @@ public class Parameter_M {
 	double	E_price	=1;
 	
 	
+	
 	double	E_Cutting	=0;
 	double	E_Bending	=0;
 	double	E_Welding	=0;
@@ -45,14 +46,23 @@ public class Parameter_M {
 	
 	double EM_Price = 0;
 	double E_Power = 0;
+	double E_number=0;
 	double BM_Price = 0;
 	double B_Power = 0;
+	double B_number=0;
+
 	double GEM_Price = 0;
 	double GE_Power = 0;
+	double GE_number=0;
+
 	double Boiler_Price = 0;
 	double Boiler_Power = 0;
+	double Boiler_number=0;
+
 	double other_Power = 0;
 	double other_Price = 0;
+	double other_number=0;
+
 
 	double E_Working_hours =0;
 	double GE_Working_hours =0;
@@ -113,11 +123,11 @@ public class Parameter_M {
 //		double EC_Patching = DR_H*I1_Patching*(1-R_HC)*(E_Cutting+E_Welding)*E_price;
 //		double EC2_Patching = DR_HC*I2_Patching*R_HC*(E_Cutting+E_Welding)*E_price;
 					
-		double EM_cost = EM_Price*E_Power*E_Working_hours;
-		double BM_cost = BM_Price*B_Power*B_Working_hours;
-		double GEM_cost = GEM_Price*GE_Power*GE_Working_hours;
-		double Boiler_cost = Boiler_Price*Boiler_Power*Boiler_Working_hours;
-		double other_cost = other_Price*other_Power*other_Working_hours;
+		double EM_cost = EM_Price*E_Power*E_Working_hours*E_number;
+		double BM_cost = BM_Price*B_Power*B_Working_hours*B_number;
+		double GEM_cost = GEM_Price*GE_Power*GE_Working_hours*GE_number;
+		double Boiler_cost = Boiler_Price*Boiler_Power*Boiler_Working_hours*Boiler_number;
+		double other_cost = other_Price*other_Power*other_Working_hours*other_number;
 		
 		double Ma_Cost = EM_cost + BM_cost+ GEM_cost + Boiler_cost+ other_cost;
 		

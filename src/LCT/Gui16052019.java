@@ -102,6 +102,7 @@ import org.atlantec.binding.erm.ProductComponent;
 import org.atlantec.binding.erm.SpecificConsumptionMeasure;
 import org.atlantec.catalogue.CatalogueManager;
 import org.atlantec.db.Session;
+import org.atlantec.directory.InformationDirectory;
 import org.atlantec.jeb.ObjectNotFoundException;
 
 
@@ -543,8 +544,8 @@ public class Gui16052019 extends JPanel {
 	public Date getD() {
 		return date;
 	}
-	public void setD(Date d) {
-		Gui16052019.date = d;
+	public void setD(Date date) {
+		Gui16052019.date = date;
 	}
 	public SimpleDateFormat getDateFormat() {
 		return dateFormat;
@@ -1056,7 +1057,7 @@ public class Gui16052019 extends JPanel {
     static private final Logger log = Logger.getLogger(GUIexample.class);
     private static Session session;
     private static ObjectManager objectManager;
-    DecimalFormat formatter = new DecimalFormat("#0.00");
+    DecimalFormat formatter = new DecimalFormat("#0.000000");
 	
 //interface	
 	private static JTabbedPane tp	= new JTabbedPane();	//main tab panel
@@ -1126,6 +1127,8 @@ public class Gui16052019 extends JPanel {
 	private String selection_Name;
 	private static String frame_name;
     private static String cwd = System.getProperty("user.dir");
+	private static String urlString;
+	private static String projectString;
 		
 	
 //define all the strings based on phases and activities	
@@ -1381,7 +1384,9 @@ public class Gui16052019 extends JPanel {
 			    field.setFont(font_2);
 			    field0[i] = field;
 			    cb0[i] = cb;
-			    IL0[i] = importData;
+//			    IL0[i] = importData;
+			    importData.removeActionListener(createImportListener());;
+			    importData.setVisible(false);
 				field0[0].setText(frame_name);
 				field0[0].setEditable(false);
 				}    
@@ -1393,10 +1398,12 @@ public class Gui16052019 extends JPanel {
 			cb0[1].setVisible(false);
 			cb0[3].setVisible(false);
 			cb0[4].setVisible(false);
-			IL0[0].setVisible(false);
-			IL0[1].setVisible(false);
-			IL0[3].setVisible(false);
-			IL0[4].setVisible(false);
+			field0[2].setVisible(false);
+			field0[5].setVisible(false);
+//			IL0[0].setVisible(false);
+//			IL0[1].setVisible(false);
+//			IL0[3].setVisible(false);
+//			IL0[4].setVisible(false);
 			
 			
 //Construction	     
@@ -1427,8 +1434,12 @@ public class Gui16052019 extends JPanel {
 			    if ("".equals(j1_0[i].getName())){}
 			    else {panel1_0.add(j1_0[i], c1);}
 			    field1_0[i] = field;
-			    IL1_0[i] = importData;
+			    field1_0[i].setVisible(false);
+//			    IL1_0[i] = importData;
+			    importData.removeActionListener(createImportListener());
 			    cb1_0[i]=cb;}
+	     
+
 	             	     
 	     //C_M phase
 	     panel1_1 = createPanel("");
@@ -1451,7 +1462,13 @@ public class Gui16052019 extends JPanel {
 			    if ("".equals(j1_1[i].getName())){}
 			    else {panel1_1.add(j1_1[i], c2);}
 			    field1_1[i] = field;
+			    field1_1[i].setVisible(false);
+
 			    cb1_1[i]=cb;
+			    if(cb.getName().contains("M1")||cb.getName().contains("M2")||cb.getName().contains("M3"))
+			    	{
+			    	importData.addActionListener(createImportListener());
+			    	}
 			    IL1_1[i] = importData;
 
 			    }
@@ -1478,7 +1495,10 @@ public class Gui16052019 extends JPanel {
 			    if ("".equals(j1_2[i].getName())){}
 			    else {panel1_2.add(j1_2[i], c3);}
 			    field1_2[i] = field;
-			    IL1_2[i] = importData;
+			    field1_2[i].setVisible(false);
+
+//			    IL1_2[i] = importData;
+			    importData.removeActionListener(createImportListener());
 			    cb1_2[i]=cb;}
 	     	
 	     	j1_2[5].setVisible(false);
@@ -1513,7 +1533,9 @@ public class Gui16052019 extends JPanel {
 			    if ("".equals(j1r_0[i].getName())){}
 			    else {panel1r_0.add(j1r_0[i], c1r);}
 			    field1r_0[i] = field;
-			    IL1r_0[i] = importData;
+			    field1r_0[i].setVisible(false);
+//			    IL1r_0[i] = importData;
+			    importData.removeActionListener(createImportListener());
 			    cb1r_0[i]=cb;}
 	             	     
 //R_M phase
@@ -1538,8 +1560,10 @@ public class Gui16052019 extends JPanel {
 			    if ("".equals(j1r_1[i].getName())){}
 			    else {panel1r_1.add(j1r_1[i], c2r);}
 			    field1r_1[i] = field;
+			    field1r_1[i].setVisible(false);
 			    cb1r_1[i]=cb;
-			    IL1r_1[i] = importData;
+//			    IL1r_1[i] = importData;
+			    importData.removeActionListener(createImportListener());
 
 
 			    }
@@ -1570,7 +1594,9 @@ public class Gui16052019 extends JPanel {
 			    if ("".equals(j1r_2[i].getName())){}
 			    else {panel1r_2.add(j1r_2[i], c3r);}
 			    field1r_2[i] = field;
-			    IL1r_2[i] = importData;
+			    field1r_2[i].setVisible(false);
+//			    IL1r_2[i] = importData;
+			    importData.removeActionListener(createImportListener());
 			    cb1r_2[i]=cb;}	     
 	     
 	     j1r_2[5].setVisible(false);
@@ -1600,8 +1626,10 @@ public class Gui16052019 extends JPanel {
 			    c4.gridy = Math.round(i/3);
 			    if ("".equals(j2[i].getName())){}
 			    else {panel2.add(j2[i], c4);}
-			    field2[i] = field;		
-			    IL2[i] = importData;
+			    field2[i] = field;
+			    field2[i].setVisible(false);
+//			    IL2[i] = importData;
+			    importData.removeActionListener(createImportListener());
 			    cb2[i]=cb;}
 	     
 //Maintenance phase	    
@@ -1628,8 +1656,10 @@ public class Gui16052019 extends JPanel {
 			    if ("".equals(j3[i].getName())){}
 			    else {panel3.add(j3[i], c5);}
 			    field3[i] = field;
+			    field3[i].setVisible(false);
 			    cb3[i]=cb;
-			    IL3[i] = importData;
+//			    IL3[i] = importData;
+			    importData.removeActionListener(createImportListener());
 
 	     }
 	     
@@ -1664,8 +1694,10 @@ public class Gui16052019 extends JPanel {
 			    if ("".equals(j4[i].getName())){}
 			    else {panel4.add(j4[i], c6);}
 			    field4[i] = field;
+			    field4[i].setVisible(false);
 			    cb4[i]=cb;
-			    IL4[i] = importData;
+//			    IL4[i] = importData;
+			    importData.removeActionListener(createImportListener());
 }
 	     
 //list all combobox in a array and add action for each combobox
@@ -2160,7 +2192,7 @@ if(Double.parseDouble(data_m[	7	][19])!=0)
 }
 else 
 {
-	CM2.	r_cutting = Double.parseDouble(data_m[	8	][24]);
+	CM2.	r_cutting = Double.parseDouble(data_m[	8	][19]);
 }
 CM2.P_Welding=Double.parseDouble(data_m[	5	][20]);
 CM2.V_Welding=Double.parseDouble(data_m[	2	][20]);
@@ -2172,7 +2204,7 @@ if(Double.parseDouble(data_m[	7	][20])!=0)
 	CM2.H_Welding_Hull= Double.parseDouble(data_m[	7	][20]);
 }
 else {
-	CM2.	r_welding = Double.parseDouble(data_m[	8	][24]);
+	CM2.	r_welding = Double.parseDouble(data_m[	8	][20]);
 }
 
 CM2.P_Painting=Double.parseDouble(data_m[	5	][21]);
@@ -2186,7 +2218,7 @@ if(Double.parseDouble(data_m[	7	][21])!=0)
 }
 else 
 {
-	CM2.	r_painting = Double.parseDouble(data_m[	8	][24]);
+	CM2.	r_painting = Double.parseDouble(data_m[	8	][21]);
 }
 
 CM2. Labour_fee_cutting =Double.parseDouble(data_m[	6	][19]);
@@ -2335,7 +2367,7 @@ RS3.run(); //Run the calculation
 
 //Material: steel, aluminium, composite material...
 Parameter_C_Material RM1 = new Parameter_C_Material();
-
+RM1.W1 = 0;
 RM1. 	W11 = Double.parseDouble(data_m[	13	][5]);
 
 RM1.	E_price		= Double.parseDouble(data_m[	1	][34]);
@@ -2611,7 +2643,7 @@ Parameter_O O3 = new Parameter_O();
 O3.	Life_span	=	Life_span	;
 O3.	Interest	=	Interest	;
 O3.	PV 			=	PV	;
-O3.	Number 		=	CS1.Number;
+O3.	Number 		=	Double.parseDouble(data_m[2][44]);
 O3. Fuel_type 	= 	data_m[0][45];
 O3. LO_type  	= 	data_m[0][46];
 
@@ -2672,15 +2704,17 @@ O3. Spec_GWP_LO 	=	Double.parseDouble(data_m[2][46])		;
 O3. Spec_AP_LO 		=	Double.parseDouble(data_m[3][46])		;
 O3. Spec_EP_LO 		=	Double.parseDouble(data_m[4][46])		;
 O3. Spec_POCP_LO 	=	Double.parseDouble(data_m[5][46])		;
-O3.Electricity_quantity=O3.Eload*O3.	Ohour*O3.Number;
 O3.Electricity_price = Double.parseDouble(data_m[1][17])		;
 O3.run(); //Run the calculation
 //Maintenance
 
 Parameter_M M1 = new Parameter_M();
+M1.GE_number=Double.parseDouble(data_m[2][42]);
+M1.B_number=Double.parseDouble(data_m[2][44]);
+
 M1.Life_span = Life_span;
 M1.GE_Power= Double.parseDouble(data_m[4][42]);
-M1.GEM_Price= Double.parseDouble(data_m[1][48]);
+M1.GEM_Price= Double.parseDouble(data_m[2][48]);
 M1.B_Power= Double.parseDouble(data_m[3][44]);
 M1.BM_Price= Double.parseDouble(data_m[3][48]);
 
@@ -2712,9 +2746,9 @@ M1. Spec_EP_E = Double.parseDouble(data_m[4][17]);
 M1. Spec_POCP_E = Double.parseDouble(data_m[5][17]);
 
 M1.E_Working_hours= Double.parseDouble(data_m[1][42]);
-M1.Boiler_Working_hours= Double.parseDouble(data_m[4][42]);
-M1.GE_Working_hours= Double.parseDouble(data_m[2][42]);
-M1.B_Working_hours= Double.parseDouble(data_m[3][42]);
+M1.Boiler_Working_hours= Double.parseDouble(data_m[1][43]);
+M1.GE_Working_hours= Double.parseDouble(data_m[1][42]);
+M1.B_Working_hours= Double.parseDouble(data_m[1][44]);
 
 
 M1.Labour_fee_cutting = Double.parseDouble(data_m[6][6]);
@@ -2735,7 +2769,11 @@ System.out.println(M1.Spare_cost);
 M1.run();
 //Scrapping
 Parameter_S S1 = new Parameter_S();
-S1.Hull_Weight = Double.parseDouble(data_m[12][5]);
+if(Double.parseDouble(data_m[12][5])!=0) {
+S1.Hull_Weight = Double.parseDouble(data_m[12][5]);}
+else {
+	S1.Hull_Weight = CM1.W1;
+}
 S1.	Machinery_Number	=	CS1.Number	; //Number of item for scrapping
 S1.	Machinery_Weight	=	CS1.Weight	; //Weight of item (ton)
 S1.S_Price_M	=	Double.parseDouble(data_m[6][54])	; //Price of machinery scrapping (Euro/set)
@@ -2778,7 +2816,7 @@ S2.	Transportation_fee	=	Double.parseDouble(data_m[2][55])	; //Transportation pr
 S2.	Transportation_SFOC	=	Double.parseDouble(data_m[3][55]); //Transportation specification fuel consumption (ton/km)
 S2.	Transportation_fuel_price	=	Double.parseDouble(data_m[4][55])	; //Fuel price of transportation (Euro/ton)
 
-S2.	Life_span	=	Life_span	;
+S2.	Life_span	=	0	;
 S2.	Interest	=	Interest	;
 S2.	PV 	=PV;
 //Specific GWP of activity (ton CO2e/ ton fuel used for activity)
@@ -2839,9 +2877,9 @@ Total_CRA = Total_RA/1000*CoTL;
 				/*R_A*/			double GWP3r = RM2.GWP;
 								double GWP_R=GWP1r+GWP2r+GWP3r;
 /*O*/			double GWP4 = O1.GWP+O2.GWP+O3.GWP;
-/*M*/			double GWP5 = 0;
+/*M*/			double GWP5 = M1.GWP;
 /*S*/			double GWP6 = S1.GWP+S2.GWP;
-/*Sum*/			GWP = Total_GWP;
+///*Sum*/			GWP = Total_GWP;
 P_GWP = 24; //Euro per ton
 /*design*/		double AP0 = 0;				
 /*C_H*/			double AP1 = CM1.AP;
@@ -2853,9 +2891,9 @@ P_GWP = 24; //Euro per ton
 				/*R_A*/			double AP3r = RM2.AP;
 								double AP_R = AP1r+AP2r+AP3r;
 /*O*/			double AP4 = O1.AP+O2.AP+O3.AP;
-/*M*/			double AP5 = 0;
+/*M*/			double AP5 = M1.AP;
 /*S*/			double AP6 = S1.AP +S2.AP;
-/*AP*/			AP = Total_AP;
+///*AP*/			AP = Total_AP;
 P_AP = 7788;
 /*design*/		double EP0 = 0;				
 /*C_H*/			double EP1 = CM1.EP;
@@ -2867,9 +2905,9 @@ P_AP = 7788;
 				/*R_A*/			double EP3r = RM2.EP;
 								double EP_R = EP1r+EP2r+EP3r;
 /*O*/			double EP4 = O1.EP+O2.EP+O3.EP;
-/*M*/			double EP5 = 0;
+/*M*/			double EP5 = M1.EP;
 /*S*/			double EP6 = S1.EP +S2.EP;
-/*EP*/			EP = Total_EP;
+///*EP*/			EP = Total_EP;
 P_EP = 0;
 /*design*/		double POCP0 = 0;				
 /*C_H*/			double POCP1 = CM1.POCP;
@@ -2881,9 +2919,9 @@ P_EP = 0;
 				/*R_A*/			double POCP3r = RM2.POCP;
 								double POCP_R=POCP1r+POCP2r+POCP3r;
 /*O*/			double POCP4 = O1.POCP+O2.POCP+O3.POCP;
-/*M*/			double POCP5 = 0;
+/*M*/			double POCP5 = M1.POCP;
 /*S*/			double POCP6 = S1.POCP +S2.POCP;
-/*POCP*/		POCP = Total_POCP;
+///*POCP*/		POCP = Total_POCP;
 P_POCP = 0;
 /*design*/		double RA0 = 0;				
 /*C_H*/			double RA1 = 0;
@@ -2893,7 +2931,10 @@ P_POCP = 0;
 /*O_r*/			double RA4r = RS1.RA+RS2.RA;	
 /*M*/			double RA5 = 0;
 /*S*/			double RA6 = 0;
-/*RA*/			RA = Total_RA;
+///*RA*/			RA = Total_RA;
+
+double Total_LCTC = Total_cost+Total_GWP*P_GWP+Total_AP*P_AP+Total_EP*P_EP+Total_POCP*P_POCP+Total_CRA;
+
 q.add(String.valueOf(sum0));
 q.add(String.valueOf(sum1));
 q.add(String.valueOf(sum2));
@@ -2902,6 +2943,7 @@ q.add(String.valueOf(sum4));
 q.add(String.valueOf(sum5));
 q.add(String.valueOf(sum6));
 q.add(String.valueOf(sum));
+
 
 textReport.setText( 	"ShipLCA Report"+"\n"+
         "Case Name: "+ project_name +"\n"+
@@ -2926,7 +2968,7 @@ textReport.setText( 	"ShipLCA Report"+"\n"+
         "	Operation: 		" + formatter.format(GWP4) +"\n"+
         "	Maintenance: 	" +formatter.format(GWP5) +"\n"+
         "	Scrapping: 		" + formatter.format(GWP6) +"\n"+
-        "	Total GWP: 		" + formatter.format(GWP) +"\n"+"\n"+
+        "	Total GWP: 		" + formatter.format(Total_GWP) +"\n"+"\n"+
         
         "Acidification Potential (AP) (ton SO2e):"+"\n"+
         "	Construction: 	" + formatter.format(AP_C)+"\n"+
@@ -2934,7 +2976,7 @@ textReport.setText( 	"ShipLCA Report"+"\n"+
         "	Operation: 		" + formatter.format(AP4) +"\n"+
         "	Maintenance: 	" +formatter.format(AP5) +"\n"+
         "	Scrapping: 		" + formatter.format(AP6) +"\n"+
-        "	Total AP: 		" + formatter.format(AP) +"\n"+"\n"+
+        "	Total AP: 		" + formatter.format(Total_AP) +"\n"+"\n"+
         
         "Eutrophication Potential(EP) (ton PO4e):"+"\n"+
         "	Construction: 	" + formatter.format(EP_C) +"\n"+
@@ -2942,7 +2984,7 @@ textReport.setText( 	"ShipLCA Report"+"\n"+
         "	Operation:		" + formatter.format(EP4) +"\n"+
         "	Maintenance: 	" +formatter.format(EP5) +"\n"+
         "	Scrapping: 		" + formatter.format(EP6) +"\n"+
-        "	Total EP: 		" + formatter.format(EP) +"\n"+"\n"+
+        "	Total EP: 		" + formatter.format(Total_EP) +"\n"+"\n"+
         
         
         "Photochemical Ozone Creation Potential (POCP) (ton C2H6e):"+"\n"+
@@ -2951,7 +2993,7 @@ textReport.setText( 	"ShipLCA Report"+"\n"+
         "	Operation: 		" + formatter.format(POCP4 )+"\n"+
         "	Maintenance: 	" +formatter.format(POCP5) +"\n"+
         "	Scrapping: 		" + formatter.format(POCP6) +"\n"+
-        "	Total POCP: 		" + formatter.format(POCP) +"\n"+"\n"+
+        "	Total POCP: 		" + formatter.format(Total_POCP) +"\n"+"\n"+
         
         "Risk Priority Number (RPN) of Machinery  (RPN):"+"\n"+
         "	Construction: 	" + formatter.format(RA2) +"\n"+
@@ -2959,22 +3001,22 @@ textReport.setText( 	"ShipLCA Report"+"\n"+
         "	Operation: 		" + formatter.format(RA4+RA4r) +"\n"+
         "	Maintenance: 	" +formatter.format(RA5) +"\n"+
         "	Scrapping: 		" + formatter.format(RA6) +"\n"+
-        "	Total RPN 		" + formatter.format(RA) +"\n"+"\n"+
+        "	Total RPN 		" + formatter.format(Total_RA) +"\n"+"\n"+
         
         
         "Total results"+"\n"+
         "	Life cycle cost (Euro): 	"+ formatter.format(sum) +"\n"+
         "	GWP 	(ton CO2e): 	"+ formatter.format(Total_GWP) +"\n"+
-        "	GWP 	(Euro): 	"+ formatter.format(GWP*P_GWP) +"\n"+
+        "	GWP 	(Euro): 	"+ formatter.format(Total_GWP*P_GWP) +"\n"+
         "	AP 	(ton SO2e): 	" + formatter.format(Total_AP) +"\n"+
-        "	AP 	(Euro): 	" + formatter.format(AP*P_AP) +"\n"+
+        "	AP 	(Euro): 	" + formatter.format(Total_AP*P_AP) +"\n"+
         "	EP 	(ton PO4e): 	" + formatter.format(Total_EP) +"\n"+
-        "	EP 	(Euro): 	" + formatter.format(EP*P_EP) +"\n"+
+        "	EP 	(Euro): 	" + formatter.format(Total_EP*P_EP) +"\n"+
         "	POCP 	(ton C2H6e): " + formatter.format(Total_POCP) +"\n"+
-        "	POCP 	(Euro): 	" + formatter.format(POCP*P_POCP) +"\n"+
+        "	POCP 	(Euro): 	" + formatter.format(Total_POCP*P_POCP) +"\n"+
         "	RPN:  		" + formatter.format(Total_RA) +"\n"+
         "	Risk Cost 	(Euro): 	" + formatter.format(Total_CRA) +"\n"+
-        "	Life cycle total cost (Euro): 	"+ formatter.format(sum+GWP*P_GWP+AP*P_AP+EP*P_EP+POCP*P_POCP+RA/1000*CoTL) +"\n"+"\n"+
+        "	Life cycle total cost (Euro): 	"+ formatter.format(Total_LCTC) +"\n"+"\n"+
         "*Note: now there is no credit regulation for EP and POCP so these results are zero."+"\n"
 );
 
@@ -2982,6 +3024,7 @@ textReport.setText( 	"ShipLCA Report"+"\n"+
 DefaultCategoryDataset dataset1 =
         new DefaultCategoryDataset( );
 dataset1.addValue( sum1+sum2+sum3 , "Construction" , "" );
+dataset1.addValue( sumR , "Retrofitting" , "" );
 dataset1.addValue( sum4 , "Operation" , "" );
 dataset1.addValue( sum5 , "Maintenance" , "");
 dataset1.addValue( sum6 , "Scrapping" , "");
@@ -3003,10 +3046,12 @@ panel_chart1.add(CP1);
 DefaultCategoryDataset dataset2 =
         new DefaultCategoryDataset( );
 dataset2.addValue( GWP_C , "Construction" , "" );
+dataset2.addValue( GWP_R , "Retrofitting" , "" );
+
 dataset2.addValue( GWP4 , "Operation" , "" );
 dataset2.addValue( GWP5 , "Maintenance" , "" );
 dataset2.addValue( GWP6 , "Scrapping" , "" );
-dataset2.addValue( GWP , "Total" , "" );
+dataset2.addValue( Total_GWP , "Total" , "" );
 // Generate the graph
 JFreeChart chart2 = ChartFactory.createBarChart(
         "Global Warming Potential - " + project_name, // Title
@@ -3024,10 +3069,12 @@ panel_chart2.add(CP2);
 DefaultCategoryDataset dataset3 =
         new DefaultCategoryDataset( );
 dataset3.addValue( AP_C , "Construction" , "" );
+dataset3.addValue( AP_R , "Retrofitting" , "" );
+
 dataset3.addValue( AP4 , "Operation" , "" );
 dataset3.addValue( AP5 , "Maintenance" , "" );
 dataset3.addValue( AP6 , "Scrapping" , "" );
-dataset3.addValue( AP , "Total" , "" );
+dataset3.addValue( Total_AP , "Total" , "" );
 // Generate the graph
 JFreeChart chart3 = ChartFactory.createBarChart(
         "Acidification Potential - " + project_name, // Title
@@ -3045,10 +3092,12 @@ panel_chart3.add(CP3);
 DefaultCategoryDataset dataset4 =
         new DefaultCategoryDataset( );
 dataset4.addValue( EP_C , "Construction" , "" );
+dataset4.addValue( EP_R , "Retrofitting" , "" );
+
 dataset4.addValue( EP4 , "Operation" , "" );
 dataset4.addValue( EP5 , "Maintenance" , "" );
 dataset4.addValue( EP6 , "Scrapping" , "" );
-dataset4.addValue( EP , "Total" , "" );
+dataset4.addValue( Total_EP , "Total" , "" );
 // Generate the graph
 JFreeChart chart4 = ChartFactory.createBarChart(
         "Eutrophication Potential - " + project_name, // Title
@@ -3066,10 +3115,12 @@ panel_chart4.add(CP4);
 DefaultCategoryDataset dataset5 =
         new DefaultCategoryDataset( );
 dataset5.addValue( POCP_C , "Construction" , "" );
+dataset5.addValue( POCP_R , "Retrofitting" , "" );
+
 dataset5.addValue( POCP4 , "Operation" , "" );
 dataset5.addValue( POCP5 , "Maintenance" , "" );
 dataset5.addValue( POCP6 , "Scrapping" , "" );
-dataset5.addValue( POCP , "Total" , "" );
+dataset5.addValue( Total_POCP , "Total" , "" );
 // Generate the graph
 JFreeChart chart5 = ChartFactory.createBarChart(
         "Photochemical Ozone Creation Potential - " + project_name, // Title
@@ -3087,10 +3138,12 @@ panel_chart5.add(CP5);
 DefaultCategoryDataset dataset6 =
         new DefaultCategoryDataset( );
 dataset6.addValue( RA2 , "Construction" , "" );
+dataset6.addValue( RA4r , "Retrofitting" , "" );
+
 dataset6.addValue( RA4 , "Operation" , "" );
 dataset6.addValue( RA5 , "Maintenance" , "" );
 dataset6.addValue( RA6 , "Scrapping" , "" );
-dataset6.addValue( RA , "Total" , "" );
+dataset6.addValue( Total_RA , "Total" , "" );
 // Generate the graph
 JFreeChart chart6 = ChartFactory.createBarChart(
         "Risk Assessment- RPN - " + project_name, // Title
@@ -3107,11 +3160,13 @@ panel_chart6.add(CP6);
 
 DefaultCategoryDataset dataset7 =
         new DefaultCategoryDataset( );
-dataset7.addValue( sum1+sum3+sum2+(GWP1+GWP3+GWP2)*P_GWP+(AP1+AP3+AP2)*P_AP+(EP1+EP+EP2)*P_EP+(POCP1+POCP3+POCP2)*P_POCP+RA2/1000*CoTL, "Construction" , "" );        //construction total cost
+dataset7.addValue( sum1+sum3+sum2+(GWP1+GWP3+GWP2)*P_GWP+(AP1+AP3+AP2)*P_AP+(EP1+EP3+EP2)*P_EP+(POCP1+POCP3+POCP2)*P_POCP+RA2/1000*CoTL, "Construction" , "" );        //construction total cost
+dataset7.addValue( sumR+GWP_R*P_GWP+AP_R*P_AP+EP_R*P_EP+POCP_R*P_POCP+RA4r/1000*CoTL , "Retrofitting" , "" );        	//Retrofitting total cost
+
 dataset7.addValue( sum4+GWP4*P_GWP+AP4*P_AP+EP4*P_EP+POCP4*P_POCP+RA4/1000*CoTL , "Operation" , "" );        	//operation total cost
-dataset7.addValue( sum5, "Maintenance", "");																		//maintenance total cost
+dataset7.addValue( sum5+GWP5*P_GWP+AP5*P_AP+EP5*P_EP+POCP5*P_POCP+RA5/1000*CoTL, "Maintenance", "");																		//maintenance total cost
 dataset7.addValue( sum6+GWP6*P_GWP+AP6*P_AP+EP6*P_EP+POCP6*P_POCP+RA6/1000*CoTL , "Scrapping" , "" ); 			//scrapping total cost
-dataset7.addValue( sum+GWP*P_GWP+AP*P_AP+EP*P_EP+POCP*P_POCP+RA/1000*CoTL , "Total" , "" );     				//life cycle total cost
+dataset7.addValue( Total_LCTC , "Total" , "" );     				//life cycle total cost
 // Generate the graph
 JFreeChart chart7 = ChartFactory.createBarChart(
         "Total Life Cycle Cost - " + project_name, // Title
@@ -3151,6 +3206,19 @@ Frame.setResizable(false);
 Frame.pack();
 Frame.setVisible(true);
 
+F_db_name.dispose();
+
+
+
+                            
+
+
+                            
+
+
+
+                                 
+
 FileOutputStream fout;
 fout = new FileOutputStream(cwd+"/reports/"+TF_db_name.getText()+".xls");
 //Total spreadsheet
@@ -3188,9 +3256,9 @@ num5.setCellType(CellType.NUMERIC);
 num0.setCellValue("Total life cycle cost");
 num1.setCellValue(sum1+sum2+sum3+(GWP1+GWP3+GWP2)*P_GWP+(AP1+AP3+AP2)*P_AP+(EP1+EP3+EP2)*P_EP+(POCP1+POCP3+POCP2)*P_POCP+RA2/1000*CoTL);
 num2.setCellValue(sum4+GWP4*P_GWP+AP4*P_AP+EP4*P_EP+POCP4*P_POCP+RA4/1000*CoTL);
-num3.setCellValue(sum5);
+num3.setCellValue(sum5+GWP5*P_GWP+AP5*P_AP+EP5*P_EP+POCP5*P_POCP+RA5/1000*CoTL);
 num4.setCellValue(sum6+GWP6*P_GWP+AP6*P_AP+EP6*P_EP+POCP6*P_POCP+RA6/1000*CoTL);
-num5.setCellValue(sum+GWP*P_GWP+AP*P_AP+EP*P_EP+POCP*P_POCP+RA/1000*CoTL);
+num5.setCellValue(sum+Total_GWP*P_GWP+Total_AP*P_AP+Total_EP*P_EP+Total_POCP*P_POCP+Total_RA/1000*CoTL);
 item0.setCellType(CellType.STRING);
 item1.setCellType(CellType.STRING);
 item2.setCellType(CellType.STRING);
@@ -3257,6 +3325,12 @@ HSSFCell item32_1 = row0_1.createCell(32);
 HSSFCell item33_1 = row0_1.createCell(33);
 HSSFCell item34_1 = row0_1.createCell(34);
 HSSFCell item35_1 = row0_1.createCell(35);
+HSSFCell item36_1 = row0_1.createCell(36);
+HSSFCell item37_1 = row0_1.createCell(37);
+HSSFCell item38_1 = row0_1.createCell(38);
+HSSFCell item39_1 = row0_1.createCell(39);
+HSSFCell item40_1 = row0_1.createCell(40);
+HSSFCell item41_1 = row0_1.createCell(41);
 
 HSSFCell num0_1 = row1_1.createCell(0);
 HSSFCell num1_1 = row1_1.createCell(1);
@@ -3294,6 +3368,12 @@ HSSFCell num32_1 = row1_1.createCell(32);
 HSSFCell num33_1 = row1_1.createCell(33);
 HSSFCell num34_1 = row1_1.createCell(34);
 HSSFCell num35_1 = row1_1.createCell(35);
+HSSFCell num36_1 = row1_1.createCell(36);
+HSSFCell num37_1 = row1_1.createCell(37);
+HSSFCell num38_1 = row1_1.createCell(38);
+HSSFCell num39_1 = row1_1.createCell(39);
+HSSFCell num40_1 = row1_1.createCell(40);
+HSSFCell num41_1 = row1_1.createCell(41);
 
 HSSFCell unit0_1 = row2_1.createCell(0);
 HSSFCell unit1_1 = row2_1.createCell(1);
@@ -3331,6 +3411,13 @@ HSSFCell unit32_1 = row2_1.createCell(32);
 HSSFCell unit33_1 = row2_1.createCell(33);
 HSSFCell unit34_1 = row2_1.createCell(34);
 HSSFCell unit35_1 = row2_1.createCell(35);
+HSSFCell unit36_1 = row2_1.createCell(36);
+HSSFCell unit37_1 = row2_1.createCell(37);
+HSSFCell unit38_1 = row2_1.createCell(38);
+HSSFCell unit39_1 = row2_1.createCell(39);
+HSSFCell unit40_1 = row2_1.createCell(40);
+HSSFCell unit41_1 = row2_1.createCell(41);
+
 
 num0_1.setCellType(CellType.STRING);
 num0_1.setCellValue("Value");
@@ -3369,42 +3456,60 @@ num32_1.setCellType(CellType.NUMERIC);
 num33_1.setCellType(CellType.NUMERIC);
 num34_1.setCellType(CellType.NUMERIC);
 num35_1.setCellType(CellType.NUMERIC);
+num36_1.setCellType(CellType.NUMERIC);
+num37_1.setCellType(CellType.NUMERIC);
+num38_1.setCellType(CellType.NUMERIC);
+num39_1.setCellType(CellType.NUMERIC);
+num40_1.setCellType(CellType.NUMERIC);
+num41_1.setCellType(CellType.NUMERIC);
 
 num1_1.setCellValue( sum1+sum2+sum3 );
 num2_1.setCellValue( sum4 );
-num3_1.setCellValue( sum6 );
-num4_1.setCellValue( sum );
-num5_1.setCellValue( GWP_C );
-num6_1.setCellValue( GWP4 );
-num7_1.setCellValue( GWP6 );
-num8_1.setCellValue( GWP );
-num9_1.setCellValue( AP_C );
-num10_1.setCellValue( AP4 );
-num11_1.setCellValue( AP6 );
-num12_1.setCellValue( AP );
-num13_1.setCellValue( EP_C );
-num14_1.setCellValue( EP4 );
-num15_1.setCellValue( EP6 );
-num16_1.setCellValue( EP );
-num17_1.setCellValue( POCP_C );
-num18_1.setCellValue( POCP4 );
-num19_1.setCellValue( POCP6 );
-num20_1.setCellValue( POCP );
-num21_1.setCellValue( RA2 );
-num22_1.setCellValue( RA4 );
-num23_1.setCellValue( RA6 );
-num24_1.setCellValue( RA );
-num25_1.setCellValue( Total_cost );
-num26_1.setCellValue( Total_GWP );
-num27_1.setCellValue( Total_AP );
-num28_1.setCellValue( Total_EP );
-num29_1.setCellValue( Total_POCP );
+num3_1.setCellValue( sum5 );
+
+num4_1.setCellValue( sum6 );
+num5_1.setCellValue( sum );
+num6_1.setCellValue( GWP_C );
+num7_1.setCellValue( GWP4 );
+num8_1.setCellValue( GWP5 );
+
+num9_1.setCellValue( GWP6 );
+num10_1.setCellValue( Total_GWP );
+num11_1.setCellValue( AP_C );
+num12_1.setCellValue( AP4 );
+num13_1.setCellValue( AP5 );
+
+num14_1.setCellValue( AP6 );
+num15_1.setCellValue( Total_AP );
+num16_1.setCellValue( EP_C );
+num17_1.setCellValue( EP4 );
+num18_1.setCellValue( EP5 );
+
+num19_1.setCellValue( EP6 );
+num20_1.setCellValue( Total_EP );
+num21_1.setCellValue( POCP_C );
+num22_1.setCellValue( POCP4 );
+num23_1.setCellValue( POCP5 );
+
+num24_1.setCellValue( POCP6 );
+num25_1.setCellValue( Total_POCP );
+num26_1.setCellValue( RA2 );
+num27_1.setCellValue( RA4 );
+num28_1.setCellValue( RA5 );
+
+num29_1.setCellValue( RA6 );
 num30_1.setCellValue( Total_RA );
-num31_1.setCellValue( Total_CRA );
-num32_1.setCellValue( GWP*P_GWP );
-num33_1.setCellValue( AP*P_AP );
-num34_1.setCellValue( EP*P_EP );
-num35_1.setCellValue( POCP*P_POCP );
+num31_1.setCellValue( Total_cost );
+num32_1.setCellValue( Total_GWP );
+num33_1.setCellValue( Total_AP );
+num34_1.setCellValue( Total_EP );
+num35_1.setCellValue( Total_POCP );
+num36_1.setCellValue( Total_RA );
+num37_1.setCellValue( Total_CRA );
+num38_1.setCellValue( Total_GWP*P_GWP );
+num39_1.setCellValue( Total_AP*P_AP );
+num40_1.setCellValue( Total_EP*P_EP );
+num41_1.setCellValue( Total_POCP*P_POCP );
 
 item0_1.setCellType(CellType.STRING);
 item1_1.setCellType(CellType.STRING);
@@ -3442,43 +3547,62 @@ item32_1.setCellType(CellType.STRING);
 item33_1.setCellType(CellType.STRING);
 item34_1.setCellType(CellType.STRING);
 item35_1.setCellType(CellType.STRING);
+item36_1.setCellType(CellType.STRING);
+item37_1.setCellType(CellType.STRING);
+item38_1.setCellType(CellType.STRING);
+item39_1.setCellType(CellType.STRING);
+item40_1.setCellType(CellType.STRING);
+item41_1.setCellType(CellType.STRING);
 
 item0_1.setCellValue("	Phases & items	");
 item1_1.setCellValue("	Construction cost	");
 item2_1.setCellValue("	Operation cost	");
-item3_1.setCellValue("	Scrapping cost  	");
-item4_1.setCellValue("	Total cost  	");
-item5_1.setCellValue("	Construction GWP  	");
-item6_1.setCellValue("	Operation GWP  	");
-item7_1.setCellValue("	Scrapping GWP  	");
-item8_1.setCellValue("	Total GWP  	");
-item9_1.setCellValue("	Construction AP  	");
-item10_1.setCellValue("	Operation AP 	");
-item11_1.setCellValue("	Scrapping AP  	");
-item12_1.setCellValue("	Total AP  	");
-item13_1.setCellValue("	Construction EP  	");
-item14_1.setCellValue("	Operation EP  	");
-item15_1.setCellValue("	Scrapping EP	");
-item16_1.setCellValue("	Total EP	");
-item17_1.setCellValue("	Construction POCP	");
-item18_1.setCellValue("	Operation POCP	");
-item19_1.setCellValue("	Scrapping POCP	");
-item20_1.setCellValue("	Total POCP	");
-item21_1.setCellValue("	Construction RPN	");
-item22_1.setCellValue("	Operation RPN	");
-item23_1.setCellValue("	Scrapping RPN	");
-item24_1.setCellValue("	Total RPN	");
-item25_1.setCellValue("	Life Cycle Cost 	");
-item26_1.setCellValue("	GWP 	");
-item27_1.setCellValue("	AP 	");
-item28_1.setCellValue("	EP	");
-item29_1.setCellValue("	POCP	");
-item30_1.setCellValue("	RPN	");
-item31_1.setCellValue("	Risk Cost	");
+item3_1.setCellValue("	Maintenance cost  	");
+item4_1.setCellValue("	Scrapping cost  	");
+item5_1.setCellValue("	Total cost  	");
+
+item6_1.setCellValue("	Construction GWP  	");
+item7_1.setCellValue("	Operation GWP  	");
+item8_1.setCellValue("	Maintenance GWP  	");
+item9_1.setCellValue("	Scrapping GWP  	");
+item10_1.setCellValue("	Total GWP  	");
+
+item11_1.setCellValue("	Construction AP  	");
+item12_1.setCellValue("	Operation AP 	");
+item13_1.setCellValue("	Maintenance AP  	");
+item14_1.setCellValue("	Scrapping AP  	");
+item15_1.setCellValue("	Total AP  	");
+
+item16_1.setCellValue("	Construction EP  	");
+item17_1.setCellValue("	Operation EP  	");
+item18_1.setCellValue("	Maintenance EP	");
+item19_1.setCellValue("	Scrapping EP	");
+item20_1.setCellValue("	Total EP	");
+
+item21_1.setCellValue("	Construction POCP	");
+item22_1.setCellValue("	Operation POCP	");
+item23_1.setCellValue("	Maintenance POCP	");
+item24_1.setCellValue("	Scrapping POCP	");
+item25_1.setCellValue("	Total POCP	");
+
+item26_1.setCellValue("	Construction RPN	");
+item27_1.setCellValue("	Operation RPN	");
+item28_1.setCellValue("	Maintenance RPN	");
+item29_1.setCellValue("	Scrapping RPN	");
+item30_1.setCellValue("	Total RPN	");
+
+item31_1.setCellValue("	Life Cycle Cost 	");
 item32_1.setCellValue("	GWP 	");
 item33_1.setCellValue("	AP 	");
 item34_1.setCellValue("	EP	");
 item35_1.setCellValue("	POCP	");
+item36_1.setCellValue("	RPN	");
+
+item37_1.setCellValue("	Risk Cost	");
+item38_1.setCellValue("	GWP 	");
+item39_1.setCellValue("	AP 	");
+item40_1.setCellValue("	EP	");
+item41_1.setCellValue("	POCP	");
 
 unit0_1.setCellType(CellType.STRING);
 unit1_1.setCellType(CellType.STRING);
@@ -3516,43 +3640,148 @@ unit32_1.setCellType(CellType.STRING);
 unit33_1.setCellType(CellType.STRING);
 unit34_1.setCellType(CellType.STRING);
 unit35_1.setCellType(CellType.STRING);
+unit35_1.setCellType(CellType.STRING);
+unit36_1.setCellType(CellType.STRING);
+unit37_1.setCellType(CellType.STRING);
+unit38_1.setCellType(CellType.STRING);
+unit39_1.setCellType(CellType.STRING);
+unit40_1.setCellType(CellType.STRING);
+unit41_1.setCellType(CellType.STRING);
 
 unit0_1.setCellValue("Units");
 unit1_1.setCellValue("Euro");
 unit2_1.setCellValue("Euro");
 unit3_1.setCellValue("Euro");
 unit4_1.setCellValue("Euro");
-unit5_1.setCellValue("ton CO2e");
+unit5_1.setCellValue("Euro");
+
 unit6_1.setCellValue("ton CO2e");
 unit7_1.setCellValue("ton CO2e");
 unit8_1.setCellValue("ton CO2e");
-unit9_1.setCellValue("ton SO2e");
-unit10_1.setCellValue("ton SO2e");
+unit9_1.setCellValue("ton CO2e");
+unit10_1.setCellValue("ton CO2e");
+
 unit11_1.setCellValue("ton SO2e");
 unit12_1.setCellValue("ton SO2e");
-unit13_1.setCellValue("ton PO4e");
-unit14_1.setCellValue("ton PO4e");
-unit15_1.setCellValue("ton PO4e");
+unit13_1.setCellValue("ton SO2e");
+unit14_1.setCellValue("ton SO2e");
+unit15_1.setCellValue("ton SO2e");
+
 unit16_1.setCellValue("ton PO4e");
-unit17_1.setCellValue("ton C2H6e");
-unit18_1.setCellValue("ton C2H6e");
-unit19_1.setCellValue("ton C2H6e");
-unit20_1.setCellValue("ton C2H6e");
-unit21_1.setCellValue("RPN");
-unit22_1.setCellValue("RPN");
-unit23_1.setCellValue("RPN");
-unit24_1.setCellValue("RPN");
-unit25_1.setCellValue("Euro");
-unit26_1.setCellValue("ton CO2e");
-unit27_1.setCellValue("ton SO2e");
-unit28_1.setCellValue("ton PO4e");
-unit29_1.setCellValue("ton C2H6e");
+unit17_1.setCellValue("ton PO4e");
+unit18_1.setCellValue("ton PO4e");
+unit19_1.setCellValue("ton PO4e");
+unit20_1.setCellValue("ton PO4e");
+
+unit21_1.setCellValue("ton C2H6e");
+unit22_1.setCellValue("ton C2H6e");
+unit23_1.setCellValue("ton C2H6e");
+unit24_1.setCellValue("ton C2H6e");
+unit25_1.setCellValue("ton C2H6e");
+
+unit26_1.setCellValue("RPN");
+unit27_1.setCellValue("RPN");
+unit28_1.setCellValue("RPN");
+unit29_1.setCellValue("RPN");
 unit30_1.setCellValue("RPN");
+
 unit31_1.setCellValue("Euro");
-unit32_1.setCellValue("Euro");
-unit33_1.setCellValue("Euro");
-unit34_1.setCellValue("Euro");
-unit35_1.setCellValue("Euro");
+unit32_1.setCellValue("ton CO2e");
+unit33_1.setCellValue("ton SO2e");
+unit34_1.setCellValue("ton PO4e");
+unit35_1.setCellValue("ton C2H6e");
+unit36_1.setCellValue("RPN");
+unit37_1.setCellValue("Euro");
+unit38_1.setCellValue("Euro");
+unit39_1.setCellValue("Euro");
+unit40_1.setCellValue("Euro");
+unit41_1.setCellValue("Euro");
+
+//Detail report spreadsheet
+HSSFSheet sheet3 = wb1.createSheet("Retrofitting");
+HSSFRow row0_2 = sheet3.createRow(0);
+HSSFRow row1_2 = sheet3.createRow(1);
+HSSFRow row2_2 = sheet3.createRow(2);
+
+HSSFCell item0_2 = row0_2.createCell(0);
+HSSFCell item1_2 = row0_2.createCell(1);
+HSSFCell item2_2 = row0_2.createCell(2);
+HSSFCell item3_2 = row0_2.createCell(3);
+HSSFCell item4_2 = row0_2.createCell(4);
+HSSFCell item5_2 = row0_2.createCell(5);
+HSSFCell item6_2 = row0_2.createCell(6);
+
+
+HSSFCell num0_2 = row1_2.createCell(0);
+HSSFCell num1_2 = row1_2.createCell(1);
+HSSFCell num2_2 = row1_2.createCell(2);
+HSSFCell num3_2 = row1_2.createCell(3);
+HSSFCell num4_2 = row1_2.createCell(4);
+HSSFCell num5_2 = row1_2.createCell(5);
+HSSFCell num6_2 = row1_2.createCell(6);
+
+HSSFCell unit0_2 = row2_2.createCell(0);
+HSSFCell unit1_2 = row2_2.createCell(1);
+HSSFCell unit2_2 = row2_2.createCell(2);
+HSSFCell unit3_2 = row2_2.createCell(3);
+HSSFCell unit4_2 = row2_2.createCell(4);
+HSSFCell unit5_2 = row2_2.createCell(5);
+HSSFCell unit6_2 = row2_2.createCell(6);
+
+
+num0_2.setCellType(CellType.STRING);
+num0_2.setCellValue("Value");
+num1_2.setCellType(CellType.NUMERIC);
+num2_2.setCellType(CellType.NUMERIC);
+num3_2.setCellType(CellType.NUMERIC);
+num4_2.setCellType(CellType.NUMERIC);
+num5_2.setCellType(CellType.NUMERIC);
+num6_2.setCellType(CellType.NUMERIC);
+
+
+num1_2.setCellValue( sumR );
+num2_2.setCellValue( GWP_R );
+num3_2.setCellValue( AP_R );
+num4_2.setCellValue( EP_R );
+num5_2.setCellValue( POCP_R );
+num6_2.setCellValue( RA4r );
+
+item0_2.setCellType(CellType.STRING);
+item1_2.setCellType(CellType.STRING);
+item2_2.setCellType(CellType.STRING);
+item3_2.setCellType(CellType.STRING);
+item4_2.setCellType(CellType.STRING);
+item5_2.setCellType(CellType.STRING);
+item6_2.setCellType(CellType.STRING);
+
+
+item0_2.setCellValue("	Retrofitting	");
+item1_2.setCellValue("	Life cycle cost	");
+item2_2.setCellValue("	GWP	");
+item3_2.setCellValue("	AP  	");
+item4_2.setCellValue("	EP  	");
+item5_2.setCellValue("	POCP  	");
+
+item6_2.setCellValue("	RPN  	");
+
+
+unit0_2.setCellType(CellType.STRING);
+unit1_2.setCellType(CellType.STRING);
+unit2_2.setCellType(CellType.STRING);
+unit3_2.setCellType(CellType.STRING);
+unit4_2.setCellType(CellType.STRING);
+unit5_2.setCellType(CellType.STRING);
+unit6_2.setCellType(CellType.STRING);
+
+
+unit0_2.setCellValue("Units");
+unit1_2.setCellValue("Euro");
+unit2_2.setCellValue("tonne CO2e");
+unit3_2.setCellValue("tonne SO2e");
+unit4_2.setCellValue("tonne PO4e.");
+unit5_2.setCellValue("tonne C2H6e.");
+unit6_2.setCellValue("RPN number");
+
 
 
 wb1.write(fout);
@@ -3911,7 +4140,7 @@ if(Double.parseDouble(data_m[	7	][19])!=0)
 }
 else 
 {
-	CM2.	r_cutting = Double.parseDouble(data_m[	8	][24]);
+	CM2.	r_cutting = Double.parseDouble(data_m[	8	][19]);
 }
 CM2.P_Welding=Double.parseDouble(data_m[	5	][20]);
 CM2.V_Welding=Double.parseDouble(data_m[	2	][20]);
@@ -3923,7 +4152,7 @@ if(Double.parseDouble(data_m[	7	][20])!=0)
 	CM2.H_Welding_Hull= Double.parseDouble(data_m[	7	][20]);
 }
 else {
-	CM2.	r_welding = Double.parseDouble(data_m[	8	][24]);
+	CM2.	r_welding = Double.parseDouble(data_m[	8	][20]);
 }
 
 CM2.P_Painting=Double.parseDouble(data_m[	5	][21]);
@@ -3937,7 +4166,7 @@ if(Double.parseDouble(data_m[	7	][21])!=0)
 }
 else 
 {
-	CM2.	r_painting = Double.parseDouble(data_m[	8	][24]);
+	CM2.	r_painting = Double.parseDouble(data_m[	8	][21]);
 }
 
 CM2. Labour_fee_cutting =Double.parseDouble(data_m[	6	][19]);
@@ -4086,7 +4315,7 @@ RS3.run(); //Run the calculation
 
 //Material: steel, aluminium, composite material...
 Parameter_C_Material RM1 = new Parameter_C_Material();
-
+RM1.W1 = 0;
 RM1. 	W11 = Double.parseDouble(data_m[	13	][5]);
 
 RM1.	E_price		= Double.parseDouble(data_m[	1	][34]);
@@ -4362,7 +4591,7 @@ Parameter_O O3 = new Parameter_O();
 O3.	Life_span	=	Life_span	;
 O3.	Interest	=	Interest	;
 O3.	PV 			=	PV	;
-O3.	Number 		=	CS1.Number;
+O3.	Number 		=	Double.parseDouble(data_m[2][44]);
 O3. Fuel_type 	= 	data_m[0][45];
 O3. LO_type  	= 	data_m[0][46];
 
@@ -4423,15 +4652,17 @@ O3. Spec_GWP_LO 	=	Double.parseDouble(data_m[2][46])		;
 O3. Spec_AP_LO 		=	Double.parseDouble(data_m[3][46])		;
 O3. Spec_EP_LO 		=	Double.parseDouble(data_m[4][46])		;
 O3. Spec_POCP_LO 	=	Double.parseDouble(data_m[5][46])		;
-O3.Electricity_quantity=O3.Eload*O3.	Ohour*O3.Number;
 O3.Electricity_price = Double.parseDouble(data_m[1][17])		;
 O3.run(); //Run the calculation
 //Maintenance
 
 Parameter_M M1 = new Parameter_M();
+M1.GE_number=Double.parseDouble(data_m[2][42]);
+M1.B_number=Double.parseDouble(data_m[2][44]);
+
 M1.Life_span = Life_span;
 M1.GE_Power= Double.parseDouble(data_m[4][42]);
-M1.GEM_Price= Double.parseDouble(data_m[1][48]);
+M1.GEM_Price= Double.parseDouble(data_m[2][48]);
 M1.B_Power= Double.parseDouble(data_m[3][44]);
 M1.BM_Price= Double.parseDouble(data_m[3][48]);
 
@@ -4463,9 +4694,9 @@ M1. Spec_EP_E = Double.parseDouble(data_m[4][17]);
 M1. Spec_POCP_E = Double.parseDouble(data_m[5][17]);
 
 M1.E_Working_hours= Double.parseDouble(data_m[1][42]);
-M1.Boiler_Working_hours= Double.parseDouble(data_m[4][42]);
-M1.GE_Working_hours= Double.parseDouble(data_m[2][42]);
-M1.B_Working_hours= Double.parseDouble(data_m[3][42]);
+M1.Boiler_Working_hours= Double.parseDouble(data_m[1][43]);
+M1.GE_Working_hours= Double.parseDouble(data_m[1][42]);
+M1.B_Working_hours= Double.parseDouble(data_m[1][44]);
 
 
 M1.Labour_fee_cutting = Double.parseDouble(data_m[6][6]);
@@ -4486,7 +4717,11 @@ System.out.println(M1.Spare_cost);
 M1.run();
 //Scrapping
 Parameter_S S1 = new Parameter_S();
-S1.Hull_Weight = Double.parseDouble(data_m[12][5]);
+if(Double.parseDouble(data_m[12][5])!=0) {
+S1.Hull_Weight = Double.parseDouble(data_m[12][5]);}
+else {
+	S1.Hull_Weight = CM1.W1;
+}
 S1.	Machinery_Number	=	CS1.Number	; //Number of item for scrapping
 S1.	Machinery_Weight	=	CS1.Weight	; //Weight of item (ton)
 S1.S_Price_M	=	Double.parseDouble(data_m[6][54])	; //Price of machinery scrapping (Euro/set)
@@ -4529,7 +4764,7 @@ S2.	Transportation_fee	=	Double.parseDouble(data_m[2][55])	; //Transportation pr
 S2.	Transportation_SFOC	=	Double.parseDouble(data_m[3][55]); //Transportation specification fuel consumption (ton/km)
 S2.	Transportation_fuel_price	=	Double.parseDouble(data_m[4][55])	; //Fuel price of transportation (Euro/ton)
 
-S2.	Life_span	=	Life_span	;
+S2.	Life_span	=	0	;
 S2.	Interest	=	Interest	;
 S2.	PV 	=PV;
 //Specific GWP of activity (ton CO2e/ ton fuel used for activity)
@@ -4590,9 +4825,9 @@ Total_CRA = Total_RA/1000*CoTL;
 				/*R_A*/			double GWP3r = RM2.GWP;
 								double GWP_R=GWP1r+GWP2r+GWP3r;
 /*O*/			double GWP4 = O1.GWP+O2.GWP+O3.GWP;
-/*M*/			double GWP5 = 0;
+/*M*/			double GWP5 = M1.GWP;
 /*S*/			double GWP6 = S1.GWP+S2.GWP;
-/*Sum*/			GWP = Total_GWP;
+///*Sum*/			GWP = Total_GWP;
 P_GWP = 24; //Euro per ton
 /*design*/		double AP0 = 0;				
 /*C_H*/			double AP1 = CM1.AP;
@@ -4604,9 +4839,9 @@ P_GWP = 24; //Euro per ton
 				/*R_A*/			double AP3r = RM2.AP;
 								double AP_R = AP1r+AP2r+AP3r;
 /*O*/			double AP4 = O1.AP+O2.AP+O3.AP;
-/*M*/			double AP5 = 0;
+/*M*/			double AP5 = M1.AP;
 /*S*/			double AP6 = S1.AP +S2.AP;
-/*AP*/			AP = Total_AP;
+///*AP*/			AP = Total_AP;
 P_AP = 7788;
 /*design*/		double EP0 = 0;				
 /*C_H*/			double EP1 = CM1.EP;
@@ -4618,9 +4853,9 @@ P_AP = 7788;
 				/*R_A*/			double EP3r = RM2.EP;
 								double EP_R = EP1r+EP2r+EP3r;
 /*O*/			double EP4 = O1.EP+O2.EP+O3.EP;
-/*M*/			double EP5 = 0;
+/*M*/			double EP5 = M1.EP;
 /*S*/			double EP6 = S1.EP +S2.EP;
-/*EP*/			EP = Total_EP;
+///*EP*/			EP = Total_EP;
 P_EP = 0;
 /*design*/		double POCP0 = 0;				
 /*C_H*/			double POCP1 = CM1.POCP;
@@ -4632,9 +4867,9 @@ P_EP = 0;
 				/*R_A*/			double POCP3r = RM2.POCP;
 								double POCP_R=POCP1r+POCP2r+POCP3r;
 /*O*/			double POCP4 = O1.POCP+O2.POCP+O3.POCP;
-/*M*/			double POCP5 = 0;
+/*M*/			double POCP5 = M1.POCP;
 /*S*/			double POCP6 = S1.POCP +S2.POCP;
-/*POCP*/		POCP = Total_POCP;
+///*POCP*/		POCP = Total_POCP;
 P_POCP = 0;
 /*design*/		double RA0 = 0;				
 /*C_H*/			double RA1 = 0;
@@ -4644,7 +4879,11 @@ P_POCP = 0;
 /*O_r*/			double RA4r = RS1.RA+RS2.RA;	
 /*M*/			double RA5 = 0;
 /*S*/			double RA6 = 0;
-/*RA*/			RA = Total_RA;
+///*RA*/			RA = Total_RA;
+
+double Total_LCTC = Total_cost+Total_GWP*P_GWP+Total_AP*P_AP+Total_EP*P_EP+Total_POCP*P_POCP+Total_CRA;
+//System.out.println("xxx1="+Total_LCTC);
+//System.out.println("xxx2="+sum);
 q.add(String.valueOf(sum0));
 q.add(String.valueOf(sum1));
 q.add(String.valueOf(sum2));
@@ -4653,6 +4892,7 @@ q.add(String.valueOf(sum4));
 q.add(String.valueOf(sum5));
 q.add(String.valueOf(sum6));
 q.add(String.valueOf(sum));
+
 
 textReport.setText( 	"ShipLCA Report"+"\n"+
         "Case Name: "+ project_name +"\n"+
@@ -4677,7 +4917,7 @@ textReport.setText( 	"ShipLCA Report"+"\n"+
         "	Operation: 		" + formatter.format(GWP4) +"\n"+
         "	Maintenance: 	" +formatter.format(GWP5) +"\n"+
         "	Scrapping: 		" + formatter.format(GWP6) +"\n"+
-        "	Total GWP: 		" + formatter.format(GWP) +"\n"+"\n"+
+        "	Total GWP: 		" + formatter.format(Total_GWP) +"\n"+"\n"+
         
         "Acidification Potential (AP) (ton SO2e):"+"\n"+
         "	Construction: 	" + formatter.format(AP_C)+"\n"+
@@ -4685,7 +4925,7 @@ textReport.setText( 	"ShipLCA Report"+"\n"+
         "	Operation: 		" + formatter.format(AP4) +"\n"+
         "	Maintenance: 	" +formatter.format(AP5) +"\n"+
         "	Scrapping: 		" + formatter.format(AP6) +"\n"+
-        "	Total AP: 		" + formatter.format(AP) +"\n"+"\n"+
+        "	Total AP: 		" + formatter.format(Total_AP) +"\n"+"\n"+
         
         "Eutrophication Potential(EP) (ton PO4e):"+"\n"+
         "	Construction: 	" + formatter.format(EP_C) +"\n"+
@@ -4693,7 +4933,7 @@ textReport.setText( 	"ShipLCA Report"+"\n"+
         "	Operation:		" + formatter.format(EP4) +"\n"+
         "	Maintenance: 	" +formatter.format(EP5) +"\n"+
         "	Scrapping: 		" + formatter.format(EP6) +"\n"+
-        "	Total EP: 		" + formatter.format(EP) +"\n"+"\n"+
+        "	Total EP: 		" + formatter.format(Total_EP) +"\n"+"\n"+
         
         
         "Photochemical Ozone Creation Potential (POCP) (ton C2H6e):"+"\n"+
@@ -4702,7 +4942,7 @@ textReport.setText( 	"ShipLCA Report"+"\n"+
         "	Operation: 		" + formatter.format(POCP4 )+"\n"+
         "	Maintenance: 	" +formatter.format(POCP5) +"\n"+
         "	Scrapping: 		" + formatter.format(POCP6) +"\n"+
-        "	Total POCP: 		" + formatter.format(POCP) +"\n"+"\n"+
+        "	Total POCP: 		" + formatter.format(Total_POCP) +"\n"+"\n"+
         
         "Risk Priority Number (RPN) of Machinery  (RPN):"+"\n"+
         "	Construction: 	" + formatter.format(RA2) +"\n"+
@@ -4710,22 +4950,22 @@ textReport.setText( 	"ShipLCA Report"+"\n"+
         "	Operation: 		" + formatter.format(RA4+RA4r) +"\n"+
         "	Maintenance: 	" +formatter.format(RA5) +"\n"+
         "	Scrapping: 		" + formatter.format(RA6) +"\n"+
-        "	Total RPN 		" + formatter.format(RA) +"\n"+"\n"+
+        "	Total RPN 		" + formatter.format(Total_RA) +"\n"+"\n"+
         
         
         "Total results"+"\n"+
         "	Life cycle cost (Euro): 	"+ formatter.format(sum) +"\n"+
         "	GWP 	(ton CO2e): 	"+ formatter.format(Total_GWP) +"\n"+
-        "	GWP 	(Euro): 	"+ formatter.format(GWP*P_GWP) +"\n"+
+        "	GWP 	(Euro): 	"+ formatter.format(Total_GWP*P_GWP) +"\n"+
         "	AP 	(ton SO2e): 	" + formatter.format(Total_AP) +"\n"+
-        "	AP 	(Euro): 	" + formatter.format(AP*P_AP) +"\n"+
+        "	AP 	(Euro): 	" + formatter.format(Total_AP*P_AP) +"\n"+
         "	EP 	(ton PO4e): 	" + formatter.format(Total_EP) +"\n"+
-        "	EP 	(Euro): 	" + formatter.format(EP*P_EP) +"\n"+
+        "	EP 	(Euro): 	" + formatter.format(Total_EP*P_EP) +"\n"+
         "	POCP 	(ton C2H6e): " + formatter.format(Total_POCP) +"\n"+
-        "	POCP 	(Euro): 	" + formatter.format(POCP*P_POCP) +"\n"+
+        "	POCP 	(Euro): 	" + formatter.format(Total_POCP*P_POCP) +"\n"+
         "	RPN:  		" + formatter.format(Total_RA) +"\n"+
         "	Risk Cost 	(Euro): 	" + formatter.format(Total_CRA) +"\n"+
-        "	Life cycle total cost (Euro): 	"+ formatter.format(sum+GWP*P_GWP+AP*P_AP+EP*P_EP+POCP*P_POCP+RA/1000*CoTL) +"\n"+"\n"+
+        "	Life cycle total cost (Euro): 	"+ formatter.format(Total_LCTC) +"\n"+"\n"+
         "*Note: now there is no credit regulation for EP and POCP so these results are zero."+"\n"
 );
 
@@ -4733,6 +4973,7 @@ textReport.setText( 	"ShipLCA Report"+"\n"+
 DefaultCategoryDataset dataset1 =
         new DefaultCategoryDataset( );
 dataset1.addValue( sum1+sum2+sum3 , "Construction" , "" );
+dataset1.addValue( sumR , "Retrofitting" , "" );
 dataset1.addValue( sum4 , "Operation" , "" );
 dataset1.addValue( sum5 , "Maintenance" , "");
 dataset1.addValue( sum6 , "Scrapping" , "");
@@ -4754,10 +4995,12 @@ panel_chart1.add(CP1);
 DefaultCategoryDataset dataset2 =
         new DefaultCategoryDataset( );
 dataset2.addValue( GWP_C , "Construction" , "" );
+dataset2.addValue( GWP_R , "Retrofitting" , "" );
+
 dataset2.addValue( GWP4 , "Operation" , "" );
 dataset2.addValue( GWP5 , "Maintenance" , "" );
 dataset2.addValue( GWP6 , "Scrapping" , "" );
-dataset2.addValue( GWP , "Total" , "" );
+dataset2.addValue( Total_GWP , "Total" , "" );
 // Generate the graph
 JFreeChart chart2 = ChartFactory.createBarChart(
         "Global Warming Potential - " + project_name, // Title
@@ -4775,10 +5018,12 @@ panel_chart2.add(CP2);
 DefaultCategoryDataset dataset3 =
         new DefaultCategoryDataset( );
 dataset3.addValue( AP_C , "Construction" , "" );
+dataset3.addValue( AP_R , "Retrofitting" , "" );
+
 dataset3.addValue( AP4 , "Operation" , "" );
 dataset3.addValue( AP5 , "Maintenance" , "" );
 dataset3.addValue( AP6 , "Scrapping" , "" );
-dataset3.addValue( AP , "Total" , "" );
+dataset3.addValue( Total_AP , "Total" , "" );
 // Generate the graph
 JFreeChart chart3 = ChartFactory.createBarChart(
         "Acidification Potential - " + project_name, // Title
@@ -4796,10 +5041,12 @@ panel_chart3.add(CP3);
 DefaultCategoryDataset dataset4 =
         new DefaultCategoryDataset( );
 dataset4.addValue( EP_C , "Construction" , "" );
+dataset4.addValue( EP_R , "Retrofitting" , "" );
+
 dataset4.addValue( EP4 , "Operation" , "" );
 dataset4.addValue( EP5 , "Maintenance" , "" );
 dataset4.addValue( EP6 , "Scrapping" , "" );
-dataset4.addValue( EP , "Total" , "" );
+dataset4.addValue( Total_EP , "Total" , "" );
 // Generate the graph
 JFreeChart chart4 = ChartFactory.createBarChart(
         "Eutrophication Potential - " + project_name, // Title
@@ -4817,10 +5064,12 @@ panel_chart4.add(CP4);
 DefaultCategoryDataset dataset5 =
         new DefaultCategoryDataset( );
 dataset5.addValue( POCP_C , "Construction" , "" );
+dataset5.addValue( POCP_R , "Retrofitting" , "" );
+
 dataset5.addValue( POCP4 , "Operation" , "" );
 dataset5.addValue( POCP5 , "Maintenance" , "" );
 dataset5.addValue( POCP6 , "Scrapping" , "" );
-dataset5.addValue( POCP , "Total" , "" );
+dataset5.addValue( Total_POCP , "Total" , "" );
 // Generate the graph
 JFreeChart chart5 = ChartFactory.createBarChart(
         "Photochemical Ozone Creation Potential - " + project_name, // Title
@@ -4838,10 +5087,12 @@ panel_chart5.add(CP5);
 DefaultCategoryDataset dataset6 =
         new DefaultCategoryDataset( );
 dataset6.addValue( RA2 , "Construction" , "" );
+dataset6.addValue( RA4r , "Retrofitting" , "" );
+
 dataset6.addValue( RA4 , "Operation" , "" );
 dataset6.addValue( RA5 , "Maintenance" , "" );
 dataset6.addValue( RA6 , "Scrapping" , "" );
-dataset6.addValue( RA , "Total" , "" );
+dataset6.addValue( Total_RA , "Total" , "" );
 // Generate the graph
 JFreeChart chart6 = ChartFactory.createBarChart(
         "Risk Assessment- RPN - " + project_name, // Title
@@ -4858,11 +5109,13 @@ panel_chart6.add(CP6);
 
 DefaultCategoryDataset dataset7 =
         new DefaultCategoryDataset( );
-dataset7.addValue( sum1+sum3+sum2+(GWP1+GWP3+GWP2)*P_GWP+(AP1+AP3+AP2)*P_AP+(EP1+EP+EP2)*P_EP+(POCP1+POCP3+POCP2)*P_POCP+RA2/1000*CoTL, "Construction" , "" );        //construction total cost
+dataset7.addValue( sum1+sum3+sum2+(GWP1+GWP3+GWP2)*P_GWP+(AP1+AP3+AP2)*P_AP+(EP1+EP3+EP2)*P_EP+(POCP1+POCP3+POCP2)*P_POCP+RA2/1000*CoTL, "Construction" , "" );        //construction total cost
+dataset7.addValue( sumR+GWP_R*P_GWP+AP_R*P_AP+EP_R*P_EP+POCP_R*P_POCP+RA4r/1000*CoTL , "Retrofitting" , "" );        	//Retrofitting total cost
+
 dataset7.addValue( sum4+GWP4*P_GWP+AP4*P_AP+EP4*P_EP+POCP4*P_POCP+RA4/1000*CoTL , "Operation" , "" );        	//operation total cost
-dataset7.addValue( sum5, "Maintenance", "");																		//maintenance total cost
+dataset7.addValue( sum5+GWP5*P_GWP+AP5*P_AP+EP5*P_EP+POCP5*P_POCP+RA5/1000*CoTL, "Maintenance", "");																		//maintenance total cost
 dataset7.addValue( sum6+GWP6*P_GWP+AP6*P_AP+EP6*P_EP+POCP6*P_POCP+RA6/1000*CoTL , "Scrapping" , "" ); 			//scrapping total cost
-dataset7.addValue( sum+GWP*P_GWP+AP*P_AP+EP*P_EP+POCP*P_POCP+RA/1000*CoTL , "Total" , "" );     				//life cycle total cost
+dataset7.addValue( Total_LCTC , "Total" , "" );     				//life cycle total cost
 // Generate the graph
 JFreeChart chart7 = ChartFactory.createBarChart(
         "Total Life Cycle Cost - " + project_name, // Title
@@ -4928,12 +5181,13 @@ F_db_name.dispose();
 	     uploadButton.addActionListener(new ActionListener() {
 
 			
+			@SuppressWarnings("static-access")
 			public void actionPerformed(ActionEvent arg0) {
 
 		        LoggingSystem.setUp();
 
 				try {
-					LCAdataFactory.setUpDataServiceConnection();
+					LCAdataFactory.setUpDataServiceConnection(urlString, projectString);
 				} 
 				catch (Exception e) 
 					{
@@ -4950,7 +5204,7 @@ F_db_name.dispose();
 					e.printStackTrace();
 				}
 
-				GUIexample guiExample = new GUIexample();
+GUIexample guiExample = new GUIexample();
 
 //Shows the default property values of the engine CatalogueItem
 guiExample.showDefaultEngineValues();
@@ -5042,7 +5296,8 @@ LCAdataFactory.setProductComponentsProperty(battery, "rh7", rh7Value1);
 AnalysisScenario scenario = LCAdataFactory.createAnalysisScenario("lcaAnalysisScenario" + project_name);
 
 //Create Case
-AnalysisCase analysisCase = LCAdataFactory.createAnalysisCase(scenario, " - Case: "+date);
+Date date_now = new Date();
+AnalysisCase analysisCase = LCAdataFactory.createAnalysisCase(scenario, " - Case: "+dateFormat.format(date_now));
 
 //Create General LCA Parameters
 ParameterSet lcaGeneralParameterSet = LCAdataFactory.createParameterSet(analysisCase, "GeneralParameters",
@@ -5062,27 +5317,92 @@ for (KeyValue kv: lcaGeneralParameterSet.getParameters())
             .getValue() + "\n");
 }
 
-//Create Result
-EvaluationResult result = LCAdataFactory.createEvaluationResult(analysisCase, "evaluationResult");
+//Create Result - A124 cost
+
+EvaluationResult result_124 = LCAdataFactory.createEvaluationResult(analysisCase, "evaluationResult");
 double LCTC = sum+GWP*P_GWP+AP*P_AP+EP*P_EP+POCP*P_POCP+RA/1000*CoTL;
-LCAdataFactory.setLifeCycleCost(result, sum);
-LCAdataFactory.setLifeCycleTotalCost(result, LCTC);
-LCAdataFactory.setGWP(result, GWP);
-LCAdataFactory.setGWPCost(result, GWP*P_GWP);
-LCAdataFactory.setAP(result, AP);
-LCAdataFactory.setAPCost(result, AP*P_AP);
-LCAdataFactory.setEP(result, EP);
-LCAdataFactory.setEPCost(result, EP*P_EP);
-LCAdataFactory.setPOCP(result, POCP);
-LCAdataFactory.setPOCPCost(result, POCP*P_POCP);
-LCAdataFactory.setRPN(result, Total_RA);
-LCAdataFactory.setRPNCost(result, Total_CRA);
+LCAdataFactory.setLifeCycleCost(result_124, sum);
+LCAdataFactory.setLifeCycleTotalCost(result_124, LCTC);
+//LCAdataFactory.setGWP(result, GWP);
+LCAdataFactory.setGWPCost(result_124, GWP*P_GWP);
+//LCAdataFactory.setAP(result, AP);
+LCAdataFactory.setAPCost(result_124, AP*P_AP);
+//LCAdataFactory.setEP(result, EP);
+LCAdataFactory.setEPCost(result_124, EP*P_EP);
+//LCAdataFactory.setPOCP(result, POCP);
+LCAdataFactory.setPOCPCost(result_124, POCP*P_POCP);
+//LCAdataFactory.setRPN(result, Total_RA);
+LCAdataFactory.setRPNCost(result_124, Total_CRA);
 
 //Save
 LCAdataFactory.projOM.makePersistent(scenario);
 LCAdataFactory.projOM.makePersistent(analysisCase);
-LCAdataFactory.projOM.makePersistent(result);
+LCAdataFactory.projOM.makePersistent(result_124);
 LCAdataFactory.projOM.currentTransaction().commit();
+
+CreateActivityInstance createActivityInstance_124 = new CreateActivityInstance();
+	Session session_124 = null;
+	try {
+		session_124 = createActivityInstance_124.setUpDataServiceConnection(urlString, projectString);
+	} catch (URISyntaxException e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	}
+System.out.println("this shit is "+session_124.toString());
+createActivityInstance_124.create(session_124.getManager(),"A124");
+
+
+
+//Create Result - A127 environment
+try {
+	LCAdataFactory.setUpDataServiceConnection(urlString, projectString);
+} 
+catch (Exception e) 
+	{
+	JFrame F_warn0 = new JFrame("Error!");
+	JPanel P_warn0 = new JPanel();
+	P_warn0.setLayout(new BorderLayout());
+	JLabel Fd_warn0 = new JLabel("Can't connect to SHIPLYS server!");
+	F_warn0.setSize(200, 80);
+	P_warn0.add(Fd_warn0,BorderLayout.CENTER);
+	F_warn0.setLocation(w_mid, h_mid);
+	F_warn0.add(P_warn0);
+	F_warn0.setVisible(true);
+	F_warn0.setResizable(false); 						         				
+	e.printStackTrace();
+}
+EvaluationResult result_127 = LCAdataFactory.createEvaluationResult(analysisCase, "evaluationResult");
+//double LCTC = sum+GWP*P_GWP+AP*P_AP+EP*P_EP+POCP*P_POCP+RA/1000*CoTL;
+//LCAdataFactory.setLifeCycleCost(result, sum);
+//LCAdataFactory.setLifeCycleTotalCost(result, LCTC);
+LCAdataFactory.setGWP(result_127, GWP);
+//LCAdataFactory.setGWPCost(result, GWP*P_GWP);
+LCAdataFactory.setAP(result_127, AP);
+//LCAdataFactory.setAPCost(result, AP*P_AP);
+LCAdataFactory.setEP(result_127, EP);
+//LCAdataFactory.setEPCost(result, EP*P_EP);
+LCAdataFactory.setPOCP(result_127, POCP);
+//LCAdataFactory.setPOCPCost(result, POCP*P_POCP);
+//LCAdataFactory.setRPN(result, Total_RA);
+//LCAdataFactory.setRPNCost(result, Total_CRA);
+
+//Save
+
+LCAdataFactory.projOM.makePersistent(result_127);
+LCAdataFactory.projOM.currentTransaction().commit();
+
+CreateActivityInstance createActivityInstance_127 = new CreateActivityInstance();
+Session session_127 = null;
+
+try {
+	session_127 = createActivityInstance_127.setUpDataServiceConnection(urlString, projectString);
+} catch (URISyntaxException e) {
+	// TODO Auto-generated catch block
+	e.printStackTrace();
+}
+createActivityInstance_127.create(session_127.getManager(),"A127");
+
+
 
 //JFrame F_ud = new JFrame("Uploaded");
 //JPanel P_ud = new JPanel();
@@ -5416,8 +5736,8 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
 				     frame_r.setSize(new Dimension(800, 600));	
 				     frame_r.setResizable(true);	
 				     
-					 	double w1 = screenSize.getWidth()*1560/1680;
-					 	double h1 = screenSize.getHeight()*900/1050;
+					 	double w1 = screenSize.getWidth()*720/1680;
+					 	double h1 = screenSize.getHeight()*440/1050;
 					 	Dimension d1 = new Dimension();
 					 	d1.setSize(w1, h1);
 				     
@@ -5436,7 +5756,7 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
 	     panel = new JPanel(true);
 	     
 		 	double w = screenSize.getWidth()*1480/1680;
-		 	double h = screenSize.getHeight()*850/1050;
+		 	double h = screenSize.getHeight()*840/1050;
 		 	Dimension d = new Dimension();
 		 	d.setSize(w, h);
 	     
@@ -5588,7 +5908,7 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
 		    c_sub.weighty = 1;
 		    c_sub.gridx = 0;
 		    c_sub.gridy = 3;
-		    importData.addActionListener(createImportListener(0));
+//		    importData.addActionListener(createImportListener());
 		    panel_m.add(importData,c_sub);
 		    
 		    
@@ -6192,12 +6512,12 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
 		 }
 
 	//add actionlistner to importdata button to open a window for downloading and maping data from server to local database
-	 private ActionListener createImportListener(int j){
+	 private ActionListener createImportListener(){
 		 ActionListener importLinster=  new ActionListener() {
              @Override
              public void actionPerformed(ActionEvent iL) {
             	           	 
-            	 JFrame F_id = new JFrame("Import from Platform");
+            	JFrame F_id = new JFrame("Import from Platform");
              	F_id.setIconImage(new ImageIcon(cwd+"/pic/icon.png").getImage());
          		JPanel P_id = new JPanel();
          		P_id.setLayout(new BorderLayout());
@@ -6244,7 +6564,7 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
          				F_id.dispose();
 
          			}
-         			;};
+         			};
 				cancel.addActionListener(c);
 //         		cancel.setBackground(Color.red);
 //         		cancel.setForeground(Color.white);
@@ -6256,7 +6576,7 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
          				frame_name = TF.getText();
          				LoggingSystem.setUp();
 						 try {
-							LCAdataFactory.setUpDataServiceConnection();
+							LCAdataFactory.setUpDataServiceConnection(urlString, projectString);
 						} catch (Exception e1) {
 							JFrame F_warn0 = new JFrame("Error!");
 							JPanel P_warn0 = new JPanel();
@@ -6272,6 +6592,7 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
 						}
 
 							readFromDB();
+							shutdown();
          				F_id.dispose();
          			}
          		};
@@ -6435,22 +6756,32 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
 
 					
 				}
-				JFrame F_id = new JFrame("Saved");
-				JPanel P_id = new JPanel();
-				P_id.setLayout(new BorderLayout());
-				JLabel Fd_id = new JLabel("<html>Database saved in:" + "<br/>"+ 	cwd+"/db/" + "import database"+"/"+productComponent.getCommonName()+"_configuratable_"+dateFormat.format(date)+".xls"+"<br/>"+
-																		cwd+"/db/" + "import database"+"/"+productComponent.getCommonName()+"_unconfiguratable_"+dateFormat.format(date)+".xls<html>", SwingConstants.CENTER);
-				
-				F_id.setSize(720, 100);
-				P_id.add(Fd_id,BorderLayout.CENTER);
-				F_id.add(P_id);
-				F_id.setVisible(true);
-				F_id.setResizable(false);          
+        
 					}
+			JFrame F_id = new JFrame("Saved");
+			JPanel P_id = new JPanel();
+			P_id.setLayout(new BorderLayout());
+			JLabel Fd_id = new JLabel("<html>Database saved in:" + "<br/>"+ 	cwd+"/db/" + "import database"+"/"+productComponent.getCommonName()+"_configuratable_"+dateFormat.format(date)+".xls"+"<br/>"+
+																	cwd+"/db/" + "import database"+"/"+productComponent.getCommonName()+"_unconfiguratable_"+dateFormat.format(date)+".xls<html>", SwingConstants.CENTER);
+			
+			F_id.setSize(720, 100);
+			P_id.add(Fd_id,BorderLayout.CENTER);
+			F_id.add(P_id);
+			F_id.setVisible(true);
+			F_id.setResizable(false);  
             	}		
         	}
         }
-    		
+    	
+    private static void shutdown()
+    {
+        if (session != null) {
+            session.close();
+        }
+
+        InformationDirectory.shutdown(null);
+    }
+	
 	private static CatalogueProperty getCataloguePropertyByName(CatalogueItemInstance item, String propertyName)
     {
         //Load catalogue
@@ -6594,11 +6925,44 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
 //main function to run to show GUI	 
 	public static void main(String[] args) {
             
+
+		
+		if(args!=null && args.length>0) {
+			
+//to do a batch script run:
+//"\Program Files (x86)\SHIPLYS LCT\SHIPLYS LCT.exe"  -i http://192.168.42.33:10000/data/v1/dbs/dc=shiplys.example -p "SHIPLYS Project"
+		
+			try {
+				urlString = args[1];
+				projectString = args[3];
+				createAndShowGUI();
+			} catch (BiffException | IOException e1) {
+				JFrame F_warn0 = new JFrame("Error!");
+				JPanel P_warn0 = new JPanel();
+				P_warn0.setLayout(new BorderLayout());
+				JLabel Fd_warn0 = new JLabel("Can't start up!");
+				F_warn0.setSize(200, 80);
+				P_warn0.add(Fd_warn0,BorderLayout.CENTER);
+				F_warn0.setLocation(w_mid, h_mid);
+				F_warn0.add(P_warn0);
+				F_warn0.setVisible(true);
+				F_warn0.setResizable(false); 	        					e1.printStackTrace();
+			}
+		}
+		
+		else {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			
             public void run() {
             	JFrame F_id = new JFrame("New project");
             	F_id.setIconImage(new ImageIcon(cwd+"/pic/icon.png").getImage());
         		JPanel P_id = new JPanel();
+        		
+        	 	double w1 = screenSize.getWidth()*400/1680;
+			 	double h1 = screenSize.getHeight()*120/1050;
+			 	Dimension d1 = new Dimension();
+			 	d1.setSize(w1, h1);
+        		
         		P_id.setLayout(new BorderLayout());
         		JTextField TF = new JTextField();
         		
@@ -6608,13 +6972,14 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
 			 	d.setSize(w, h);
         		
         		TF.setPreferredSize(d);
-        		TF.setName("Enter project name here!");
+        		TF.setText("Ener project name here!"); 
         		JButton enter_name = new JButton();
         		enter_name.setText("Create a project");
         		enter_name.setFont(new Font("Arial", Font.BOLD,14));
         		TF.setBackground(Color.green);
         		enter_name.setBackground(Color.red);
         		enter_name.setForeground(Color.white);
+        		enter_name.setPreferredSize(d);
         		ActionListener en = new ActionListener() {
         			
         			@Override
@@ -6640,7 +7005,8 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
         		};
         		enter_name.addActionListener(en);
         		TF.addActionListener(en);
-        		F_id.setSize(300, 100);
+        		F_id.setSize(d1);
+//			 	P_id.setPreferredSize(d1);
         		P_id.add(TF,BorderLayout.PAGE_START);
         		P_id.add(enter_name,BorderLayout.PAGE_END);
         		F_id.add(P_id);
@@ -6648,33 +7014,48 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
         		F_id.setResizable(false);  
         		F_id.setLocation(w_mid, h_mid);
         		F_id.setAlwaysOnTop(true);
-            
+        		F_id.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 		
 			}
+		}
             
-            }
 		);
+		}
 	}
 	
 //create frame
 	private static void createAndShowGUI() throws BiffException, IOException {
   
-	frame = new JFrame("ShipLCA - "+ frame_name+" - " +dateFormat.format(date));
+	if(projectString == null) {
+		frame = new JFrame("ShipLCA - "+ frame_name+" - " +dateFormat.format(date));
+	}
+	else {
+		frame = new JFrame("ShipLCA - "+ projectString+" - " +dateFormat.format(date));
+	}
+		
+		
+	
+	if(projectString ==null) {
 	frame.setName(project_name);
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+	else {
+	frame.setName(projectString);
+	}
+	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     
- 	double w = screenSize.getWidth()*1680/1680;
- 	double h = screenSize.getHeight()*1000/1050;
- 	Dimension d = new Dimension();
- 	d.setSize(w, h);
-    
-    frame.setPreferredSize(d);
+// 	double w = screenSize.getWidth()*1680/1680;
+// 	double h = screenSize.getHeight()*1000/1050;
+// 	Dimension d = new Dimension();
+// 	d.setSize(w, h);
+//    
+//    frame.setPreferredSize(d);
     
     //Create and set up the content pane.
     JComponent newContentPane = new Gui16052019();
     frame.setLayout(new BorderLayout());
     frame.add(newContentPane,BorderLayout.WEST);
-    frame.setExtendedState(JFrame.NORMAL);
+    frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
     frame.setResizable(false);
     
  	double w1 = screenSize.getWidth()*1630/1680;

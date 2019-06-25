@@ -263,7 +263,7 @@ public class StartScreen
             session.close();
         }
 
-        InformationDirectory.shutdown();
+		InformationDirectory.shutdown();
     }
     
     private static CatalogueProperty getCataloguePropertyByName(CatalogueItemInstance item, String propertyName)
