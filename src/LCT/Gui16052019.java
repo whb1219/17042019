@@ -23,6 +23,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -83,9 +85,11 @@ import org.apache.poi.ss.usermodel.CellType;
 import org.atlantec.objects.ObjectManager;
 import org.atlantec.objects.Query;
 import org.atlantec.util.CollectionsHelper;
+import org.atlantec.util.DateHelper;
 import org.atlantec.util.logging.LoggingSystem;
 import org.apache.log4j.Logger;
 import org.atlantec.binding.POID;
+import org.atlantec.binding.erm.ActivityInstance;
 import org.atlantec.binding.erm.AnalysisCase;
 import org.atlantec.binding.erm.AnalysisScenario;
 import org.atlantec.binding.erm.Catalogue;
@@ -98,6 +102,7 @@ import org.atlantec.binding.erm.MassMeasure;
 import org.atlantec.binding.erm.MoneyMeasure;
 import org.atlantec.binding.erm.ParameterSet;
 import org.atlantec.binding.erm.PowerMeasure;
+import org.atlantec.binding.erm.ProcessTemplate;
 import org.atlantec.binding.erm.ProductComponent;
 import org.atlantec.binding.erm.SpecificConsumptionMeasure;
 import org.atlantec.catalogue.CatalogueManager;
@@ -1240,7 +1245,38 @@ public class Gui16052019 extends JPanel {
 	
 //uploading parameters(should be global)
     double Life_span;
-    double PV;
+    public double getGWP() {
+		return GWP;
+	}
+
+	public void setGWP(double gWP) {
+		GWP = gWP;
+	}
+
+	public double getAP() {
+		return AP;
+	}
+
+	public void setAP(double aP) {
+		AP = aP;
+	}
+
+	public double getEP() {
+		return EP;
+	}
+
+	public void setEP(double eP) {
+		EP = eP;
+	}
+
+	public double getPOCP() {
+		return POCP;
+	}
+
+	public void setPOCP(double pOCP) {
+		POCP = pOCP;
+	}
+	double PV;
     double Interest;
     double SL;
     double CoTL;
@@ -1249,8 +1285,8 @@ public class Gui16052019 extends JPanel {
     double AP;
     double EP; 
     double POCP; 
-    double P_GWP; 
-    double P_AP; 
+    double P_GWP=24; 
+    double P_AP=7788; 
     double P_EP; 
     double P_POCP; 
     double RA; 
@@ -2879,7 +2915,7 @@ Total_CRA = Total_RA/1000*CoTL;
 /*O*/			double GWP4 = O1.GWP+O2.GWP+O3.GWP;
 /*M*/			double GWP5 = M1.GWP;
 /*S*/			double GWP6 = S1.GWP+S2.GWP;
-///*Sum*/			GWP = Total_GWP;
+/*Sum*/			GWP = Total_GWP;
 P_GWP = 24; //Euro per ton
 /*design*/		double AP0 = 0;				
 /*C_H*/			double AP1 = CM1.AP;
@@ -2893,7 +2929,7 @@ P_GWP = 24; //Euro per ton
 /*O*/			double AP4 = O1.AP+O2.AP+O3.AP;
 /*M*/			double AP5 = M1.AP;
 /*S*/			double AP6 = S1.AP +S2.AP;
-///*AP*/			AP = Total_AP;
+/*AP*/			AP = Total_AP;
 P_AP = 7788;
 /*design*/		double EP0 = 0;				
 /*C_H*/			double EP1 = CM1.EP;
@@ -2907,7 +2943,7 @@ P_AP = 7788;
 /*O*/			double EP4 = O1.EP+O2.EP+O3.EP;
 /*M*/			double EP5 = M1.EP;
 /*S*/			double EP6 = S1.EP +S2.EP;
-///*EP*/			EP = Total_EP;
+/*EP*/			EP = Total_EP;
 P_EP = 0;
 /*design*/		double POCP0 = 0;				
 /*C_H*/			double POCP1 = CM1.POCP;
@@ -2921,7 +2957,7 @@ P_EP = 0;
 /*O*/			double POCP4 = O1.POCP+O2.POCP+O3.POCP;
 /*M*/			double POCP5 = M1.POCP;
 /*S*/			double POCP6 = S1.POCP +S2.POCP;
-///*POCP*/		POCP = Total_POCP;
+/*POCP*/		POCP = Total_POCP;
 P_POCP = 0;
 /*design*/		double RA0 = 0;				
 /*C_H*/			double RA1 = 0;
@@ -4827,7 +4863,7 @@ Total_CRA = Total_RA/1000*CoTL;
 /*O*/			double GWP4 = O1.GWP+O2.GWP+O3.GWP;
 /*M*/			double GWP5 = M1.GWP;
 /*S*/			double GWP6 = S1.GWP+S2.GWP;
-///*Sum*/			GWP = Total_GWP;
+/*Sum*/			GWP = Total_GWP;
 P_GWP = 24; //Euro per ton
 /*design*/		double AP0 = 0;				
 /*C_H*/			double AP1 = CM1.AP;
@@ -4841,7 +4877,7 @@ P_GWP = 24; //Euro per ton
 /*O*/			double AP4 = O1.AP+O2.AP+O3.AP;
 /*M*/			double AP5 = M1.AP;
 /*S*/			double AP6 = S1.AP +S2.AP;
-///*AP*/			AP = Total_AP;
+/*AP*/			AP = Total_AP;
 P_AP = 7788;
 /*design*/		double EP0 = 0;				
 /*C_H*/			double EP1 = CM1.EP;
@@ -4855,7 +4891,7 @@ P_AP = 7788;
 /*O*/			double EP4 = O1.EP+O2.EP+O3.EP;
 /*M*/			double EP5 = M1.EP;
 /*S*/			double EP6 = S1.EP +S2.EP;
-///*EP*/			EP = Total_EP;
+/*EP*/			EP = Total_EP;
 P_EP = 0;
 /*design*/		double POCP0 = 0;				
 /*C_H*/			double POCP1 = CM1.POCP;
@@ -4869,7 +4905,7 @@ P_EP = 0;
 /*O*/			double POCP4 = O1.POCP+O2.POCP+O3.POCP;
 /*M*/			double POCP5 = M1.POCP;
 /*S*/			double POCP6 = S1.POCP +S2.POCP;
-///*POCP*/		POCP = Total_POCP;
+/*POCP*/		POCP = Total_POCP;
 P_POCP = 0;
 /*design*/		double RA0 = 0;				
 /*C_H*/			double RA1 = 0;
@@ -4879,7 +4915,7 @@ P_POCP = 0;
 /*O_r*/			double RA4r = RS1.RA+RS2.RA;	
 /*M*/			double RA5 = 0;
 /*S*/			double RA6 = 0;
-///*RA*/			RA = Total_RA;
+/*RA*/			RA = Total_RA;
 
 double Total_LCTC = Total_cost+Total_GWP*P_GWP+Total_AP*P_AP+Total_EP*P_EP+Total_POCP*P_POCP+Total_CRA;
 //System.out.println("xxx1="+Total_LCTC);
@@ -5181,7 +5217,7 @@ F_db_name.dispose();
 	     uploadButton.addActionListener(new ActionListener() {
 
 			
-			@SuppressWarnings("static-access")
+			@SuppressWarnings({ "static-access", "deprecation" })
 			public void actionPerformed(ActionEvent arg0) {
 
 		        LoggingSystem.setUp();
@@ -5319,12 +5355,14 @@ for (KeyValue kv: lcaGeneralParameterSet.getParameters())
 
 //Create Result - A124 cost
 
-EvaluationResult result_124 = LCAdataFactory.createEvaluationResult(analysisCase, "evaluationResult");
+EvaluationResult result_124 = LCAdataFactory.createEvaluationResult(analysisCase, "evaluationResult_124");
 double LCTC = sum+GWP*P_GWP+AP*P_AP+EP*P_EP+POCP*P_POCP+RA/1000*CoTL;
 LCAdataFactory.setLifeCycleCost(result_124, sum);
 LCAdataFactory.setLifeCycleTotalCost(result_124, LCTC);
 //LCAdataFactory.setGWP(result, GWP);
 LCAdataFactory.setGWPCost(result_124, GWP*P_GWP);
+System.out.println("xxx1"+GWP*P_GWP);
+System.out.println("xxx2"+GWP);
 //LCAdataFactory.setAP(result, AP);
 LCAdataFactory.setAPCost(result_124, AP*P_AP);
 //LCAdataFactory.setEP(result, EP);
@@ -5338,18 +5376,38 @@ LCAdataFactory.setRPNCost(result_124, Total_CRA);
 LCAdataFactory.projOM.makePersistent(scenario);
 LCAdataFactory.projOM.makePersistent(analysisCase);
 LCAdataFactory.projOM.makePersistent(result_124);
+
+POID<ProcessTemplate> activityPOID=  new POID<>("", ProcessTemplate.class.getName(), POID.buildStructuredName("A12","A124"), "");
+
+//create new activity instance
+ActivityInstance actInst =  LCAdataFactory.projOM.createInformationObject(ActivityInstance.class, activityPOID
+        .getName()+".instance");
+
+//set the plan attribute of activity instance referencing the activity received from meta service
+actInst.setPlan(activityPOID);
+
+//TODO: start date could be set by the work flow controller after selecting a specific activity,
+//the appropriate software and starting a job
+Date startDate = Date.from(Instant.now().minus(5, ChronoUnit.MINUTES));
+actInst.setStartDate(DateHelper.formatIsoDate(startDate));
+
+Date endDate = Date.from(Instant.now());
+actInst.setEndDate(DateHelper.formatIsoDate(endDate));
+
+LCAdataFactory.projOM.makePersistent(actInst);
 LCAdataFactory.projOM.currentTransaction().commit();
 
-CreateActivityInstance createActivityInstance_124 = new CreateActivityInstance();
-	Session session_124 = null;
-	try {
-		session_124 = createActivityInstance_124.setUpDataServiceConnection(urlString, projectString);
-	} catch (URISyntaxException e1) {
-		// TODO Auto-generated catch block
-		e1.printStackTrace();
-	}
-System.out.println("this shit is "+session_124.toString());
-createActivityInstance_124.create(session_124.getManager(),"A124");
+
+//CreateActivityInstance createActivityInstance_124 = new CreateActivityInstance();
+//	Session session_124 = null;
+//	try {
+//		session_124 = createActivityInstance_124.setUpDataServiceConnection(urlString, projectString);
+//	} catch (URISyntaxException e1) {
+//		// TODO Auto-generated catch block
+//		e1.printStackTrace();
+//	}
+//System.out.println("this shit is "+session_124.toString());
+//createActivityInstance_124.create(session_124.getManager(),"A124");
 
 
 
@@ -5371,7 +5429,7 @@ catch (Exception e)
 	F_warn0.setResizable(false); 						         				
 	e.printStackTrace();
 }
-EvaluationResult result_127 = LCAdataFactory.createEvaluationResult(analysisCase, "evaluationResult");
+EvaluationResult result_127 = LCAdataFactory.createEvaluationResult(analysisCase, "evaluationResult_127");
 //double LCTC = sum+GWP*P_GWP+AP*P_AP+EP*P_EP+POCP*P_POCP+RA/1000*CoTL;
 //LCAdataFactory.setLifeCycleCost(result, sum);
 //LCAdataFactory.setLifeCycleTotalCost(result, LCTC);
@@ -5389,18 +5447,36 @@ LCAdataFactory.setPOCP(result_127, POCP);
 //Save
 
 LCAdataFactory.projOM.makePersistent(result_127);
+activityPOID=  new POID<>("", ProcessTemplate.class.getName(), POID.buildStructuredName("A12","A127"), "");
+
+//create new activity instance
+actInst =  LCAdataFactory.projOM.createInformationObject(ActivityInstance.class, activityPOID
+      .getName()+".instance");
+
+//set the plan attribute of activity instance referencing the activity received from meta service
+actInst.setPlan(activityPOID);
+
+//TODO: start date could be set by the work flow controller after selecting a specific activity,
+//the appropriate software and starting a job
+startDate = Date.from(Instant.now().minus(5, ChronoUnit.MINUTES));
+actInst.setStartDate(DateHelper.formatIsoDate(startDate));
+
+endDate = Date.from(Instant.now());
+actInst.setEndDate(DateHelper.formatIsoDate(endDate));
+
+LCAdataFactory.projOM.makePersistent(actInst);
 LCAdataFactory.projOM.currentTransaction().commit();
 
-CreateActivityInstance createActivityInstance_127 = new CreateActivityInstance();
-Session session_127 = null;
-
-try {
-	session_127 = createActivityInstance_127.setUpDataServiceConnection(urlString, projectString);
-} catch (URISyntaxException e) {
-	// TODO Auto-generated catch block
-	e.printStackTrace();
-}
-createActivityInstance_127.create(session_127.getManager(),"A127");
+//CreateActivityInstance createActivityInstance_127 = new CreateActivityInstance();
+//Session session_127 = null;
+//
+//try {
+//	session_127 = createActivityInstance_127.setUpDataServiceConnection(urlString, projectString);
+//} catch (URISyntaxException e) {
+//	// TODO Auto-generated catch block
+//	e.printStackTrace();
+//}
+//createActivityInstance_127.create(session_127.getManager(),"A127");
 
 
 
@@ -6972,7 +7048,7 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
 			 	d.setSize(w, h);
         		
         		TF.setPreferredSize(d);
-        		TF.setText("Ener project name here!"); 
+        		TF.setText("Enter project name here!"); 
         		JButton enter_name = new JButton();
         		enter_name.setText("Create a project");
         		enter_name.setFont(new Font("Arial", Font.BOLD,14));
@@ -7056,7 +7132,7 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
     frame.setLayout(new BorderLayout());
     frame.add(newContentPane,BorderLayout.WEST);
     frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-    frame.setResizable(false);
+    frame.setResizable(true);
     
  	double w1 = screenSize.getWidth()*1630/1680;
  	double h1 = screenSize.getHeight()*850/1050;
