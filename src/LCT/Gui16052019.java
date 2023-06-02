@@ -1285,8 +1285,8 @@ public class Gui16052019 extends JPanel {
     double AP;
     double EP; 
     double POCP; 
-    double P_GWP=24; 
-    double P_AP=7788; 
+    double P_GWP; 
+    double P_AP; 
     double P_EP; 
     double P_POCP; 
     double RA; 
@@ -1909,6 +1909,8 @@ public class Gui16052019 extends JPanel {
 PV =Double.parseDouble(data_m1[1][2]); //0 means not using present value; 1 means using;
 Life_span = Double.parseDouble(field0[1].getText()); //Life span of target (year)
 Interest= Double.parseDouble(data_m1[2][2]); //Interest rate (100%)
+P_GWP = Double.parseDouble(data_m1[3][2]);
+P_AP = Double.parseDouble(data_m1[4][2]);
 
 project_name = field0[0].getText();						//project name
 SL= Double.parseDouble(field0[3].getText());			//sensitivity level
@@ -2916,7 +2918,7 @@ Total_CRA = Total_RA/1000*CoTL;
 /*M*/			double GWP5 = M1.GWP;
 /*S*/			double GWP6 = S1.GWP+S2.GWP;
 /*Sum*/			GWP = Total_GWP;
-P_GWP = 24; //Euro per ton
+//P_GWP = 24; //Euro per ton
 /*design*/		double AP0 = 0;				
 /*C_H*/			double AP1 = CM1.AP;
 /*C_M*/			double AP2 = CS1.AP +CS2.AP; //+ CM1.Cost_C_Material
@@ -2930,7 +2932,7 @@ P_GWP = 24; //Euro per ton
 /*M*/			double AP5 = M1.AP;
 /*S*/			double AP6 = S1.AP +S2.AP;
 /*AP*/			AP = Total_AP;
-P_AP = 7788;
+//P_AP = 7788;
 /*design*/		double EP0 = 0;				
 /*C_H*/			double EP1 = CM1.EP;
 /*C_M*/			double EP2 = CS1.EP +CS2.EP; //+ CM1.Cost_C_Material
@@ -3857,7 +3859,8 @@ F_db_name.dispose();
 PV =Double.parseDouble(data_m1[1][2]); //0 means not using present value; 1 means using;
 Life_span = Double.parseDouble(field0[1].getText()); //Life span of target (year)
 Interest= Double.parseDouble(data_m1[2][2]); //Interest rate (100%)
-
+P_GWP = Double.parseDouble(data_m1[3][2]);
+P_AP = Double.parseDouble(data_m1[4][2]);
 project_name = field0[0].getText();						//project name
 SL= Double.parseDouble(field0[3].getText());			//sensitivity level
 CoTL = Double.parseDouble(field0[4].getText());		//ship total price
@@ -4864,7 +4867,8 @@ Total_CRA = Total_RA/1000*CoTL;
 /*M*/			double GWP5 = M1.GWP;
 /*S*/			double GWP6 = S1.GWP+S2.GWP;
 /*Sum*/			GWP = Total_GWP;
-P_GWP = 24; //Euro per ton
+//P_GWP = 24; //Euro per ton
+System.out.println(P_GWP + "test");
 /*design*/		double AP0 = 0;				
 /*C_H*/			double AP1 = CM1.AP;
 /*C_M*/			double AP2 = CS1.AP +CS2.AP; //+ CM1.Cost_C_Material
@@ -4878,7 +4882,7 @@ P_GWP = 24; //Euro per ton
 /*M*/			double AP5 = M1.AP;
 /*S*/			double AP6 = S1.AP +S2.AP;
 /*AP*/			AP = Total_AP;
-P_AP = 7788;
+//P_AP = 7788;
 /*design*/		double EP0 = 0;				
 /*C_H*/			double EP1 = CM1.EP;
 /*C_M*/			double EP2 = CS1.EP +CS2.EP; //+ CM1.Cost_C_Material
