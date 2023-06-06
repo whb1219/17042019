@@ -5921,6 +5921,7 @@ System.out.println("Results are saved to Project@"+"project_name"+"/~AnalysisCas
 //create drop list for database selection
 
 		    file = new File (cwd+"/db/"+string+"/");//.substring(0, position)
+		    System.out.println(cwd);
 		    file_group = file.listFiles();
 		    Arrays.sort(file_group, Comparator.comparingLong(File::lastModified));
 		    choices = new String[file_group.length];
